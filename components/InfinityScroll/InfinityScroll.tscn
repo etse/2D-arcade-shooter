@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://components/InfinityScroll/InfinityScroll.gd" type="Script" id=1]
+
+[node name="InfinityScroll" type="Node"]
+script = ExtResource( 1 )
+
+[node name="texture_1" type="Sprite" parent="."]
+position = Vector2( -140, -40 )
+z_index = -2
+centered = false
+
+[node name="texture_2" type="Sprite" parent="."]
+position = Vector2( -140, -4130 )
+z_index = -2
+centered = false
+
