@@ -19,7 +19,6 @@ extents = Vector2( 10, 540 )
 position = Vector2( 960, 950 )
 
 [node name="WorldBounds" type="StaticBody2D" parent="."]
-editor/display_folded = true
 position = Vector2( 620, -10 )
 __meta__ = {
 "_edit_group_": true,
@@ -43,6 +42,7 @@ position = Vector2( 1310, 550 )
 shape = SubResource( 2 )
 
 [node name="Background" type="Node" parent="."]
+pause_mode = 1
 
 [node name="Nebula" parent="Background" instance=ExtResource( 2 )]
 texture = ExtResource( 3 )

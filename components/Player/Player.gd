@@ -1,18 +1,22 @@
-extends RigidBody2D
+extends KinematicBody2D
 
-const acceleration = 4200
+const acceleration_force = 9000
+const dampening = 10
+const max_speed = 2700
 var velocity = Vector2(0, 0)
-var desired_x_velocity = 0;
-var desired_y_velocity = 0;
+var acceleration = Vector2(0,0 );
 
 func _ready():
 	$Exhaust1.play();
 	$Exhaust2.play();	
 
 func _physics_process(delta: float):
-	velocity.x = desired_x_velocity
-	velocity.y = desired_y_velocity
-	applied_force = velocity	
+	velocity = velocity - (velocity * dampening * delta)
+		
+	velocity = velocity + (acceleration * delta)
+	if velocity.length() > max_speed:
+		velocity = velocity.normalized() * max_speed
+	velocity = move_and_slide(velocity)
 	
 func _input(event: InputEvent):
 	handle_movement(event)	
@@ -20,23 +24,23 @@ func _input(event: InputEvent):
 func handle_movement(event: InputEvent):
 	if event.is_action("move_left"):
 		if event.is_pressed():
-			desired_x_velocity = -acceleration
-		elif desired_x_velocity < 0:
-			desired_x_velocity = 0;
+			acceleration.x = -acceleration_force
+		elif acceleration.x < 0:
+			acceleration.x = 0;
 	if event.is_action("move_right"):
 		if event.is_pressed():
-			desired_x_velocity = acceleration
-		elif desired_x_velocity > 0:
-			desired_x_velocity = 0;
+			acceleration.x = acceleration_force
+		elif acceleration.x > 0:
+			acceleration.x = 0;
 			
 	if event.is_action("move_up"):
 		if event.is_pressed():
-			desired_y_velocity = -acceleration
-		elif desired_y_velocity < 0:
-			desired_y_velocity = 0;
+			acceleration.y = -acceleration_force
+		elif acceleration.y < 0:
+			acceleration.y = 0;
 	if event.is_action("move_down"):
 		if event.is_pressed():
-			desired_y_velocity = acceleration
-		elif desired_y_velocity > 0:
-			desired_y_velocity = 0;
+			acceleration.y = acceleration_force
+		elif acceleration.y > 0:
+			acceleration.y = 0;
 	
