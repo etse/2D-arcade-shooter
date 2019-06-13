@@ -1,32 +1,22 @@
-# TexturePacker Importer
+# My first Godot3 game
 
-This is a plugin for [Godot Engine](https://godotengine.org) to import
-`TileSet`s and `AtlasTexture`s from the [TexturePacker](https://www.codeandweb.com/texturepacker)
+In this game I try to create an old-school arcade shoot 'em up. Very much inspired by 
+[Tyrian 2000](https://www.gog.com/game/tyrian_2000), which I played alot of back in the old days.
 
-**Note: This is compatible only with Godot 3.0 or later.**
+## Assets and credits
+
+Assets and content used from 3rd parties might have licences that differ from the game itself. Before reusing
+the assets found in the folder `assets/`, please read the licence given by the original author.
+
+### Arts and assets
+
+* [Dynamic space backgrounds Lite (free)](https://dinvstudio.itch.io/dynamic-space-background-lite-free)
+* [Spaceship Shooter Environment](https://ansimuz.itch.io/spaceship-shooter-environment)
+* [Spacefleet](https://vtrixdev.itch.io/spacefleet)
+
+### Music and SFX
+
+* [Space Music Pack by Goose Ninja](https://gooseninja.itch.io/space-music-pack)
 
 
-## Installation
 
-Simply download it from [Godot Asset Library](https://godotengine.org/asset-library/asset/169)
-
-Alternatively, download or clone this repository and copy the contents of the
-`addons` folder to your own project's `addons` folder.
-
-Important: Enable the plugin on the Project Settings.
-
-## Features
-
-* Import sprite sheets as AtlasTextures
-* Import sprite sheets as TileSets
-* Supports trimmed sprites (margin)
-* Supports MultiPack
-
-## Usage (once the plugin is enabled)
-
-1. Save your sprite sheets / tile maps in your project folder
-2. Watch Godot import it automatically.
-
-## License
-
-[MIT License](LICENSE). Copyright (c) 2018 Andreas Loew / CodeAndWeb GmbH
