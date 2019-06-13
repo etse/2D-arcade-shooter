@@ -5,6 +5,7 @@ const dampening = 10
 const max_speed = 2700
 var velocity = Vector2(0, 0)
 var acceleration = Vector2(0,0 );
+var gun_cooldown = 0
 
 func _ready():
 	$Exhaust1.play();
@@ -18,8 +19,18 @@ func _physics_process(delta: float):
 		velocity = velocity.normalized() * max_speed
 	velocity = move_and_slide(velocity)
 	
+	handle_shooting(delta)
+	
 func _input(event: InputEvent):
-	handle_movement(event)	
+	handle_movement(event)
+	
+func handle_shooting(delta: float):
+	if gun_cooldown > 0:
+		gun_cooldown -= delta
+	
+	if Input.is_action_pressed("shoot") && gun_cooldown <= 0:
+		print("FIRE!")
+		gun_cooldown = 0.5
 	
 func handle_movement(event: InputEvent):
 	if event.is_action("move_left"):

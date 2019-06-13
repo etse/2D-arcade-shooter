@@ -19,6 +19,7 @@ size = 120
 font_data = ExtResource( 3 )
 
 [node name="MainMenu" type="Control"]
+editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = SubResource( 2 )
@@ -57,7 +58,6 @@ margin_bottom = 329.0
 text = "Options"
 
 [node name="OptionsPanel" type="PopupPanel" parent="MenuContainer"]
-editor/display_folded = true
 margin_left = 831.0
 margin_top = 458.0
 margin_right = 1089.0
