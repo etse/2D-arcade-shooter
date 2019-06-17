@@ -4,7 +4,7 @@ func _ready():
 	pass
 
 func _on_StartGameButton_pressed():
-	get_tree().change_scene("res://screens/Levels/TutorialLevel/Level.tscn")
+	get_tree().change_scene("res://screens/Level/Level.tscn")
 
 func _on_OptionsButton_pressed():
 	$MenuContainer/OptionsPanel.popup_centered()

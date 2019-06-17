@@ -21,7 +21,7 @@ animations = [ {
 "frames": [ ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ) ],
 "loop": true,
 "name": "default",
-"speed": 12.0
+"speed": 8.0
 } ]
 
 [node name="Player" type="KinematicBody2D"]
@@ -43,3 +43,10 @@ frames = SubResource( 2 )
 position = Vector2( 11, 56 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 2 )
+
+[node name="LeftGun" type="Position2D" parent="."]
+position = Vector2( -25, -28 )
+
+[node name="RightGun" type="Position2D" parent="."]
+position = Vector2( 25, -28 )
+

@@ -1,0 +1,77 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://screens/Level/Level.gd" type="Script" id=1]
+[ext_resource path="res://components/Player/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://components/InfinityScroll/InfinityScroll.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/backgrounds/Nebula Aqua-Pink-small.png" type="Texture" id=4]
+[ext_resource path="res://assets/backgrounds/Stars-Big_1_2_PC.png" type="Texture" id=5]
+[ext_resource path="res://assets/backgrounds/Stars Small_1.png" type="Texture" id=6]
+[ext_resource path="res://assets/music/Rolemusic_The_Pirate_And_The_Dancer.ogg" type="AudioStream" id=7]
+[ext_resource path="res://screens/Level/levels/Level1.tscn" type="PackedScene" id=8]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 980, 10 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 10, 540 )
+
+[node name="Level" type="Node"]
+script = ExtResource( 1 )
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 960, 950 )
+
+[node name="WorldBounds" type="StaticBody2D" parent="."]
+position = Vector2( 620, -10 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="Top" type="CollisionShape2D" parent="WorldBounds"]
+position = Vector2( 340, 0 )
+shape = SubResource( 1 )
+
+[node name="Bottom" type="CollisionShape2D" parent="WorldBounds"]
+position = Vector2( 340, 1100 )
+shape = SubResource( 1 )
+
+[node name="Left" type="CollisionShape2D" parent="WorldBounds"]
+position = Vector2( -630, 550 )
+shape = SubResource( 2 )
+
+[node name="Right" type="CollisionShape2D" parent="WorldBounds"]
+position = Vector2( 1310, 550 )
+shape = SubResource( 2 )
+
+[node name="Background" type="Node" parent="."]
+pause_mode = 1
+
+[node name="Nebula" parent="Background" instance=ExtResource( 3 )]
+texture = ExtResource( 4 )
+scroll_speed = 20.0
+
+[node name="Stars" parent="Background" instance=ExtResource( 3 )]
+texture = ExtResource( 5 )
+scroll_speed = 35.0
+alpha = 0.5
+
+[node name="Stars2" parent="Background" instance=ExtResource( 3 )]
+texture = ExtResource( 6 )
+scroll_speed = 50.0
+alpha = 0.5
+
+[node name="Music" type="AudioStreamPlayer" parent="Background"]
+stream = ExtResource( 7 )
+volume_db = -20.0
+autoplay = true
+bus = "music"
+
+[node name="Bullets" type="Node" parent="."]
+
+[node name="Enemies" type="Node" parent="."]
+
+[node name="Level1" parent="." instance=ExtResource( 8 )]
+
+[connection signal="bullet_fired" from="Player" to="." method="_on_Player_bullet_fired"]
+[connection signal="spawned_enemy" from="Level1" to="." method="_on_Level1_spawned_enemy"]

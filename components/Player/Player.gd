@@ -1,11 +1,14 @@
 extends KinematicBody2D
 
+var fireBullet = preload("res://components/Bullets/FireBullet/FireBullet.tscn") 
 const acceleration_force = 9000
 const dampening = 10
 const max_speed = 2700
 var velocity = Vector2(0, 0)
 var acceleration = Vector2(0,0 );
 var gun_cooldown = 0
+
+signal bullet_fired(position)
 
 func _ready():
 	$Exhaust1.play();
@@ -29,8 +32,14 @@ func handle_shooting(delta: float):
 		gun_cooldown -= delta
 	
 	if Input.is_action_pressed("shoot") && gun_cooldown <= 0:
-		print("FIRE!")
-		gun_cooldown = 0.5
+		var bulletLeft = fireBullet.instance()
+		var bulletRight = fireBullet.instance()
+		bulletLeft.position = get_global_transform().xform($LeftGun.position)
+		bulletRight.position = get_global_transform().xform($RightGun.position)
+
+		emit_signal("bullet_fired", bulletLeft)
+		emit_signal("bullet_fired", bulletRight)
+		gun_cooldown = 0.4
 	
 func handle_movement(event: InputEvent):
 	if event.is_action("move_left"):
