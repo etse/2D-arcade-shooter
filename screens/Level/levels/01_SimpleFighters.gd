@@ -6,10 +6,15 @@ onready var startPoints = [$Points/StartLeft, $Points/StartCenter, $Points/Start
 onready var endPoints = [$Points/EndLeft, $Points/EndCenter, $Points/EndRight, $Points/EndCenter]
 
 func start():
+	spawnCount = 0
 	$Timer.start()
 	
 func update(delta: float):
-	pass
+	if spawnCount >= 8:
+		return true
+	
+func exit():
+	$Timer.stop()
 
 func _on_Timer_timeout():
 	var enemy = basicEnemy.instance()
@@ -21,3 +26,6 @@ func _on_Timer_timeout():
 	$Enemies.add_child(enemy)
 	spawnCount += 1
 	
+
+func _on_tween_tween_completed(object, key):
+	object.queue_free()

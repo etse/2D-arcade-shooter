@@ -159,6 +159,7 @@ stream = ExtResource( 5 )
 volume_db = -20.0
 autoplay = true
 bus = "music"
+
 [connection signal="pressed" from="MenuContainer/Control/StartGameButton" to="." method="_on_StartGameButton_pressed"]
 [connection signal="pressed" from="MenuContainer/Control/OptionsButton" to="." method="_on_OptionsButton_pressed"]
 [connection signal="about_to_show" from="MenuContainer/OptionsPanel" to="." method="_on_OptionsPanel_about_to_show"]

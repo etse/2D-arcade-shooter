@@ -1,10 +1,17 @@
 extends Node2D
 
-onready var currentWave = $Waves/SimpleFighters
+onready var waves = [$Waves/Wait, $Waves/SimpleFighters, $Waves/Formation]
+onready var currentWave = null
+var waveCount = 0
 
 func _ready():
+	currentWave = waves[waveCount]
 	currentWave.start()
 
 func _process(delta):
-	currentWave.update(delta)
+	if currentWave.update(delta):
+		currentWave.exit()
+		waveCount += 1
+		currentWave = waves[waveCount % waves.size()]
+		currentWave.start()
 	

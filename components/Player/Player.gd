@@ -36,6 +36,7 @@ func handle_shooting(delta: float):
 		bulletRight.position = get_global_transform().xform($RightGun.position)
 		$Bullets.add_child(bulletLeft)
 		$Bullets.add_child(bulletRight)
+		$BulletSound.play()
 		gun_cooldown = 0.4
 	
 func handle_movement(event: InputEvent):

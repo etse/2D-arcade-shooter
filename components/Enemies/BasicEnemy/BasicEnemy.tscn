@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://components/Enemies/BasicEnemy/BasicEnemy.gd" type="Script" id=1]
 [ext_resource path="res://assets/sprites/enemies/illumGreen10.png" type="Texture" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://assets/sprites/effects/explosion/Explosion_1_005.png" type="Texture" id=7]
 [ext_resource path="res://assets/sprites/effects/explosion/Explosion_1_006.png" type="Texture" id=8]
 [ext_resource path="res://assets/sprites/effects/explosion/Explosion_1_007.png" type="Texture" id=9]
+[ext_resource path="res://assets/sfx/explosion1.ogg" type="AudioStream" id=10]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 30.0
@@ -19,7 +20,7 @@ animations = [ {
 "frames": [ ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ) ],
 "loop": false,
 "name": "default",
-"speed": 8.0
+"speed": 10.0
 } ]
 
 [node name="BasicEnemy" type="KinematicBody2D"]
@@ -37,4 +38,11 @@ visible = false
 scale = Vector2( 0.15, 0.15 )
 frames = SubResource( 2 )
 
+[node name="ExplosionSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
+volume_db = -30.0
+
+[node name="Tween" type="Tween" parent="."]
+
 [connection signal="animation_finished" from="Explosion" to="." method="_on_Explosion_animation_finished"]
+[connection signal="finished" from="ExplosionSound" to="." method="_on_ExplosionSound_finished"]

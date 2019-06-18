@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://components/Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://assets/sprites/player/Ship_LVL_1.png" type="Texture" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://assets/sprites/effects/exhaust/Exhaust_1_007.png" type="Texture" id=10]
 [ext_resource path="res://assets/sprites/effects/exhaust/Exhaust_1_008.png" type="Texture" id=11]
 [ext_resource path="res://assets/sprites/effects/exhaust/Exhaust_1_009.png" type="Texture" id=12]
+[ext_resource path="res://assets/sfx/laser_bolt2.ogg" type="AudioStream" id=13]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 40.0
@@ -51,3 +52,8 @@ position = Vector2( -25, -28 )
 position = Vector2( 25, -28 )
 
 [node name="Bullets" type="Node" parent="."]
+
+[node name="BulletSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 13 )
+volume_db = -25.0
+
