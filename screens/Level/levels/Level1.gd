@@ -1,10 +1,11 @@
 extends Node2D
 
 signal spawned_enemy(enemy)
+onready var currentWave = $Waves/SimpleFighters
 
 func _ready():
-	$Waves/SimpleFighters.start()
+	currentWave.start()
 
 func _process(delta):
-	$Waves/SimpleFighters.update(delta)
+	currentWave.update(delta)
 	
