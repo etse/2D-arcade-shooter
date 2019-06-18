@@ -6,5 +6,5 @@ func _ready():
 	$Waves/SimpleFighters.start()
 
 func _process(delta):
-	$Waves/SimpleFighters.update()
+	$Waves/SimpleFighters.update(delta)
 	
