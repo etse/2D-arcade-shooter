@@ -8,8 +8,6 @@ var velocity = Vector2(0, 0)
 var acceleration = Vector2(0,0 );
 var gun_cooldown = 0
 
-signal bullet_fired(position)
-
 func _ready():
 	$Exhaust1.play();
 	$Exhaust2.play();	
@@ -36,9 +34,8 @@ func handle_shooting(delta: float):
 		var bulletRight = fireBullet.instance()
 		bulletLeft.position = get_global_transform().xform($LeftGun.position)
 		bulletRight.position = get_global_transform().xform($RightGun.position)
-
-		emit_signal("bullet_fired", bulletLeft)
-		emit_signal("bullet_fired", bulletRight)
+		$Bullets.add_child(bulletLeft)
+		$Bullets.add_child(bulletRight)
 		gun_cooldown = 0.4
 	
 func handle_movement(event: InputEvent):

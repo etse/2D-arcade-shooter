@@ -50,3 +50,4 @@ position = Vector2( -25, -28 )
 [node name="RightGun" type="Position2D" parent="."]
 position = Vector2( 25, -28 )
 
+[node name="Bullets" type="Node" parent="."]
