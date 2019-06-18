@@ -7,8 +7,10 @@ func _ready():
 	$Fire.play()
 	add_to_group("bullets")
 
-func _process(delta):
+func _physics_process(delta):
 	move_local_y(-1250 * delta)
+
+func _process(delta):
 	for body in get_overlapping_bodies():
 		if body.is_in_group("enemies"):
 			emit_signal("hit_enemy", $Self, body, 2)

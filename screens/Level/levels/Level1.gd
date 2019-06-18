@@ -15,5 +15,3 @@ func _on_Timer_timeout():
 	tweenNode.start()
 	emit_signal("spawned_enemy", enemy)
 	
-func _tween_update():
-	print("UPDATE!")
