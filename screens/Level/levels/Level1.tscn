@@ -57,4 +57,18 @@ position = Vector2( 1500, 1170 )
 [node name="tween" type="Tween" parent="."]
 
 [node name="Waves" type="Node" parent="."]
+
+[node name="01_SimpleFighters" type="Node" parent="Waves"]
+
+[node name="02_Formation" type="Node" parent="Waves"]
+
+[node name="03_DifferentStrength" type="Node" parent="Waves"]
+
+[node name="04_Attackers" type="Node" parent="Waves"]
+
+[node name="05_HordeEvade" type="Node" parent="Waves"]
+
+[node name="06_CalmBeforeBoss" type="Node" parent="Waves"]
+
+[node name="07_BossBattle" type="Node" parent="Waves"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
