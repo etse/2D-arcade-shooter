@@ -19,6 +19,7 @@ size = 120
 font_data = ExtResource( 3 )
 
 [node name="MainMenu" type="Control"]
+editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = SubResource( 2 )
@@ -100,7 +101,7 @@ ticks_on_borders = true
 
 [node name="Label" type="Label" parent="MenuContainer/OptionsPanel/VerticalContainer/MasterVolume"]
 margin_left = 154.0
-margin_right = 234.0
+margin_right = 230.0
 margin_bottom = 33.0
 text = "Master"
 
@@ -118,7 +119,7 @@ ticks_on_borders = true
 
 [node name="Label" type="Label" parent="MenuContainer/OptionsPanel/VerticalContainer/MusicVolume"]
 margin_left = 154.0
-margin_right = 223.0
+margin_right = 221.0
 margin_bottom = 33.0
 text = "Music"
 
@@ -136,7 +137,7 @@ ticks_on_borders = true
 
 [node name="Label" type="Label" parent="MenuContainer/OptionsPanel/VerticalContainer/SFXVolume"]
 margin_left = 154.0
-margin_right = 199.0
+margin_right = 198.0
 margin_bottom = 33.0
 text = "SFX"
 
@@ -158,7 +159,6 @@ stream = ExtResource( 5 )
 volume_db = -20.0
 autoplay = true
 bus = "music"
-
 [connection signal="pressed" from="MenuContainer/Control/StartGameButton" to="." method="_on_StartGameButton_pressed"]
 [connection signal="pressed" from="MenuContainer/Control/OptionsButton" to="." method="_on_OptionsButton_pressed"]
 [connection signal="about_to_show" from="MenuContainer/OptionsPanel" to="." method="_on_OptionsPanel_about_to_show"]
