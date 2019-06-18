@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://screens/Level/levels/Level1.gd" type="Script" id=1]
 [ext_resource path="res://components/InfinityScroll/InfinityScroll.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://assets/backgrounds/Stars-Big_1_2_PC.png" type="Texture" id=4]
 [ext_resource path="res://assets/backgrounds/Stars Small_1.png" type="Texture" id=5]
 [ext_resource path="res://assets/music/Rolemusic_The_Pirate_And_The_Dancer.ogg" type="AudioStream" id=6]
+[ext_resource path="res://screens/Level/levels/01_SimpleFighters.gd" type="Script" id=7]
 
 [node name="Level1" type="Node2D"]
 script = ExtResource( 1 )
@@ -32,10 +33,6 @@ stream = ExtResource( 6 )
 volume_db = -20.0
 bus = "music"
 
-[node name="Timer" type="Timer" parent="."]
-wait_time = 3.0
-autostart = true
-
 [node name="StartLeft" type="Position2D" parent="."]
 position = Vector2( 400, -90 )
 
@@ -54,11 +51,15 @@ position = Vector2( 950, 1170 )
 [node name="EndRight" type="Position2D" parent="."]
 position = Vector2( 1500, 1170 )
 
-[node name="tween" type="Tween" parent="."]
-
 [node name="Waves" type="Node" parent="."]
 
 [node name="01_SimpleFighters" type="Node" parent="Waves"]
+script = ExtResource( 7 )
+
+[node name="tween" type="Tween" parent="Waves/01_SimpleFighters"]
+
+[node name="Timer" type="Timer" parent="Waves/01_SimpleFighters"]
+wait_time = 3.0
 
 [node name="02_Formation" type="Node" parent="Waves"]
 
@@ -71,4 +72,4 @@ position = Vector2( 1500, 1170 )
 [node name="06_CalmBeforeBoss" type="Node" parent="Waves"]
 
 [node name="07_BossBattle" type="Node" parent="Waves"]
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="Waves/01_SimpleFighters/Timer" to="." method="_on_Timer_timeout"]
