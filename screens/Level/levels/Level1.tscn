@@ -53,23 +53,23 @@ position = Vector2( 1500, 1170 )
 
 [node name="Waves" type="Node" parent="."]
 
-[node name="01_SimpleFighters" type="Node" parent="Waves"]
+[node name="SimpleFighters" type="Node" parent="Waves"]
 script = ExtResource( 7 )
 
-[node name="tween" type="Tween" parent="Waves/01_SimpleFighters"]
+[node name="tween" type="Tween" parent="Waves/SimpleFighters"]
 
-[node name="Timer" type="Timer" parent="Waves/01_SimpleFighters"]
+[node name="Timer" type="Timer" parent="Waves/SimpleFighters"]
 wait_time = 3.0
 
-[node name="02_Formation" type="Node" parent="Waves"]
+[node name="Formation" type="Node" parent="Waves"]
 
-[node name="03_DifferentStrength" type="Node" parent="Waves"]
+[node name="DifferentStrength" type="Node" parent="Waves"]
 
-[node name="04_Attackers" type="Node" parent="Waves"]
+[node name="Attackers" type="Node" parent="Waves"]
 
-[node name="05_HordeEvade" type="Node" parent="Waves"]
+[node name="HordeEvade" type="Node" parent="Waves"]
 
-[node name="06_CalmBeforeBoss" type="Node" parent="Waves"]
+[node name="CalmBeforeBoss" type="Node" parent="Waves"]
 
-[node name="07_BossBattle" type="Node" parent="Waves"]
-[connection signal="timeout" from="Waves/01_SimpleFighters/Timer" to="." method="_on_Timer_timeout"]
+[node name="BossBattle" type="Node" parent="Waves"]
+[connection signal="timeout" from="Waves/SimpleFighters/Timer" to="." method="_on_Timer_timeout"]

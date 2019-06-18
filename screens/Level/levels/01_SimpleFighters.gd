@@ -7,7 +7,7 @@ signal spawned_enemy(enemy)
 func start():
 	$Timer.start()
 	
-func update():
+func update(delta: float):
 	pass
 
 func _on_Timer_timeout():
