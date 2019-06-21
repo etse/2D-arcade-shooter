@@ -1,4 +1,5 @@
 extends KinematicBody2D
+class_name BasicEnemy
 
 export var health: float = 6
 

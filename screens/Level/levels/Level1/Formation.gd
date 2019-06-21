@@ -8,14 +8,13 @@ func start():
 	$Timer.start()
 	
 func update(delta: float):
-	if spawnCount >= 16:
+	if spawnCount >= 20:
 		return true
 	
 func exit():
 	$Timer.stop()
 
 func _on_Timer_timeout():
-	print("SPAWN!")
 	var enemy = basicEnemy.instance()
 	var path = PathFollow2D.new()
 	path.add_child(enemy)
@@ -25,7 +24,7 @@ func _on_Timer_timeout():
 		$Enemies/RightPath.add_child(path)
 	path.rotate = false
 	path.rotation = 0
-	$Tween.interpolate_property(path, "unit_offset", 0, 1, 8, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	$Tween.interpolate_property(path, "unit_offset", 0, 1, 7, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	$Tween.start()
 	spawnCount += 1
 	

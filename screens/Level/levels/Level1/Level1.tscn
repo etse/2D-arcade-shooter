@@ -1,14 +1,14 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
-[ext_resource path="res://screens/Level/levels/Level1.gd" type="Script" id=1]
+[ext_resource path="res://screens/Level/levels/Level1/Level1.gd" type="Script" id=1]
 [ext_resource path="res://components/InfinityScroll/InfinityScroll.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/backgrounds/Nebula Aqua-Pink-small.png" type="Texture" id=3]
 [ext_resource path="res://assets/backgrounds/Stars-Big_1_2_PC.png" type="Texture" id=4]
 [ext_resource path="res://assets/backgrounds/Stars Small_1.png" type="Texture" id=5]
 [ext_resource path="res://assets/music/Rolemusic_The_Pirate_And_The_Dancer.ogg" type="AudioStream" id=6]
-[ext_resource path="res://screens/Level/levels/Wait.gd" type="Script" id=7]
-[ext_resource path="res://screens/Level/levels/01_SimpleFighters.gd" type="Script" id=8]
-[ext_resource path="res://screens/Level/levels/Formation.gd" type="Script" id=9]
+[ext_resource path="res://screens/Level/levels/Level1/Wait.gd" type="Script" id=7]
+[ext_resource path="res://screens/Level/levels/Level1/01_SimpleFighters.gd" type="Script" id=8]
+[ext_resource path="res://screens/Level/levels/Level1/Formation.gd" type="Script" id=9]
 
 [sub_resource type="Curve2D" id=1]
 bake_interval = 10.0
@@ -21,8 +21,17 @@ _data = {
 "points": PoolVector2Array( -63.9377, -242.147, 63.9377, 242.147, 1536, -96, 14.9642, -446.204, -14.9642, 446.204, 416, 512, 69.3793, -244.868, -69.3793, 244.868, 1472, 1184 )
 }
 
+[sub_resource type="Curve2D" id=3]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 960, -288, 0, 0, 0, 0, 960, 96 )
+}
+
+[sub_resource type="Curve2D" id=4]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 960, 96, 0, 0, 0, 0, 160, 96, 0, 0, 0, 0, 1792, 96, 0, 0, 0, 0, 960, 96 )
+}
+
 [node name="Level1" type="Node2D"]
-visible = false
 script = ExtResource( 1 )
 
 [node name="Background" type="Node" parent="."]
@@ -70,31 +79,36 @@ wait_time = 2.0
 editor/display_folded = true
 
 [node name="StartLeft" type="Position2D" parent="Waves/SimpleFighters/Points"]
+visible = false
 position = Vector2( 400, -90 )
 
 [node name="StartCenter" type="Position2D" parent="Waves/SimpleFighters/Points"]
+visible = false
 position = Vector2( 950, -90 )
 
 [node name="StartRight" type="Position2D" parent="Waves/SimpleFighters/Points"]
+visible = false
 position = Vector2( 1500, -90 )
 
 [node name="EndLeft" type="Position2D" parent="Waves/SimpleFighters/Points"]
+visible = false
 position = Vector2( 400, 1170 )
 
 [node name="EndCenter" type="Position2D" parent="Waves/SimpleFighters/Points"]
+visible = false
 position = Vector2( 950, 1170 )
 
 [node name="EndRight" type="Position2D" parent="Waves/SimpleFighters/Points"]
+visible = false
 position = Vector2( 1500, 1170 )
 
 [node name="Enemies" type="Node" parent="Waves/SimpleFighters"]
 
 [node name="Formation" type="Node" parent="Waves"]
-editor/display_folded = true
 script = ExtResource( 9 )
 
 [node name="Timer" type="Timer" parent="Waves/Formation"]
-wait_time = 1.5
+wait_time = 1.2
 
 [node name="Tween" type="Tween" parent="Waves/Formation"]
 
@@ -115,6 +129,14 @@ curve = SubResource( 2 )
 [node name="CalmBeforeBoss" type="Node" parent="Waves"]
 
 [node name="BossBattle" type="Node" parent="Waves"]
+
+[node name="EntryPath" type="Path2D" parent="Waves/BossBattle"]
+curve = SubResource( 3 )
+
+[node name="MainPath" type="Path2D" parent="Waves/BossBattle"]
+curve = SubResource( 4 )
+
+[node name="Tween" type="Tween" parent="Waves/BossBattle"]
 
 [connection signal="timeout" from="Waves/Wait/Timer" to="Waves/Wait" method="_on_Timer_timeout"]
 [connection signal="tween_completed" from="Waves/SimpleFighters/tween" to="Waves/SimpleFighters" method="_on_tween_tween_completed"]

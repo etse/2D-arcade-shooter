@@ -8,9 +8,20 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "KinematicBody2D",
+"class": "BasicEnemy",
+"language": "GDScript",
+"path": "res://components/Enemies/BasicEnemy/BasicEnemy.gd"
+}, {
+"base": "Area2D",
+"class": "Bullet",
+"language": "GDScript",
+"path": "res://components/Bullets/bullet.gd"
+} ]
 _global_script_class_icons={
-
+"BasicEnemy": "",
+"Bullet": ""
 }
 
 [application]
