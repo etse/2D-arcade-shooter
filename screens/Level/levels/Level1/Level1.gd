@@ -1,6 +1,6 @@
 extends Node2D
 
-onready var waves = [$Waves/BossBattle, $Waves/Wait, $Waves/SimpleFighters, $Waves/Formation, $Waves/BossBattle]
+onready var waves = [$Waves/Wait, $Waves/SimpleFighters, $Waves/Formation, $Waves/BossBattle]
 onready var currentWave = null
 var waveCount = 0
 
