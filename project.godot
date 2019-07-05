@@ -26,7 +26,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Pirate Hunter"
+config/name="The invasion"
 run/main_scene="res://screens/MainMenu/MainMenu.tscn"
 config/icon="res://icon.png"
 
