@@ -58,4 +58,3 @@ position = Vector2( 25, -28 )
 [node name="BulletSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 13 )
 volume_db = -25.0
-

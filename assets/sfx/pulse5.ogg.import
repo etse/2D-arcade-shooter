@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/pulse5.ogg-d08a6f944a3e49c2e26574d067cadbac.oggstr"
+
+[deps]
+
+source_file="res://assets/sfx/pulse5.ogg"
+dest_files=[ "res://.import/pulse5.ogg-d08a6f944a3e49c2e26574d067cadbac.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

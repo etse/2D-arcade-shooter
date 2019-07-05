@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/pulse2-2.ogg-8145ff00e35aa7f34dda72f345d78232.oggstr"
+
+[deps]
+
+source_file="res://assets/sfx/pulse2-2.ogg"
+dest_files=[ "res://.import/pulse2-2.ogg-8145ff00e35aa7f34dda72f345d78232.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

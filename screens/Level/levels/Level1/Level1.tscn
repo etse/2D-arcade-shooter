@@ -132,10 +132,10 @@ position = Vector2( 980, -200 )
 position = Vector2( 980, 180 )
 
 [node name="Left" type="Position2D" parent="Waves/BossBattle/Points"]
-position = Vector2( 120, 180 )
+position = Vector2( 200, 180 )
 
 [node name="Right" type="Position2D" parent="Waves/BossBattle/Points"]
-position = Vector2( 1840, 180 )
+position = Vector2( 1720, 180 )
 [connection signal="timeout" from="Waves/Wait/Timer" to="Waves/Wait" method="_on_Timer_timeout"]
 [connection signal="tween_completed" from="Waves/SimpleFighters/tween" to="Waves/SimpleFighters" method="_on_tween_tween_completed"]
 [connection signal="timeout" from="Waves/SimpleFighters/Timer" to="Waves/SimpleFighters" method="_on_Timer_timeout"]

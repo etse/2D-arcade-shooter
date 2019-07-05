@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/laser_bolt1.ogg-117b785c399fc0f560ae9c16bb010684.oggstr"
+
+[deps]
+
+source_file="res://assets/sfx/laser_bolt1.ogg"
+dest_files=[ "res://.import/laser_bolt1.ogg-117b785c399fc0f560ae9c16bb010684.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

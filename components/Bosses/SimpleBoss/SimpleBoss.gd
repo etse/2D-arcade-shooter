@@ -51,7 +51,7 @@ func createFireball():
 func _on_ShootTimer_timeout():
 	var leftBullet = createFireball()
 	var rightBullet = createFireball()
-	leftBullet.position = $LeftGun.position
-	rightBullet.position = $RightGun.position
+	leftBullet.position = get_global_transform().xform($LeftGun.position)
+	rightBullet.position = get_global_transform().xform($RightGun.position)
 	$Bullets.add_child(leftBullet)
 	$Bullets.add_child(rightBullet)

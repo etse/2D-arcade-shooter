@@ -36,7 +36,7 @@ position = Vector2( 0, -32 )
 shape = SubResource( 1 )
 
 [node name="ShootTimer" type="Timer" parent="."]
-wait_time = 1.5
+wait_time = 1.2
 
 [node name="LeftGun" type="Position2D" parent="."]
 position = Vector2( -160, 73 )
