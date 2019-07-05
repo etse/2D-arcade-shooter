@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://screens/Level/levels/Level1/Level1.gd" type="Script" id=1]
 [ext_resource path="res://components/InfinityScroll/InfinityScroll.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://screens/Level/levels/Level1/Wait.gd" type="Script" id=7]
 [ext_resource path="res://screens/Level/levels/Level1/01_SimpleFighters.gd" type="Script" id=8]
 [ext_resource path="res://screens/Level/levels/Level1/Formation.gd" type="Script" id=9]
+[ext_resource path="res://screens/Level/levels/Level1/BossBattle.gd" type="Script" id=10]
 
 [sub_resource type="Curve2D" id=1]
 bake_interval = 10.0
@@ -19,16 +20,6 @@ _data = {
 [sub_resource type="Curve2D" id=2]
 _data = {
 "points": PoolVector2Array( -63.9377, -242.147, 63.9377, 242.147, 1536, -96, 14.9642, -446.204, -14.9642, 446.204, 416, 512, 69.3793, -244.868, -69.3793, 244.868, 1472, 1184 )
-}
-
-[sub_resource type="Curve2D" id=3]
-_data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 960, -288, 0, 0, 0, 0, 960, 96 )
-}
-
-[sub_resource type="Curve2D" id=4]
-_data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 960, 96, 0, 0, 0, 0, 160, 96, 0, 0, 0, 0, 1792, 96, 0, 0, 0, 0, 960, 96 )
 }
 
 [node name="Level1" type="Node2D"]
@@ -67,7 +58,6 @@ script = ExtResource( 7 )
 wait_time = 5.0
 
 [node name="SimpleFighters" type="Node" parent="Waves"]
-editor/display_folded = true
 script = ExtResource( 8 )
 
 [node name="tween" type="Tween" parent="Waves/SimpleFighters"]
@@ -129,15 +119,23 @@ curve = SubResource( 2 )
 [node name="CalmBeforeBoss" type="Node" parent="Waves"]
 
 [node name="BossBattle" type="Node" parent="Waves"]
-
-[node name="EntryPath" type="Path2D" parent="Waves/BossBattle"]
-curve = SubResource( 3 )
-
-[node name="MainPath" type="Path2D" parent="Waves/BossBattle"]
-curve = SubResource( 4 )
+script = ExtResource( 10 )
 
 [node name="Tween" type="Tween" parent="Waves/BossBattle"]
 
+[node name="Points" type="Node" parent="Waves/BossBattle"]
+
+[node name="Start" type="Position2D" parent="Waves/BossBattle/Points"]
+position = Vector2( 980, -200 )
+
+[node name="Entry" type="Position2D" parent="Waves/BossBattle/Points"]
+position = Vector2( 980, 180 )
+
+[node name="Left" type="Position2D" parent="Waves/BossBattle/Points"]
+position = Vector2( 120, 180 )
+
+[node name="Right" type="Position2D" parent="Waves/BossBattle/Points"]
+position = Vector2( 1840, 180 )
 [connection signal="timeout" from="Waves/Wait/Timer" to="Waves/Wait" method="_on_Timer_timeout"]
 [connection signal="tween_completed" from="Waves/SimpleFighters/tween" to="Waves/SimpleFighters" method="_on_tween_tween_completed"]
 [connection signal="timeout" from="Waves/SimpleFighters/Timer" to="Waves/SimpleFighters" method="_on_Timer_timeout"]

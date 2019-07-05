@@ -1,19 +1,27 @@
 extends KinematicBody2D
 
-export var health: float = 60
+export var health: float = 300
+var exploded = false
 signal destroyed;
 onready var fireball = preload('res://components/Bullets/FireBall/FireBall.tscn')
 
+func _ready():
+	add_to_group("enemies")
+
 func _process(delta):
-	if health <= 0:
+	if health <= 0 and not exploded:
 		playExplosion()
 	
 func playExplosion():
+	exploded = true
 	$Explosion/ExplosionSoundTimer.start()
 	$Explosion/ExplosionAnim.visible = true
 	$Explosion/ExplosionAnim.play()
 	$Explosion/Tween.interpolate_property($Sprite, "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), 0.7, Tween.TRANS_EXPO, Tween.EASE_IN)
 	$Explosion/Tween.start()
+	
+func startShooting():
+	$ShootTimer.start()
 
 func _on_ExplosionAnim_animation_finished():
 	$Explosion/ExplosionAnim.visible = false
@@ -33,9 +41,6 @@ func _on_ExplosionSoundTimer_timeout():
 
 func _on_ExplosionSound3_finished():
 	emit_signal("destroyed")
-
-func _on_WaitBeforeShoot_timeout():
-	$ShootTimer.start()
 
 func createFireball():
 	var bullet = fireball.instance()

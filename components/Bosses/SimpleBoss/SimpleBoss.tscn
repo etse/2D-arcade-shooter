@@ -14,7 +14,7 @@
 [ext_resource path="res://assets/sprites/effects/explosion/Explosion_2_008.png" type="Texture" id=12]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 160, 96 )
+extents = Vector2( 180, 96 )
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
@@ -32,14 +32,8 @@ scale = Vector2( 1.92574, 1.81959 )
 texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2( 0, -32 )
 shape = SubResource( 1 )
-
-[node name="WaitBeforeShoot" type="Timer" parent="."]
-wait_time = 3.0
-one_shot = true
-autostart = true
 
 [node name="ShootTimer" type="Timer" parent="."]
 wait_time = 1.5
@@ -52,7 +46,7 @@ position = Vector2( 160, 73 )
 
 [node name="Bullets" type="Node" parent="."]
 
-[node name="Explosion" type="Node" parent="."]
+[node name="Explosion" type="Node2D" parent="."]
 
 [node name="ExplosionSound1" type="AudioStreamPlayer" parent="Explosion"]
 stream = ExtResource( 3 )
@@ -74,14 +68,12 @@ wait_time = 0.23
 
 [node name="ExplosionAnim" type="AnimatedSprite" parent="Explosion"]
 visible = false
-position = Vector2( 1.52588e-005, -3.8147e-006 )
+position = Vector2( 1.52588e-05, -3.8147e-06 )
 scale = Vector2( 0.775246, 0.642621 )
 frames = SubResource( 2 )
 frame = 1
 
 [node name="Tween" type="Tween" parent="Explosion"]
-
-[connection signal="timeout" from="WaitBeforeShoot" to="." method="_on_WaitBeforeShoot_timeout"]
 [connection signal="timeout" from="ShootTimer" to="." method="_on_ShootTimer_timeout"]
 [connection signal="finished" from="Explosion/ExplosionSound3" to="." method="_on_ExplosionSound3_finished"]
 [connection signal="timeout" from="Explosion/ExplosionSoundTimer" to="." method="_on_ExplosionSoundTimer_timeout"]

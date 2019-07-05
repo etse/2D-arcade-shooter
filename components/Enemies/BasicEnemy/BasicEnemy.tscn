@@ -43,6 +43,5 @@ stream = ExtResource( 10 )
 volume_db = -30.0
 
 [node name="Tween" type="Tween" parent="."]
-
 [connection signal="animation_finished" from="Explosion" to="." method="_on_Explosion_animation_finished"]
 [connection signal="finished" from="ExplosionSound" to="." method="_on_ExplosionSound_finished"]

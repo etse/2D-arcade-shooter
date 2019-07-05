@@ -8,7 +8,7 @@ func start():
 	$Timer.start()
 	
 func update(delta: float):
-	if spawnCount >= 20:
+	if spawnCount >= 16:
 		return true
 	
 func exit():
