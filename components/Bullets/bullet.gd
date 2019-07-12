@@ -33,4 +33,5 @@ func on_collision(body):
 	$Particles.emitting = true
 
 func _on_Timer_timeout():
+	$Particles.emitting = false
 	queue_free()

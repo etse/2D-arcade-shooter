@@ -3,6 +3,7 @@
 [ext_resource path="res://components/Bullets/bullet.gd" type="Script" id=1]
 
 [sub_resource type="Gradient" id=2]
+offsets = PoolRealArray( 0, 0.5 )
 colors = PoolColorArray( 0.94902, 0.431373, 0, 1, 0.992157, 0.968627, 0.14902, 1 )
 
 [sub_resource type="GradientTexture" id=3]
@@ -35,6 +36,7 @@ script = ExtResource( 1 )
 emitting = false
 amount = 16
 lifetime = 0.5
+one_shot = true
 explosiveness = 0.7
 process_material = SubResource( 1 )
 
