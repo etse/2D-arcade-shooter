@@ -10,6 +10,7 @@ func _ready():
 
 func _process(delta):
 	if health <= 0 and not exploded:
+		$ShootTimer.stop()
 		playExplosion()
 	
 func playExplosion():

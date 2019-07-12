@@ -28,7 +28,7 @@ func on_collision(body):
 	body.health -= damage
 	destroyed = true
 	$Sprite.visible = false
-	$HitSound.play()
+	$HitSound.play(0.1)
 	speed = Vector2(0, 0)
 	$Timer.start()
 	$Particles.emitting = true
