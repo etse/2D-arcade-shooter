@@ -7,6 +7,7 @@ const max_speed = 2700
 var velocity = Vector2(0, 0)
 var acceleration = Vector2(0,0 );
 var gun_cooldown = 0
+var health = 100
 
 func _ready():
 	$Exhaust1.play();
