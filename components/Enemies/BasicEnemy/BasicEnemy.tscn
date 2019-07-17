@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://components/Enemies/BasicEnemy/BasicEnemy.gd" type="Script" id=1]
 [ext_resource path="res://assets/sprites/enemies/illumGreen10.png" type="Texture" id=2]
@@ -20,8 +20,25 @@ animations = [ {
 "frames": [ ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ) ],
 "loop": false,
 "name": "default",
-"speed": 10.0
+"speed": 20.0
 } ]
+
+[sub_resource type="Animation" id=3]
+resource_name = "Hit"
+length = 0.1
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.03, 0.09 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 5, 5, 5, 1 ), Color( 1, 1, 1, 1 ) ]
+}
 
 [node name="BasicEnemy" type="KinematicBody2D"]
 script = ExtResource( 1 )
@@ -43,5 +60,9 @@ stream = ExtResource( 10 )
 volume_db = -30.0
 
 [node name="Tween" type="Tween" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Hit = SubResource( 3 )
+
 [connection signal="animation_finished" from="Explosion" to="." method="_on_Explosion_animation_finished"]
 [connection signal="finished" from="ExplosionSound" to="." method="_on_ExplosionSound_finished"]

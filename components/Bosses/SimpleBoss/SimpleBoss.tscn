@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://components/Bosses/SimpleBoss/SimpleBoss.gd" type="Script" id=1]
 [ext_resource path="res://assets/sprites/enemies/illumBlue02.png" type="Texture" id=2]
@@ -24,6 +24,23 @@ animations = [ {
 "speed": 10.0
 } ]
 
+[sub_resource type="Animation" id=3]
+resource_name = "Hit"
+length = 0.1
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.04, 0.1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 2, 2, 2, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
 [node name="SimpleBoss" type="KinematicBody2D"]
 script = ExtResource( 1 )
 
@@ -32,11 +49,11 @@ scale = Vector2( 1.92574, 1.81959 )
 texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( 0, -32 )
 shape = SubResource( 1 )
 
 [node name="ShootTimer" type="Timer" parent="."]
-wait_time = 1.2
 
 [node name="LeftGun" type="Position2D" parent="."]
 position = Vector2( -160, 73 )
@@ -68,12 +85,15 @@ wait_time = 0.23
 
 [node name="ExplosionAnim" type="AnimatedSprite" parent="Explosion"]
 visible = false
-position = Vector2( 1.52588e-05, -3.8147e-06 )
+position = Vector2( 1.52588e-005, -3.8147e-006 )
 scale = Vector2( 0.775246, 0.642621 )
 frames = SubResource( 2 )
-frame = 1
 
 [node name="Tween" type="Tween" parent="Explosion"]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Hit = SubResource( 3 )
+
 [connection signal="timeout" from="ShootTimer" to="." method="_on_ShootTimer_timeout"]
 [connection signal="finished" from="Explosion/ExplosionSound3" to="." method="_on_ExplosionSound3_finished"]
 [connection signal="timeout" from="Explosion/ExplosionSoundTimer" to="." method="_on_ExplosionSoundTimer_timeout"]

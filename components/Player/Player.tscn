@@ -58,3 +58,9 @@ position = Vector2( 25, -28 )
 [node name="BulletSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 13 )
 volume_db = -25.0
+
+[node name="HealthRegenTimer" type="Timer" parent="."]
+wait_time = 0.02
+autostart = true
+
+[connection signal="timeout" from="HealthRegenTimer" to="." method="_on_HealthRegenTimer_timeout"]

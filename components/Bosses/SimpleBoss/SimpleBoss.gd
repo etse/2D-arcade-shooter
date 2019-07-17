@@ -1,7 +1,8 @@
 extends KinematicBody2D
 
-export var health: float = 300
+export var health: float = 200
 var exploded = false
+var explosionSound = 0
 signal destroyed;
 onready var fireball = preload('res://components/Bullets/FireBall/FireBall.tscn')
 
@@ -11,10 +12,13 @@ func _ready():
 func _process(delta):
 	if health <= 0 and not exploded:
 		$ShootTimer.stop()
-		playExplosion()
+		self.playExplosion()
 	
 func playExplosion():
-	exploded = true
+	self.exploded = true
+	Score.add_score(1000)
+	CameraControl.screen_shake(14, 25, 1.2)
+	$CollisionShape2D.disabled = true
 	$Explosion/ExplosionSoundTimer.start()
 	$Explosion/ExplosionAnim.visible = true
 	$Explosion/ExplosionAnim.play()
@@ -22,15 +26,15 @@ func playExplosion():
 	$Explosion/Tween.start()
 	
 func startShooting():
-	$ShootTimer.start()
+	if not self.exploded:
+		$ShootTimer.start()
 
 func _on_ExplosionAnim_animation_finished():
 	$Explosion/ExplosionAnim.visible = false
 
-var explosionSound = 0
 func _on_ExplosionSoundTimer_timeout():
-	explosionSound += 1
-	match explosionSound:
+	self.explosionSound += 1
+	match self.explosionSound:
 		1:
 			$Explosion/ExplosionSound1.play()
 		2:
@@ -42,11 +46,18 @@ func _on_ExplosionSoundTimer_timeout():
 
 func _on_ExplosionSound3_finished():
 	emit_signal("destroyed")
+	
+func on_hit(damage: float):
+	if not exploded:
+		self.health -= damage
+		$AnimationPlayer.play("Hit")
+		CameraControl.screen_shake(2, 12, 0.2)
 
 func createFireball():
 	var bullet = fireball.instance()
 	bullet.friendly = false
 	bullet.speed = Vector2(0, 400)
+	bullet.damage = 20.0
 	return bullet
 
 func _on_ShootTimer_timeout():
