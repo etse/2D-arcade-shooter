@@ -1,6 +1,6 @@
-extends KinematicBody2D
+extends Area2D
 
-export var health: float = 200
+export var health: float = 230
 var exploded = false
 var explosionSound = 0
 signal destroyed;
@@ -56,7 +56,7 @@ func on_hit(damage: float):
 func createFireball():
 	var bullet = fireball.instance()
 	bullet.friendly = false
-	bullet.speed = Vector2(0, 400)
+	bullet.speed = Vector2(0, 500)
 	bullet.damage = 20.0
 	return bullet
 

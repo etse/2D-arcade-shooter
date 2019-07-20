@@ -15,10 +15,12 @@ func _physics_process(delta):
 
 func _process(delta):
 	if not destroyed:
-		for body in get_overlapping_bodies():
+		for body in get_overlapping_areas():
 			if body.is_in_group("enemies") and friendly:
 				on_collision(body)
-			elif body.is_in_group("player") and not friendly:
+				
+		for body in get_overlapping_bodies():
+			if body.is_in_group("player") and not friendly:
 				on_collision(body)
 			elif body.is_in_group("wall"):
 				queue_free()

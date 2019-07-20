@@ -26,6 +26,7 @@ _data = {
 script = ExtResource( 1 )
 
 [node name="Background" type="Node" parent="."]
+editor/display_folded = true
 
 [node name="Nebula" parent="Background" instance=ExtResource( 2 )]
 texture = ExtResource( 3 )
@@ -48,6 +49,7 @@ autoplay = true
 bus = "music"
 
 [node name="Waves" type="Node" parent="."]
+editor/display_folded = true
 
 [node name="Wait" type="Node" parent="Waves"]
 editor/display_folded = true

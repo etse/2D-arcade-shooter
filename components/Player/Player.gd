@@ -8,12 +8,13 @@ const max_speed_shooting = 500
 var velocity = Vector2(0, 0)
 var acceleration = Vector2(0,0);
 var gun_cooldown = 0
+var destroyed = false
 var max_health = 100
 var health = 100
-var health_regen = 3.5
+var health_regen = 5
 
-signal max_health_changes
 signal health_changed
+signal destroyed
 
 func _ready():
 	$Exhaust1.play();
@@ -28,12 +29,20 @@ func _physics_process(delta: float):
 	var velocity_max = max_speed_shooting if Input.is_action_pressed("shoot") else max_speed
 	if velocity.length() > velocity_max:
 		velocity = velocity.normalized() * velocity_max
-	velocity = move_and_slide(velocity)
 	
+	handle_collision(delta)
+	velocity = move_and_slide(velocity)
 	handle_shooting(delta)
 	
 func _input(event: InputEvent):
 	handle_movement(event)
+	
+func handle_collision(delta):
+	for collider in $CollisionArea.get_overlapping_areas():
+		if collider.is_in_group("enemies") and not collider.is_in_group("bullets"):
+			collider.on_hit(2)
+			self.on_hit(15)
+			self.velocity = (self.position - collider.position).normalized() * 600
 	
 func handle_shooting(delta: float):
 	if gun_cooldown > 0:
@@ -51,6 +60,17 @@ func handle_shooting(delta: float):
 		
 func on_hit(damage: float):
 	health -= damage
+	$AnimationPlayer.play("hit")
+	if self.health <= 0 and not self.destroyed:
+		self.on_destroyed()
+	
+func on_destroyed():
+	self.destroyed = true
+	$CollisionShape2D.disabled = true
+	$Tween.interpolate_property(self, "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), 0.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
+	$Tween.start()
+	CameraControl.screen_shake(22, 10, 0.5)
+	emit_signal("destroyed")
 	
 func handle_movement(event: InputEvent):
 	if event.is_action("move_left"):
