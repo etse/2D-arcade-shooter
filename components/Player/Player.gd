@@ -1,14 +1,13 @@
-extends KinematicBody2D
+extends CharacterBody2D
 
 var fireBullet = preload("res://components/Bullets/FireBullet/FireBullet.tscn") 
 const acceleration_force = 7000
 const dampening = 10
 const max_speed = 1000
 const max_speed_shooting = 500
-var velocity = Vector2(0, 0)
 var acceleration = Vector2(0,0);
 var gun_cooldown = 0
-var destroyed = false
+var isDestroyed = false
 var max_health = 100
 var health = 100
 var health_regen = 5
@@ -31,7 +30,9 @@ func _physics_process(delta: float):
 		velocity = velocity.normalized() * velocity_max
 	
 	handle_collision(delta)
-	velocity = move_and_slide(velocity)
+	set_velocity(velocity)
+	move_and_slide()
+	velocity = velocity
 	handle_shooting(delta)
 	
 func _input(event: InputEvent):
@@ -49,10 +50,10 @@ func handle_shooting(delta: float):
 		gun_cooldown -= delta
 	
 	if Input.is_action_pressed("shoot") && gun_cooldown <= 0:
-		var bulletLeft = fireBullet.instance()
-		var bulletRight = fireBullet.instance()
-		bulletLeft.position = get_global_transform().xform($LeftGun.position)
-		bulletRight.position = get_global_transform().xform($RightGun.position)
+		var bulletLeft = fireBullet.instantiate()
+		var bulletRight = fireBullet.instantiate()
+		bulletLeft.position = get_global_transform() * ($LeftGun.position)
+		bulletRight.position = get_global_transform() * ($RightGun.position)
 		$Bullets.add_child(bulletLeft)
 		$Bullets.add_child(bulletRight)
 		$BulletSound.play()
@@ -61,16 +62,16 @@ func handle_shooting(delta: float):
 func on_hit(damage: float):
 	health -= damage
 	$AnimationPlayer.play("hit")
-	if self.health <= 0 and not self.destroyed:
+	if self.health <= 0 and not self.isDestroyed:
 		self.on_destroyed()
 	
 func on_destroyed():
-	self.destroyed = true
+	self.isDestroyed = true
 	$CollisionShape2D.disabled = true
 	$Tween.interpolate_property(self, "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), 0.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
 	$Tween.start()
 	CameraControl.screen_shake(22, 10, 0.5)
-	emit_signal("destroyed")
+	destroyed.emit()
 	
 func handle_movement(event: InputEvent):
 	if event.is_action("move_left"):
@@ -101,7 +102,7 @@ func _update_health(health_change: float):
 			self.health = self.max_health
 		else:
 			self.health = self.health + health_change
-		emit_signal("health_changed", self.health)
+		health_changed.emit(self.health)
 	
 
 func _on_HealthRegenTimer_timeout():

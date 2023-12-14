@@ -1,7 +1,7 @@
 extends Node
 
 signal score_changed
-export var score = 0
+@export var score = 0
 
 func add_score(points: float):
 	score = score + points

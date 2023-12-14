@@ -1,8 +1,8 @@
 extends Area2D
 class_name BasicEnemy
 
-export var health: float = 6
-export var points = 10
+@export var health: float = 6
+@export var points = 10
 
 func _ready():
 	add_to_group("enemies")
@@ -16,7 +16,7 @@ func on_destroyed():
 	$Explosion.visible = true
 	$ExplosionSound.play()
 	$Explosion.play()
-	$Tween.interpolate_property($Sprite, "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), 0.3, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	$Tween.interpolate_property($Sprite2D, "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), 0.3, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	$Tween.start()
 	CameraControl.screen_shake(3, 20, 0.3)
 	Score.add_score(self.points)

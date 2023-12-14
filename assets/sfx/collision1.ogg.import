@@ -1,15 +1,19 @@
 [remap]
 
-importer="ogg_vorbis"
-type="AudioStreamOGGVorbis"
-path="res://.import/collision1.ogg-ee8bbb3513b1917f0bd3242f7882a3d0.oggstr"
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://g1sankndhcwj"
+path="res://.godot/imported/collision1.ogg-ee8bbb3513b1917f0bd3242f7882a3d0.oggvorbisstr"
 
 [deps]
 
 source_file="res://assets/sfx/collision1.ogg"
-dest_files=[ "res://.import/collision1.ogg-ee8bbb3513b1917f0bd3242f7882a3d0.oggstr" ]
+dest_files=["res://.godot/imported/collision1.ogg-ee8bbb3513b1917f0bd3242f7882a3d0.oggvorbisstr"]
 
 [params]
 
 loop=false
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

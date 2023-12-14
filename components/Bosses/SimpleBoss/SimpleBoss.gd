@@ -1,10 +1,10 @@
 extends Area2D
 
-export var health: float = 230
+@export var health: float = 230
 var exploded = false
 var explosionSound = 0
 signal destroyed;
-onready var fireball = preload('res://components/Bullets/FireBall/FireBall.tscn')
+@onready var fireball = preload('res://components/Bullets/FireBall/FireBall.tscn')
 
 func _ready():
 	add_to_group("enemies")
@@ -22,7 +22,7 @@ func playExplosion():
 	$Explosion/ExplosionSoundTimer.start()
 	$Explosion/ExplosionAnim.visible = true
 	$Explosion/ExplosionAnim.play()
-	$Explosion/Tween.interpolate_property($Sprite, "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), 0.7, Tween.TRANS_EXPO, Tween.EASE_IN)
+	$Explosion/Tween.interpolate_property($Sprite2D, "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), 0.7, Tween.TRANS_EXPO, Tween.EASE_IN)
 	$Explosion/Tween.start()
 	
 func startShooting():
@@ -54,7 +54,7 @@ func on_hit(damage: float):
 		CameraControl.screen_shake(2, 12, 0.2)
 
 func createFireball():
-	var bullet = fireball.instance()
+	var bullet = fireball.instantiate()
 	bullet.friendly = false
 	bullet.speed = Vector2(0, 500)
 	bullet.damage = 20.0
@@ -63,7 +63,7 @@ func createFireball():
 func _on_ShootTimer_timeout():
 	var leftBullet = createFireball()
 	var rightBullet = createFireball()
-	leftBullet.position = get_global_transform().xform($LeftGun.position)
-	rightBullet.position = get_global_transform().xform($RightGun.position)
+	leftBullet.position = get_global_transform() * ($LeftGun.position)
+	rightBullet.position = get_global_transform() * ($RightGun.position)
 	$Bullets.add_child(leftBullet)
 	$Bullets.add_child(rightBullet)

@@ -1,8 +1,8 @@
 extends VBoxContainer
 
-export var label: String = ""
-export var maxValue: float = 100.0
-export var value: float = 100.0
+@export var label: String = ""
+@export var maxValue: float = 100.0
+@export var value: float = 100.0
 
 signal value_changed
 

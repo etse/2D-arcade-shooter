@@ -2,8 +2,9 @@ extends Node
 
 var basicEnemy = preload("res://components/Enemies/BasicEnemy/BasicEnemy.tscn")
 var spawnCount = 0
-onready var startPoints = [$Points/StartLeft, $Points/StartCenter, $Points/StartRight, $Points/StartCenter]
-onready var endPoints = [$Points/EndLeft, $Points/EndCenter, $Points/EndRight, $Points/EndCenter]
+@onready var startPoints = [$Points/StartLeft, $Points/StartCenter, $Points/StartRight, $Points/StartCenter]
+@onready var endPoints = [$Points/EndLeft, $Points/EndCenter, $Points/EndRight, $Points/EndCenter]
+@onready var tween = get_tree().create_tween()
 
 func start():
 	spawnCount = 0
@@ -17,12 +18,12 @@ func exit():
 	$Timer.stop()
 
 func _on_Timer_timeout():
-	var enemy = basicEnemy.instance()
+	var enemy = basicEnemy.instantiate()
 	var startPos = startPoints[spawnCount % startPoints.size()]
 	var endPos = endPoints[spawnCount % endPoints.size()]
 	enemy.position = startPos.position
-	$tween.interpolate_property(enemy, "position", startPos.position, endPos.position, 5, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-	$tween.start()
+	tween.tween_property(enemy, "position", endPos.position, 5).set_trans(Tween.TRANS_LINEAR)
+	tween.play()
 	$Enemies.add_child(enemy)
 	spawnCount += 1
 	

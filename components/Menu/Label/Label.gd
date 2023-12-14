@@ -1,7 +1,7 @@
 extends Label
 
 signal selected
-export var initial_focus = false
+@export var initial_focus = false
 
 func _ready():
 	$AnimationPlayer.play("Reset")
@@ -20,7 +20,7 @@ func _on_Label_mouse_exited():
 func _on_Label_gui_input(event: InputEvent):
 	if event.is_action_pressed("mouse_click") or event.is_action_pressed("ui_accept"):
 		$AnimationPlayer.play("Accept")
-		yield($AnimationPlayer, "animation_finished")
+		await $AnimationPlayer.animation_finished
 		emit_signal("selected")
 
 func _on_Label_focus_entered():

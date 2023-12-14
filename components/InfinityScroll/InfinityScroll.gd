@@ -1,8 +1,8 @@
 extends Node
 
-export var texture: StreamTexture
-export var scroll_speed: float
-export var alpha: float = 1
+@export var texture: CompressedTexture2D
+@export var scroll_speed: float
+@export var alpha: float = 1
 
 func _ready():
 	$texture_1.texture = texture
@@ -13,7 +13,7 @@ func _ready():
 	$texture_2.position = Vector2(0, 0)
 	
 func _physics_process(delta: float):
-	var screen_height = ProjectSettings.get_setting("display/window/size/height")
+	var screen_height = ProjectSettings.get_setting("display/window/size/viewport_height")
 	
 	var movement = delta * scroll_speed;
 	$texture_1.position.y += movement

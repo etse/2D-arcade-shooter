@@ -2,9 +2,9 @@
 
 [ext_resource path="res://screens/Level/levels/Level1/Level1.gd" type="Script" id=1]
 [ext_resource path="res://components/InfinityScroll/InfinityScroll.tscn" type="PackedScene" id=2]
-[ext_resource path="res://assets/backgrounds/Nebula Aqua-Pink-small.png" type="Texture" id=3]
-[ext_resource path="res://assets/backgrounds/Stars-Big_1_2_PC.png" type="Texture" id=4]
-[ext_resource path="res://assets/backgrounds/Stars Small_1.png" type="Texture" id=5]
+[ext_resource path="res://assets/backgrounds/Nebula Aqua-Pink-small.png" type="Texture2D" id=3]
+[ext_resource path="res://assets/backgrounds/Stars-Big_1_2_PC.png" type="Texture2D" id=4]
+[ext_resource path="res://assets/backgrounds/Stars Small_1.png" type="Texture2D" id=5]
 [ext_resource path="res://assets/music/Rolemusic_The_Pirate_And_The_Dancer.ogg" type="AudioStream" id=6]
 [ext_resource path="res://screens/Level/levels/Level1/Wait.gd" type="Script" id=7]
 [ext_resource path="res://screens/Level/levels/Level1/01_SimpleFighters.gd" type="Script" id=8]
@@ -14,12 +14,12 @@
 [sub_resource type="Curve2D" id=1]
 bake_interval = 10.0
 _data = {
-"points": PoolVector2Array( 17.7286, -220.499, -17.7286, 220.499, 416, -64, 0, -446.539, 0, 446.539, 1568, 512, 5.54018, -274.793, -5.54018, 274.793, 416, 1184 )
+"points": PackedVector2Array( 17.7286, -220.499, -17.7286, 220.499, 416, -64, 0, -446.539, 0, 446.539, 1568, 512, 5.54018, -274.793, -5.54018, 274.793, 416, 1184 )
 }
 
 [sub_resource type="Curve2D" id=2]
 _data = {
-"points": PoolVector2Array( -63.9377, -242.147, 63.9377, 242.147, 1536, -96, 14.9642, -446.204, -14.9642, 446.204, 416, 512, 69.3793, -244.868, -69.3793, 244.868, 1472, 1184 )
+"points": PackedVector2Array( -63.9377, -242.147, 63.9377, 242.147, 1536, -96, 14.9642, -446.204, -14.9642, 446.204, 416, 512, 69.3793, -244.868, -69.3793, 244.868, 1472, 1184 )
 }
 
 [node name="Level1" type="Node2D"]
@@ -69,27 +69,27 @@ wait_time = 2.0
 [node name="Points" type="Node" parent="Waves/SimpleFighters"]
 editor/display_folded = true
 
-[node name="StartLeft" type="Position2D" parent="Waves/SimpleFighters/Points"]
+[node name="StartLeft" type="Marker2D" parent="Waves/SimpleFighters/Points"]
 visible = false
 position = Vector2( 400, -90 )
 
-[node name="StartCenter" type="Position2D" parent="Waves/SimpleFighters/Points"]
+[node name="StartCenter" type="Marker2D" parent="Waves/SimpleFighters/Points"]
 visible = false
 position = Vector2( 950, -90 )
 
-[node name="StartRight" type="Position2D" parent="Waves/SimpleFighters/Points"]
+[node name="StartRight" type="Marker2D" parent="Waves/SimpleFighters/Points"]
 visible = false
 position = Vector2( 1500, -90 )
 
-[node name="EndLeft" type="Position2D" parent="Waves/SimpleFighters/Points"]
+[node name="EndLeft" type="Marker2D" parent="Waves/SimpleFighters/Points"]
 visible = false
 position = Vector2( 400, 1170 )
 
-[node name="EndCenter" type="Position2D" parent="Waves/SimpleFighters/Points"]
+[node name="EndCenter" type="Marker2D" parent="Waves/SimpleFighters/Points"]
 visible = false
 position = Vector2( 950, 1170 )
 
-[node name="EndRight" type="Position2D" parent="Waves/SimpleFighters/Points"]
+[node name="EndRight" type="Marker2D" parent="Waves/SimpleFighters/Points"]
 visible = false
 position = Vector2( 1500, 1170 )
 
@@ -126,16 +126,16 @@ script = ExtResource( 10 )
 
 [node name="Points" type="Node" parent="Waves/BossBattle"]
 
-[node name="Start" type="Position2D" parent="Waves/BossBattle/Points"]
+[node name="Start" type="Marker2D" parent="Waves/BossBattle/Points"]
 position = Vector2( 980, -200 )
 
-[node name="Entry" type="Position2D" parent="Waves/BossBattle/Points"]
+[node name="Entry" type="Marker2D" parent="Waves/BossBattle/Points"]
 position = Vector2( 980, 180 )
 
-[node name="Left" type="Position2D" parent="Waves/BossBattle/Points"]
+[node name="Left" type="Marker2D" parent="Waves/BossBattle/Points"]
 position = Vector2( 200, 180 )
 
-[node name="Right" type="Position2D" parent="Waves/BossBattle/Points"]
+[node name="Right" type="Marker2D" parent="Waves/BossBattle/Points"]
 position = Vector2( 1720, 180 )
 
 [connection signal="timeout" from="Waves/Wait/Timer" to="Waves/Wait" method="_on_Timer_timeout"]

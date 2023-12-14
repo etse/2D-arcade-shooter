@@ -1,15 +1,19 @@
 [remap]
 
-importer="ogg_vorbis"
-type="AudioStreamOGGVorbis"
-path="res://.import/menu_select1.ogg-f591f3eea3160045ecb9568fd5d603e8.oggstr"
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cc5vu84cemmpn"
+path="res://.godot/imported/menu_select1.ogg-f591f3eea3160045ecb9568fd5d603e8.oggvorbisstr"
 
 [deps]
 
 source_file="res://assets/sfx/menu_select1.ogg"
-dest_files=[ "res://.import/menu_select1.ogg-f591f3eea3160045ecb9568fd5d603e8.oggstr" ]
+dest_files=["res://.godot/imported/menu_select1.ogg-f591f3eea3160045ecb9568fd5d603e8.oggvorbisstr"]
 
 [params]
 
 loop=false
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

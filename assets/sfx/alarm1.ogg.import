@@ -1,15 +1,19 @@
 [remap]
 
-importer="ogg_vorbis"
-type="AudioStreamOGGVorbis"
-path="res://.import/alarm1.ogg-58ca7ac7c000660b280abd321b0bbdba.oggstr"
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cpgnk0px4eqsp"
+path="res://.godot/imported/alarm1.ogg-58ca7ac7c000660b280abd321b0bbdba.oggvorbisstr"
 
 [deps]
 
 source_file="res://assets/sfx/alarm1.ogg"
-dest_files=[ "res://.import/alarm1.ogg-58ca7ac7c000660b280abd321b0bbdba.oggstr" ]
+dest_files=["res://.godot/imported/alarm1.ogg-58ca7ac7c000660b280abd321b0bbdba.oggvorbisstr"]
 
 [params]
 
 loop=false
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,15 +1,19 @@
 [remap]
 
-importer="ogg_vorbis"
-type="AudioStreamOGGVorbis"
-path="res://.import/pulse4.ogg-2d030a6d85a818d862c2aa429c5ea546.oggstr"
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://6trl1guuhayj"
+path="res://.godot/imported/pulse4.ogg-2d030a6d85a818d862c2aa429c5ea546.oggvorbisstr"
 
 [deps]
 
 source_file="res://assets/sfx/pulse4.ogg"
-dest_files=[ "res://.import/pulse4.ogg-2d030a6d85a818d862c2aa429c5ea546.oggstr" ]
+dest_files=["res://.godot/imported/pulse4.ogg-2d030a6d85a818d862c2aa429c5ea546.oggvorbisstr"]
 
 [params]
 
 loop=true
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

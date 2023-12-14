@@ -1,69 +1,74 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=10 format=3 uid="uid://dyb6kp4rafykb"]
 
-[ext_resource path="res://assets/fonts/Roboto-Regular.ttf" type="DynamicFontData" id=1]
-[ext_resource path="res://screens/Menu/Menu.gd" type="Script" id=2]
-[ext_resource path="res://components/Menu/MainMenu/MainMenu.tscn" type="PackedScene" id=3]
-[ext_resource path="res://components/Menu/Options/Options.tscn" type="PackedScene" id=4]
-[ext_resource path="res://components/Menu/UpgradeShip/UpgradeShip.tscn" type="PackedScene" id=5]
-[ext_resource path="res://assets/backgrounds/Nebula Aqua-Pink-small.png" type="Texture" id=6]
-[ext_resource path="res://assets/music/BoxCat_Games_Assignment.ogg" type="AudioStream" id=7]
+[ext_resource type="FontFile" uid="uid://bv744ye3li3i1" path="res://assets/fonts/Roboto-Regular.ttf" id="1"]
+[ext_resource type="Script" path="res://screens/Menu/Menu.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://bcrem2ugvl83t" path="res://components/Menu/MainMenu/MainMenu.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://components/Menu/Options/Options.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://components/Menu/UpgradeShip/UpgradeShip.tscn" id="5"]
+[ext_resource type="Texture2D" uid="uid://llk20olhalge" path="res://assets/backgrounds/Nebula Aqua-Pink-small.png" id="6"]
+[ext_resource type="AudioStream" uid="uid://wvxdbxn74ui8" path="res://assets/music/BoxCat_Games_Assignment.ogg" id="7"]
 
-[sub_resource type="DynamicFont" id=1]
-size = 24
-use_filter = true
-font_data = ExtResource( 1 )
+[sub_resource type="FontFile" id="1"]
+fallbacks = Array[Font]([ExtResource("1")])
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
 
-[sub_resource type="Theme" id=2]
-default_font = SubResource( 1 )
+[sub_resource type="Theme" id="2"]
+default_font = SubResource("1")
 
 [node name="MenuScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
-theme = SubResource( 2 )
-script = ExtResource( 2 )
+theme = SubResource("2")
+script = ExtResource("2")
 
 [node name="MenuContainer" type="CenterContainer" parent="."]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 2
 
-[node name="MainMenu" parent="MenuContainer" instance=ExtResource( 3 )]
+[node name="MainMenu" parent="MenuContainer" instance=ExtResource("3")]
+layout_mode = 2
 
-[node name="Options" parent="MenuContainer" instance=ExtResource( 4 )]
+[node name="Options" parent="MenuContainer" instance=ExtResource("4")]
 visible = false
-margin_left = 649.0
-margin_top = 127.0
-margin_right = 1271.0
-margin_bottom = 953.0
+layout_mode = 2
 
-[node name="UpgradeShip" parent="MenuContainer" instance=ExtResource( 5 )]
+[node name="UpgradeShip" parent="MenuContainer" instance=ExtResource("5")]
 visible = false
-margin_top = 300.0
-margin_bottom = 779.0
+layout_mode = 2
 
 [node name="Background" type="TextureRect" parent="."]
 show_behind_parent = true
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-rect_clip_content = true
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource( 6 )
-expand = true
+texture = ExtResource("6")
+expand_mode = 1
 stretch_mode = 3
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 7 )
+stream = ExtResource("7")
 volume_db = -20.0
 autoplay = true
-bus = "music"
-
-[node name="TransitionTween" type="Tween" parent="."]
+bus = &"music"
 
 [connection signal="Options" from="MenuContainer/MainMenu" to="." method="_on_MainMenu_Options"]
 [connection signal="StartGame" from="MenuContainer/MainMenu" to="." method="_on_MainMenu_StartGame"]

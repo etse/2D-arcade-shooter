@@ -15,7 +15,7 @@ func exit():
 	$Timer.stop()
 
 func _on_Timer_timeout():
-	var enemy = basicEnemy.instance()
+	var enemy = basicEnemy.instantiate()
 	var path = PathFollow2D.new()
 	path.add_child(enemy)
 	if spawnCount % 2 == 0:
@@ -24,7 +24,7 @@ func _on_Timer_timeout():
 		$Enemies/RightPath.add_child(path)
 	path.rotate = false
 	path.rotation = 0
-	$Tween.interpolate_property(path, "unit_offset", 0, 1, 7, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	$Tween.interpolate_property(path, "progress_ratio", 0, 1, 7, Tween.TRANS_LINEAR, Tween.EASE_IN)
 	$Tween.start()
 	spawnCount += 1
 	

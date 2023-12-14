@@ -1,15 +1,19 @@
 [remap]
 
-importer="ogg_vorbis"
-type="AudioStreamOGGVorbis"
-path="res://.import/laser_bolt_2.ogg-d68e8cedfd54c5866f6c51dbca4c271f.oggstr"
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cjfg1o07b43av"
+path="res://.godot/imported/laser_bolt_2.ogg-d68e8cedfd54c5866f6c51dbca4c271f.oggvorbisstr"
 
 [deps]
 
 source_file="res://assets/sfx/laser_bolt_2.ogg"
-dest_files=[ "res://.import/laser_bolt_2.ogg-d68e8cedfd54c5866f6c51dbca4c271f.oggstr" ]
+dest_files=["res://.godot/imported/laser_bolt_2.ogg-d68e8cedfd54c5866f6c51dbca4c271f.oggvorbisstr"]
 
 [params]
 
 loop=false
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

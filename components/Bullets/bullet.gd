@@ -1,9 +1,9 @@
 extends Area2D
 class_name Bullet
 
-export var speed: Vector2 = Vector2(0, -1600)
-export var damage: float = 2
-export var friendly: bool = true
+@export var speed: Vector2 = Vector2(0, -1600)
+@export var damage: float = 2
+@export var friendly: bool = true
 var destroyed = false
 
 func _ready():
@@ -30,7 +30,7 @@ func on_collision(body):
 	if body.has_method("on_hit"):
 		body.on_hit(damage)
 	destroyed = true
-	$Sprite.visible = false
+	$Sprite2D.visible = false
 	$HitSound.play()
 	speed = Vector2(0, 0)
 	$Timer.start()

@@ -1,7 +1,7 @@
 extends Node2D
 
-onready var waves = [$Waves/Wait, $Waves/SimpleFighters, $Waves/Formation, $Waves/Wait, $Waves/BossBattle]
-onready var currentWave = null
+@onready var waves = [$Waves/Wait, $Waves/SimpleFighters, $Waves/Formation, $Waves/Wait, $Waves/BossBattle]
+@onready var currentWave = null
 var waveCount = 0
 
 func _ready():

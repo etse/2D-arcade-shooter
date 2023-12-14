@@ -1,15 +1,19 @@
 [remap]
 
-importer="ogg_vorbis"
-type="AudioStreamOGGVorbis"
-path="res://.import/rocket1.ogg-423b668c426b46fb8cda5f91d66e5a19.oggstr"
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bk222ou00dqfx"
+path="res://.godot/imported/rocket1.ogg-423b668c426b46fb8cda5f91d66e5a19.oggvorbisstr"
 
 [deps]
 
 source_file="res://assets/sfx/rocket1.ogg"
-dest_files=[ "res://.import/rocket1.ogg-423b668c426b46fb8cda5f91d66e5a19.oggstr" ]
+dest_files=["res://.godot/imported/rocket1.ogg-423b668c426b46fb8cda5f91d66e5a19.oggvorbisstr"]
 
 [params]
 
 loop=true
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
