@@ -2,7 +2,6 @@ extends Node
 
 var basicEnemy = preload("res://components/Enemies/BasicEnemy/BasicEnemy.tscn")
 var spawnCount = 0
-@onready var tween = get_tree().create_tween()
 
 func start():
 	spawnCount = 0
@@ -18,14 +17,15 @@ func exit():
 func _on_Timer_timeout():
 	var enemy = basicEnemy.instantiate()
 	var path = PathFollow2D.new()
+	var tween = create_tween()
 	path.add_child(enemy)
 	if spawnCount % 2 == 0:
 		$Enemies/LeftPath.add_child(path)
 	else:
 		$Enemies/RightPath.add_child(path)
-	path.rotate = false
+	path.rotates = false
 	path.rotation = 0
-	tween.interpolate_property(path, "progress_ratio", 1).set_trans(Tween.TRANS_LINEAR)
+	tween.tween_property(path, "progress_ratio", 1.0, 10).set_trans(Tween.TRANS_LINEAR)
 	tween.play()
 	spawnCount += 1
 	

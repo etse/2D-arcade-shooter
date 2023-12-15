@@ -26,10 +26,11 @@ func _reset():
 	self.amplitude = 0
 	self.duration = 0.2
 	self.frequency = 16
- 	$ShakeTween.interpolate_property(camera, "offset", camera.offset, Vector2(), $ShakeTimer.wait_time, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
-	$ShakeTween.start()
-	$ShakeTween.interpolate_property(camera, "rotation_degrees", camera.rotation_degrees, 0, $ShakeTimer.wait_time, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
-	$ShakeTween.start()
+	var tween = create_tween()
+	tween.tween_property(camera, "offset", camera.offset, $ShakeTimer.wait_time).as_relative().set_trans(Tween.TRANS_SINE)
+	tween.play()
+	tween.tween_property(camera, "rotation_degrees", camera.rotation_degrees, $ShakeTimer.wait_time).as_relative().set_trans(Tween.TRANS_SINE)
+	tween.play()
 	
 func _new_shake():
 	var trans_shake = Vector2()
@@ -38,10 +39,11 @@ func _new_shake():
 	var shake_limit = min(self.amplitude / 10.0, 0.7)
 	var shake_rotation = randf_range(-shake_limit, shake_limit)
 	
-	$ShakeTween.interpolate_property(camera, "offset", camera.offset, trans_shake, $ShakeTimer.wait_time, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
-	$ShakeTween.start()
-	$ShakeTween.interpolate_property(camera, "rotation_degrees", camera.rotation_degrees, shake_rotation, $ShakeTimer.wait_time, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
-	$ShakeTween.start()
+	var tween = create_tween()
+	tween.tween_property(camera, "offset", trans_shake, $ShakeTimer.wait_time).set_trans(Tween.TRANS_SINE)
+	tween.play()
+	tween.tween_property(camera, "rotation_degrees", shake_rotation, $ShakeTimer.wait_time).set_trans(Tween.TRANS_SINE)
+	tween.play()
 
 func _on_EndShakeTimer_timeout():
 	end_shake()

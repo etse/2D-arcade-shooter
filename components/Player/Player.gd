@@ -70,7 +70,7 @@ func on_destroyed():
 	$CollisionShape2D.disabled = true
 	var tween = create_tween()
 	tween.tween_property(self, "modulate", Color(1, 1, 1, 0), 0.5).set_trans(Tween.TRANS_CUBIC)
-	tween.plat()
+	tween.play()
 	CameraControl.screen_shake(22, 10, 0.5)
 	destroyed.emit()
 	

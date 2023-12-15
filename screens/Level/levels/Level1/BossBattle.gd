@@ -5,31 +5,30 @@ var BossEnemy = preload("res://components/Bosses/SimpleBoss/SimpleBoss.tscn")
 @onready var entryPos = $Points/Entry
 @onready var leftPos = $Points/Left
 @onready var rightPos = $Points/Right
-@onready var tween = get_tree().create_tween()
 
 
 func start():
+	var moveToScreenTween = create_tween()
 	var boss = BossEnemy.instantiate()
 	boss.position = startPos.position
 	add_child(boss)
 	
-	tween.tween_property(boss, "position", startPos.position, 5).set_trans(Tween.TRANS_SINE)
-	tween.play
-	await tween.tween_completed
+	moveToScreenTween.tween_property(boss, "position", entryPos.position, 5).from(startPos.position).set_trans(Tween.TRANS_SINE)
+	moveToScreenTween.play
+	await moveToScreenTween.finished
 	
-	tween.tween_property(boss, "position", entryPos.position, 3).set_trans(Tween.TRANS_SINE)
-	tween.play()
+	var moveRightTween = create_tween()
+	moveRightTween.tween_property(boss, "position", rightPos.position, 3).set_trans(Tween.TRANS_SINE)
+	moveRightTween.play()
 	boss.startShooting()
-	await tween.tween_completed
+	await moveRightTween.finished
 	
 	while(boss.health > 0):
-		tween.tween_property(boss, "position", rightPos.position, 5).set_trans(Tween.TRANS_SINE)
-		tween.play()
-		await tween.tween_completed
-		
-		tween.tween_property(boss, "position", rightPos.position, 5).set_trans(Tween.TRANS_SINE)
-		tween.play()
-		await tween.tween_completed
+		var movementTween = create_tween()
+		movementTween.tween_property(boss, "position", leftPos.position, 5).set_trans(Tween.TRANS_SINE)		
+		movementTween.tween_property(boss, "position", rightPos.position, 5).set_trans(Tween.TRANS_SINE)
+		movementTween.play()
+		await movementTween.finished
 	
 func update(delta: float):
 	pass

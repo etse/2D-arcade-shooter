@@ -12,12 +12,13 @@ func _process(delta):
 		self.on_destroyed()
 		
 func on_destroyed():
+	var tween = create_tween()
 	$CollisionShape2D.disabled = true
 	$Explosion.visible = true
 	$ExplosionSound.play()
 	$Explosion.play()
-	$Tween.interpolate_property($Sprite2D, "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), 0.3, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-	$Tween.start()
+	tween.tween_property($Sprite2D, "modulate", Color(1, 1, 1, 0), 0.3).set_trans(Tween.TRANS_LINEAR)
+	tween.play()
 	CameraControl.screen_shake(3, 20, 0.3)
 	Score.add_score(self.points)
 	

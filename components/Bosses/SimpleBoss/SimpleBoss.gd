@@ -16,14 +16,15 @@ func _process(delta):
 	
 func playExplosion():
 	self.exploded = true
+	var tween = create_tween()
 	Score.add_score(1000)
 	CameraControl.screen_shake(14, 25, 1.2)
 	$CollisionShape2D.disabled = true
 	$Explosion/ExplosionSoundTimer.start()
 	$Explosion/ExplosionAnim.visible = true
 	$Explosion/ExplosionAnim.play()
-	$Explosion/Tween.interpolate_property($Sprite2D, "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), 0.7, Tween.TRANS_EXPO, Tween.EASE_IN)
-	$Explosion/Tween.start()
+	tween.tween_property($Sprite2D, "modulate", Color(1, 1, 1, 0), 0.7).set_trans(Tween.TRANS_EXPO)
+	tween.play()
 	
 func startShooting():
 	if not self.exploded:
