@@ -26,7 +26,7 @@ func _reset():
 	self.amplitude = 0
 	self.duration = 0.2
 	self.frequency = 16
-	$ShakeTween.interpolate_property(camera, "offset", camera.offset, Vector2(), $ShakeTimer.wait_time, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+ 	$ShakeTween.interpolate_property(camera, "offset", camera.offset, Vector2(), $ShakeTimer.wait_time, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
 	$ShakeTween.start()
 	$ShakeTween.interpolate_property(camera, "rotation_degrees", camera.rotation_degrees, 0, $ShakeTimer.wait_time, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
 	$ShakeTween.start()
