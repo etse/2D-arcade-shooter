@@ -1,98 +1,142 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=3 uid="uid://30ucejcn2d70"]
 
-[ext_resource path="res://components/Bosses/SimpleBoss/SimpleBoss.gd" type="Script" id=1]
-[ext_resource path="res://assets/sprites/enemies/illumBlue02.png" type="Texture2D" id=2]
-[ext_resource path="res://assets/sfx/explosion2.ogg" type="AudioStream" id=3]
-[ext_resource path="res://assets/sfx/explosion1.ogg" type="AudioStream" id=4]
-[ext_resource path="res://assets/sprites/effects/explosion/Explosion_2_001.png" type="Texture2D" id=5]
-[ext_resource path="res://assets/sprites/effects/explosion/Explosion_2_002.png" type="Texture2D" id=6]
-[ext_resource path="res://assets/sprites/effects/explosion/Explosion_2_003.png" type="Texture2D" id=7]
-[ext_resource path="res://assets/sprites/effects/explosion/Explosion_2_004.png" type="Texture2D" id=8]
-[ext_resource path="res://assets/sprites/effects/explosion/Explosion_2_005.png" type="Texture2D" id=9]
-[ext_resource path="res://assets/sprites/effects/explosion/Explosion_2_006.png" type="Texture2D" id=10]
-[ext_resource path="res://assets/sprites/effects/explosion/Explosion_2_007.png" type="Texture2D" id=11]
-[ext_resource path="res://assets/sprites/effects/explosion/Explosion_2_008.png" type="Texture2D" id=12]
+[ext_resource type="Script" path="res://components/Bosses/SimpleBoss/SimpleBoss.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://s7vvc6oiudpc" path="res://assets/sprites/enemies/illumBlue02.png" id="2"]
+[ext_resource type="AudioStream" uid="uid://ck6en2boxun3b" path="res://assets/sfx/explosion2.ogg" id="3"]
+[ext_resource type="AudioStream" uid="uid://dl3kj2npeey0e" path="res://assets/sfx/explosion1.ogg" id="4"]
+[ext_resource type="Texture2D" uid="uid://bjtxxv8gsovxd" path="res://assets/sprites/effects/explosion/Explosion_2_001.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://dpq03axltf871" path="res://assets/sprites/effects/explosion/Explosion_2_002.png" id="6"]
+[ext_resource type="Texture2D" uid="uid://bokpmunhpc2pp" path="res://assets/sprites/effects/explosion/Explosion_2_003.png" id="7"]
+[ext_resource type="Texture2D" uid="uid://c7so44lp5mjl5" path="res://assets/sprites/effects/explosion/Explosion_2_004.png" id="8"]
+[ext_resource type="Texture2D" uid="uid://qgbnsrkt0aha" path="res://assets/sprites/effects/explosion/Explosion_2_005.png" id="9"]
+[ext_resource type="Texture2D" uid="uid://cojuqquum4dh2" path="res://assets/sprites/effects/explosion/Explosion_2_006.png" id="10"]
+[ext_resource type="Texture2D" uid="uid://ceg814xq2uyvc" path="res://assets/sprites/effects/explosion/Explosion_2_007.png" id="11"]
+[ext_resource type="Texture2D" uid="uid://c4p5ykdranibr" path="res://assets/sprites/effects/explosion/Explosion_2_008.png" id="12"]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 180, 96 )
+[sub_resource type="RectangleShape2D" id="1"]
+size = Vector2(360, 192)
 
-[sub_resource type="SpriteFrames" id=2]
-animations = [ {
-"frames": [ ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ) ],
+[sub_resource type="SpriteFrames" id="2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12")
+}],
 "loop": false,
-"name": "default",
+"name": &"default",
 "speed": 10.0
-} ]
+}]
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id="3"]
 resource_name = "Hit"
 length = 0.1
 step = 0.01
 tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
 tracks/0/path = NodePath("Sprite2D:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
 tracks/0/keys = {
-"times": PackedFloat32Array( 0, 0.04, 0.1 ),
-"transitions": PackedFloat32Array( 1, 1, 1 ),
+"times": PackedFloat32Array(0, 0.04, 0.1),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 2, 2, 2, 1 ), Color( 1, 1, 1, 1 ) ]
+"values": [Color(1, 1, 1, 1), Color(2, 2, 2, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_achbx"]
+_data = {
+"Hit": SubResource("3")
 }
 
 [node name="SimpleBoss" type="Area2D"]
-script = ExtResource( 1 )
+script = ExtResource("1")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2( 1.92574, 1.81959 )
-texture = ExtResource( 2 )
+scale = Vector2(1.92574, 1.81959)
+texture = ExtResource("2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
-position = Vector2( 0, -32 )
-shape = SubResource( 1 )
+position = Vector2(0, -32)
+shape = SubResource("1")
 
 [node name="ShootTimer" type="Timer" parent="."]
 
 [node name="LeftGun" type="Marker2D" parent="."]
-position = Vector2( -160, 73 )
+position = Vector2(-160, 73)
 
 [node name="RightGun" type="Marker2D" parent="."]
-position = Vector2( 160, 73 )
+position = Vector2(160, 73)
 
 [node name="Bullets" type="Node" parent="."]
 
 [node name="Explosion" type="Node2D" parent="."]
 
 [node name="ExplosionSound1" type="AudioStreamPlayer" parent="Explosion"]
-stream = ExtResource( 3 )
+stream = ExtResource("3")
 volume_db = -22.0
-bus = "sfx"
+bus = &"sfx"
 
 [node name="ExplosionSound2" type="AudioStreamPlayer" parent="Explosion"]
-stream = ExtResource( 3 )
+stream = ExtResource("3")
 volume_db = -22.0
-bus = "sfx"
+bus = &"sfx"
 
 [node name="ExplosionSound3" type="AudioStreamPlayer" parent="Explosion"]
-stream = ExtResource( 4 )
+stream = ExtResource("4")
 volume_db = -22.0
-bus = "sfx"
+bus = &"sfx"
 
 [node name="ExplosionSoundTimer" type="Timer" parent="Explosion"]
 wait_time = 0.23
 
 [node name="ExplosionAnim" type="AnimatedSprite2D" parent="Explosion"]
 visible = false
-position = Vector2( 1.52588e-005, -3.8147e-006 )
-scale = Vector2( 0.775246, 0.642621 )
-frames = SubResource( 2 )
-
-[node name="Tween" type="Tween" parent="Explosion"]
+position = Vector2(1.52588e-05, -3.8147e-06)
+scale = Vector2(0.775246, 0.642621)
+sprite_frames = SubResource("2")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Hit = SubResource( 3 )
+libraries = {
+"": SubResource("AnimationLibrary_achbx")
+}
 
 [connection signal="timeout" from="ShootTimer" to="." method="_on_ShootTimer_timeout"]
 [connection signal="finished" from="Explosion/ExplosionSound3" to="." method="_on_ExplosionSound3_finished"]

@@ -1,45 +1,68 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=7 format=3 uid="uid://chaybk1l06kkn"]
 
-[ext_resource path="res://components/Menu/UpgradeShip/UpgradeShip.gd" type="Script" id=1]
-[ext_resource path="res://assets/fonts/Arcade.ttf" type="FontFile" id=2]
-[ext_resource path="res://components/Menu/Label/Label.tscn" type="PackedScene" id=3]
-[ext_resource path="res://assets/fonts/8bitOperatorPlus-Bold.ttf" type="FontFile" id=4]
+[ext_resource type="Script" path="res://components/Menu/UpgradeShip/UpgradeShip.gd" id="1"]
+[ext_resource type="FontFile" uid="uid://c4wkpvq38gdoq" path="res://assets/fonts/Arcade.ttf" id="2"]
+[ext_resource type="PackedScene" uid="uid://vy8ykdp0wu7f" path="res://components/Menu/Label/Label.tscn" id="3"]
+[ext_resource type="FontFile" uid="uid://doesrguwx81i0" path="res://assets/fonts/8bitOperatorPlus-Bold.ttf" id="4"]
 
-[sub_resource type="FontFile" id=3]
-size = 200
-font_data = ExtResource( 2 )
+[sub_resource type="FontFile" id="3"]
+fallbacks = Array[Font]([ExtResource("2"), ExtResource("2")])
+subpixel_positioning = 0
+msdf_pixel_range = 14
+msdf_size = 128
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
+cache/0/16/0/kerning_overrides/140/0 = Vector2(0, 0)
+cache/0/140/0/ascent = 0.0
+cache/0/140/0/descent = 0.0
+cache/0/140/0/underline_position = 0.0
+cache/0/140/0/underline_thickness = 0.0
+cache/0/140/0/scale = 1.0
+cache/0/140/0/kerning_overrides/16/0 = Vector2(0, 0)
+cache/0/140/0/kerning_overrides/140/0 = Vector2(0, 0)
 
-[sub_resource type="FontFile" id=2]
-size = 48
-outline_size = 2
-outline_color = Color( 0, 0, 0, 1 )
-font_data = ExtResource( 4 )
+[sub_resource type="FontFile" id="2"]
+fallbacks = Array[Font]([ExtResource("4"), ExtResource("4")])
+subpixel_positioning = 0
+msdf_pixel_range = 14
+msdf_size = 128
+cache/0/24/0/ascent = 0.0
+cache/0/24/0/descent = 0.0
+cache/0/24/0/underline_position = 0.0
+cache/0/24/0/underline_thickness = 0.0
+cache/0/24/0/scale = 1.0
+cache/0/24/0/kerning_overrides/24/0 = Vector2(0, 0)
+cache/0/24/0/kerning_overrides/16/0 = Vector2(0, 0)
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/16/0/kerning_overrides/24/0 = Vector2(0, 0)
+cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
 
 [node name="UpgradeShip" type="VBoxContainer"]
 offset_left = 382.0
 offset_top = 302.0
 offset_right = 1538.0
 offset_bottom = 777.0
-script = ExtResource( 1 )
+script = ExtResource("1")
 
 [node name="UpgradeShipTitle" type="Label" parent="."]
-offset_right = 1156.0
-offset_bottom = 403.0
-theme_override_fonts/font = SubResource( 3 )
+layout_mode = 2
+theme_override_fonts/font = SubResource("3")
+theme_override_font_sizes/font_size = 140
 text = "Upgrade ship
 "
 
 [node name="ShipList" type="HBoxContainer" parent="."]
-offset_top = 407.0
-offset_right = 1156.0
-offset_bottom = 407.0
+layout_mode = 2
 
-[node name="GoBack" parent="." instance=ExtResource( 3 )]
-offset_top = 411.0
-offset_right = 1156.0
-offset_bottom = 479.0
-theme_override_fonts/font = SubResource( 2 )
+[node name="GoBack" parent="." instance=ExtResource("3")]
+layout_mode = 2
+theme_override_fonts/font = SubResource("2")
 text = "Back"
-align = 1
-valign = 1
-

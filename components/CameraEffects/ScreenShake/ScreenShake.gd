@@ -28,7 +28,6 @@ func _reset():
 	self.frequency = 16
 	var tween = create_tween()
 	tween.tween_property(camera, "offset", camera.offset, $ShakeTimer.wait_time).as_relative().set_trans(Tween.TRANS_SINE)
-	tween.play()
 	tween.tween_property(camera, "rotation_degrees", camera.rotation_degrees, $ShakeTimer.wait_time).as_relative().set_trans(Tween.TRANS_SINE)
 	tween.play()
 	
@@ -41,7 +40,6 @@ func _new_shake():
 	
 	var tween = create_tween()
 	tween.tween_property(camera, "offset", trans_shake, $ShakeTimer.wait_time).set_trans(Tween.TRANS_SINE)
-	tween.play()
 	tween.tween_property(camera, "rotation_degrees", shake_rotation, $ShakeTimer.wait_time).set_trans(Tween.TRANS_SINE)
 	tween.play()
 

@@ -3,8 +3,8 @@
 [ext_resource type="FontFile" uid="uid://bv744ye3li3i1" path="res://assets/fonts/Roboto-Regular.ttf" id="1"]
 [ext_resource type="Script" path="res://screens/Menu/Menu.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://bcrem2ugvl83t" path="res://components/Menu/MainMenu/MainMenu.tscn" id="3"]
-[ext_resource type="PackedScene" path="res://components/Menu/Options/Options.tscn" id="4"]
-[ext_resource type="PackedScene" path="res://components/Menu/UpgradeShip/UpgradeShip.tscn" id="5"]
+[ext_resource type="PackedScene" uid="uid://dlbhca3tu1lin" path="res://components/Menu/Options/Options.tscn" id="4"]
+[ext_resource type="PackedScene" uid="uid://chaybk1l06kkn" path="res://components/Menu/UpgradeShip/UpgradeShip.tscn" id="5"]
 [ext_resource type="Texture2D" uid="uid://llk20olhalge" path="res://assets/backgrounds/Nebula Aqua-Pink-small.png" id="6"]
 [ext_resource type="AudioStream" uid="uid://wvxdbxn74ui8" path="res://assets/music/BoxCat_Games_Assignment.ogg" id="7"]
 
