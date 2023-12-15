@@ -4,7 +4,6 @@ var basicEnemy = preload("res://components/Enemies/BasicEnemy/BasicEnemy.tscn")
 var spawnCount = 0
 @onready var startPoints = [$Points/StartLeft, $Points/StartCenter, $Points/StartRight, $Points/StartCenter]
 @onready var endPoints = [$Points/EndLeft, $Points/EndCenter, $Points/EndRight, $Points/EndCenter]
-@onready var tween = get_tree().create_tween()
 
 func start():
 	spawnCount = 0
@@ -18,6 +17,7 @@ func exit():
 	$Timer.stop()
 
 func _on_Timer_timeout():
+	var tween = get_tree().create_tween()
 	var enemy = basicEnemy.instantiate()
 	var startPos = startPoints[spawnCount % startPoints.size()]
 	var endPos = endPoints[spawnCount % endPoints.size()]

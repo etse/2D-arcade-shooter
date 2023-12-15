@@ -2,6 +2,7 @@ extends Node
 
 var basicEnemy = preload("res://components/Enemies/BasicEnemy/BasicEnemy.tscn")
 var spawnCount = 0
+@onready var tween = get_tree().create_tween()
 
 func start():
 	spawnCount = 0
@@ -24,8 +25,8 @@ func _on_Timer_timeout():
 		$Enemies/RightPath.add_child(path)
 	path.rotate = false
 	path.rotation = 0
-	$Tween.interpolate_property(path, "progress_ratio", 0, 1, 7, Tween.TRANS_LINEAR, Tween.EASE_IN)
-	$Tween.start()
+	tween.interpolate_property(path, "progress_ratio", 1).set_trans(Tween.TRANS_LINEAR)
+	tween.play()
 	spawnCount += 1
 	
 

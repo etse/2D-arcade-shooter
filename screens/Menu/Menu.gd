@@ -3,14 +3,15 @@ extends Control
 @onready var currentPanel = $MenuContainer/MainMenu
 @onready var levelScene = "res://screens/Level/Level.tscn"
 
-func _switch_panel(toPanel):
+func _switch_panel(toPanel: Object):
 	toPanel.modulate = Color(1, 1, 1, 0)
 	toPanel.visible = true
-	$TransitionTween.interpolate_property(currentPanel, "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), 0.1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-	$TransitionTween.start()
-	$TransitionTween.interpolate_property(toPanel, "modulate", Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-	$TransitionTween.start()
-	await $TransitionTween.tween_completed
+	var tween = get_tree().create_tween()
+	tween.tween_property(currentPanel, "modulate:a", 0, 0.1).set_trans(Tween.TRANS_LINEAR)
+	tween.play()
+	tween.tween_property(toPanel, "modulate:a", 1, 0.1).set_trans(Tween.TRANS_LINEAR)
+	tween.play()
+	await tween.finished
 	currentPanel.visible = false
 	currentPanel = toPanel
 

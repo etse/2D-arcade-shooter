@@ -1,8 +1,8 @@
 [gd_scene load_steps=8 format=3 uid="uid://bdllior8sn4f0"]
 
 [ext_resource type="Script" path="res://screens/Level/Level.gd" id="1"]
-[ext_resource type="PackedScene" path="res://components/HUD/HUD.tscn" id="2"]
-[ext_resource type="PackedScene" path="res://screens/Level/levels/Level1/Level1.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://1b74sphhym2f" path="res://components/HUD/HUD.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://by33htaqqymtq" path="res://screens/Level/levels/Level1/Level1.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://c3gcmir1uqwv8" path="res://components/Player/Player.tscn" id="4"]
 [ext_resource type="PackedScene" path="res://components/CameraEffects/ScreenShake/ScreenShake.tscn" id="5"]
 
@@ -36,10 +36,10 @@ position = Vector2(1310, 550)
 shape = SubResource("2")
 
 [node name="HUD" parent="." instance=ExtResource("2")]
-
-[node name="Level1" parent="." instance=ExtResource("3")]
+visible = false
 
 [node name="Player" parent="." instance=ExtResource("4")]
+visible = false
 position = Vector2(960, 950)
 
 [node name="Camera3D" type="Camera2D" parent="."]
@@ -47,8 +47,13 @@ position = Vector2(960, 540)
 ignore_rotation = false
 
 [node name="ScreenShake" parent="Camera3D" instance=ExtResource("5")]
+visible = false
+
+[node name="Level1" parent="." instance=ExtResource("3")]
+visible = false
 
 [node name="Overlay" type="Polygon2D" parent="."]
+visible = false
 modulate = Color(0, 0, 0, 1)
 polygon = PackedVector2Array(0, 0, 1920, 0, 1920, 1080, 0, 1080)
 

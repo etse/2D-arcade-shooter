@@ -5,6 +5,7 @@ var BossEnemy = preload("res://components/Bosses/SimpleBoss/SimpleBoss.tscn")
 @onready var entryPos = $Points/Entry
 @onready var leftPos = $Points/Left
 @onready var rightPos = $Points/Right
+@onready var tween = get_tree().create_tween()
 
 
 func start():
@@ -12,23 +13,23 @@ func start():
 	boss.position = startPos.position
 	add_child(boss)
 	
-	$Tween.interpolate_property(boss, "position", startPos.position, entryPos.position, 5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
-	$Tween.start()
-	await $Tween.tween_completed
+	tween.tween_property(boss, "position", startPos.position, 5).set_trans(Tween.TRANS_SINE)
+	tween.play
+	await tween.tween_completed
 	
-	$Tween.interpolate_property(boss, "position", entryPos.position, rightPos.position, 3, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
-	$Tween.start()
+	tween.tween_property(boss, "position", entryPos.position, 3).set_trans(Tween.TRANS_SINE)
+	tween.play()
 	boss.startShooting()
-	await $Tween.tween_completed
+	await tween.tween_completed
 	
 	while(boss.health > 0):
-		$Tween.interpolate_property(boss, "position", rightPos.position, leftPos.position, 5, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
-		$Tween.start()
-		await $Tween.tween_completed
+		tween.tween_property(boss, "position", rightPos.position, 5).set_trans(Tween.TRANS_SINE)
+		tween.play()
+		await tween.tween_completed
 		
-		$Tween.interpolate_property(boss, "position", leftPos.position, rightPos.position, 5, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
-		$Tween.start()
-		await $Tween.tween_completed
+		tween.tween_property(boss, "position", rightPos.position, 5).set_trans(Tween.TRANS_SINE)
+		tween.play()
+		await tween.tween_completed
 	
 func update(delta: float):
 	pass

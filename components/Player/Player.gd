@@ -68,8 +68,9 @@ func on_hit(damage: float):
 func on_destroyed():
 	self.isDestroyed = true
 	$CollisionShape2D.disabled = true
-	$Tween.interpolate_property(self, "modulate", Color(1, 1, 1, 1), Color(1, 1, 1, 0), 0.5, Tween.TRANS_CUBIC, Tween.EASE_OUT)
-	$Tween.start()
+	var tween = create_tween()
+	tween.tween_property(self, "modulate", Color(1, 1, 1, 0), 0.5).set_trans(Tween.TRANS_CUBIC)
+	tween.plat()
 	CameraControl.screen_shake(22, 10, 0.5)
 	destroyed.emit()
 	
