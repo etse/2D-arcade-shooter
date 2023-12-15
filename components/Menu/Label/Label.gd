@@ -21,7 +21,7 @@ func _on_Label_gui_input(event: InputEvent):
 	if event.is_action_pressed("mouse_click") or event.is_action_pressed("ui_accept"):
 		$AnimationPlayer.play("Accept")
 		await $AnimationPlayer.animation_finished
-		emit_signal("selected")
+		selected.emit()
 
 func _on_Label_focus_entered():
 	$AnimationPlayer.play("Select")

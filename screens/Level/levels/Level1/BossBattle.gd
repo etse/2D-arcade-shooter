@@ -6,7 +6,6 @@ var BossEnemy = preload("res://components/Bosses/SimpleBoss/SimpleBoss.tscn")
 @onready var leftPos = $Points/Left
 @onready var rightPos = $Points/Right
 
-
 func start():
 	var moveToScreenTween = create_tween()
 	var boss = BossEnemy.instantiate()

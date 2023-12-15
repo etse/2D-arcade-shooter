@@ -46,7 +46,7 @@ func _on_ExplosionSoundTimer_timeout():
 			$Explosion/ExplosionSoundTimer.stop()
 
 func _on_ExplosionSound3_finished():
-	emit_signal("destroyed")
+	destroyed.emit()
 	
 func on_hit(damage: float):
 	if not exploded:

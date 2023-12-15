@@ -32,4 +32,4 @@ func _on_SFXVolume_value_changed(value: float):
 	changeAudioVolume("sfx", value)
 
 func _on_Save_selected():
-	emit_signal("saved")
+	saved.emit()
