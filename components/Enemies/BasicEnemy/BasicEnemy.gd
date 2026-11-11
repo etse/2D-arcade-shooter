@@ -2,7 +2,7 @@ extends Area2D
 class_name BasicEnemy
 
 @export var health: float = 6
-@export var points = 10
+@export var points: int = 10
 
 func _ready():
 	add_to_group("enemies")

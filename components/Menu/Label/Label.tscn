@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://vy8ykdp0wu7f"]
+[gd_scene load_steps=12 format=3 uid="uid://vy8ykdp0wu7f"]
 
 [ext_resource type="FontFile" uid="uid://doesrguwx81i0" path="res://assets/fonts/8bitOperatorPlus-Bold.ttf" id="1"]
 [ext_resource type="Script" path="res://components/Menu/Label/Label.gd" id="2"]
@@ -707,6 +707,8 @@ cache/0/25/0/kerning_overrides/23/0 = Vector2(0, 0)
 cache/0/25/0/kerning_overrides/24/0 = Vector2(0, 0)
 cache/0/25/0/kerning_overrides/25/0 = Vector2(0, 0)
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_focus"]
+
 [sub_resource type="Animation" id="5"]
 resource_name = "Accept"
 length = 0.25
@@ -831,6 +833,7 @@ mouse_filter = 0
 theme_override_colors/font_color = Color(1, 0.791902, 0.170859, 1)
 theme_override_fonts/font = SubResource("1")
 theme_override_font_sizes/font_size = 24
+theme_override_styles/focus = SubResource("StyleBoxEmpty_focus")
 text = "LabelText"
 script = ExtResource("2")
 
