@@ -67,6 +67,7 @@ All helpers live in `tools/` and find the Godot binary via `tools/godot.sh`
 | Validate everything (re-import, compile all scripts, load all scenes) | `tools/validate.sh` (exit 0 = OK) |
 | Run a scene headless for N frames (catch runtime errors) | `tools/godot.sh --headless --path . --quit-after 600 res://screens/Level/Level.tscn` |
 | Screenshot a scene after N seconds (needs `$DISPLAY`) | `tools/screenshot.sh res://screens/Level/Level.tscn 5 /tmp/shot.png` |
+| Record a demo video (scripted autoplay, needs `$DISPLAY` + ffmpeg) | `.claude/skills/record-demo/scripts/record.sh .claude/skills/record-demo/scripts/demos/weapon_shop.gd` → `demo/weapon_shop.mp4` |
 | Open the editor | `tools/godot.sh --path . -e` |
 | Run the game | `tools/godot.sh --path .` |
 
@@ -100,6 +101,7 @@ screens/
   Level/levels/Level1/         Level1 scene + wave scripts
 assets/                        3rd-party art/music/sfx/fonts (see README for licences)
 tools/                         agent/dev helper scripts (validate, screenshot, godot wrapper)
+demo/                          recorded demo videos (git-ignored, see skill record-demo)
 ```
 
 ## Architecture
@@ -188,5 +190,6 @@ Project skills for agents are in `.claude/skills/`:
 - `godot-scene-editing` — safely hand-edit `.tscn`/`.tres` files.
 - `gdscript-godot4` — GDScript 4 idioms and Godot 3→4 pitfalls.
 - `shmup-content` — add enemies, bullets, waves and bosses the way this project does it.
+- `record-demo` — record short gameplay videos with a scripted, cheating autoplay; videos go in `demo/`.
 
 <!-- TODO (owner): add design goals, planned features, art/style direction, balancing notes. -->

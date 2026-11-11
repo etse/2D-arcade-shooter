@@ -1,2 +1,4 @@
 .import/
 .godot/
+/demo/
+/.demo_run.*/
