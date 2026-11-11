@@ -16,7 +16,7 @@ An enemy is an `Area2D` scene that:
 1. `add_to_group("enemies")` in `_ready()` — bullets and the player only interact with this group.
 2. Implements `on_hit(damage: float)` — called by friendly bullets and on player ramming.
 3. On death: disables its `CollisionShape2D` (so it stops taking hits), calls `Score.add_score(points)`, optionally `CameraControl.screen_shake(...)`, plays explosion, then `queue_free()`s.
-4. Is freed if it leaves the screen without dying (existing enemies don't do this yet — add a `VisibleOnScreenNotifier2D` and free on `screen_exited` for new ones).
+4. Is freed if it leaves the screen without dying. Current waves do this by ending the movement tween below the screen and `queue_free()`ing on `tween.finished`; a `VisibleOnScreenNotifier2D` + `screen_exited` also works.
 
 ## Recipe: new enemy type
 
@@ -60,9 +60,9 @@ Steps:
 
 Follow `components/Bosses/SimpleBoss/` + `screens/Level/levels/Level1/BossBattle.gd`:
 boss scene emits `destroyed` when its death sequence finishes; the battle wave
-drives movement with tweens in a loop while `boss.health > 0`. If you add a
-boss, make the battle wave's `update()` return true after `destroyed` so the
-level can progress (currently it never does — known issue).
+drives movement with tweens (created on the boss) in a loop while the boss is
+alive, and its `update()` returns true once `destroyed` has fired (it then
+`queue_free()`s the boss). Do the same for new bosses so the level can end.
 
 ## Recipe: new level
 

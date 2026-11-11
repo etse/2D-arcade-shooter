@@ -12,8 +12,8 @@ money (`$123`); the menu has "Upgrade weapon" / "Upgrade ship" entries meant
 for a shop (not implemented yet).
 
 - Engine: **Godot 4.7** (`config/features=PackedStringArray("4.7")`), GDScript only, no addons.
-- Originally a Godot 3 project, migrated to Godot 4 (see git history). Leftovers
-  from the migration still exist — see "Known issues / gotchas".
+- Originally a Godot 3 project, migrated to Godot 4 (see git history). Watch out
+  for Godot 3 idioms in older code (skill `gdscript-godot4`).
 - Main scene: `res://screens/Menu/Menu.tscn`.
 - Viewport 1920×1080, window 1280×720, stretch mode `viewport`.
 - Some commit messages / comments are in Norwegian.
@@ -60,22 +60,22 @@ screens/
   Level/levels/Level1/         Level1 scene + wave scripts
 assets/                        3rd-party art/music/sfx/fonts (see README for licences)
 tools/                         agent/dev helper scripts (validate, screenshot, godot wrapper)
-Slider.gd                      script for components/Menu/Slider (lives at repo root, legacy)
 ```
 
 ## Architecture
 
 ### Autoloads (`project.godot` → `[autoload]`)
 - `Score` (`components/Singletons/Score.gd`): `score: int`, `add_score(points)`, signal `score_changed(score)`. Never reset between runs.
-- `CameraControl` (`components/Singletons/Camera_control.gd`): global event bus for screen shake. Call `CameraControl.screen_shake(amplitude, frequency, duration)`; `Level.gd` forwards it to `$Camera3D/ScreenShake`.
+- `CameraControl` (`components/Singletons/Camera_control.gd`): global event bus for screen shake. Call `CameraControl.screen_shake(amplitude, frequency, duration)`; `Level.gd` forwards it to `$Camera/ScreenShake`.
 
 ### Scene flow
 `Menu.tscn` → "Start next level" → `change_scene_to_file("res://screens/Level/Level.tscn")`
-→ player dies → `Level.gd` fades out → back to `Menu.tscn`. There is no win state yet.
+→ player dies, or `Level1` emits `completed` after its last wave → `Level.gd` fades out → back to `Menu.tscn`.
+There is no dedicated win/lose screen yet.
 
 ### Levels and waves
-`Level1.gd` holds an ordered array of wave nodes and runs them as a simple
-state machine. Each wave is a child `Node` of `Level1/Waves` with a script that
+`Level1.gd` holds an ordered array of wave nodes and runs them in order as a
+simple state machine; after the last wave it emits `completed`. Each wave is a child `Node` of `Level1/Waves` with a script that
 implements this informal protocol (duck-typed, no base class):
 
 ```gdscript
@@ -89,7 +89,10 @@ Current order: `Wait → SimpleFighters → Formation → Wait → BossBattle`.
 placeholder nodes not yet wired in. Waves spawn enemies under their own
 `Enemies` child and move them with tweens (`SimpleFighters`) or
 `Path2D`/`PathFollow2D` (`Formation`). Spawn/target positions are `Marker2D`s
-under each wave's `Points` node.
+under each wave's `Points` node. Movement tweens are created on the enemy (or
+its `PathFollow2D`) so they die with it, and the enemy is `queue_free()`d when
+the tween finishes (end points are below the screen). `BossBattle` finishes
+when the boss emits `destroyed`.
 
 ### Combat / collision model
 Collision layers/masks are all default; **filtering is done with groups**:
@@ -127,14 +130,9 @@ changes bus volumes (not persisted to disk).
 - Commit directly on `main`.
 
 ## Known issues / gotchas
-- The Camera2D in `Level.tscn` is named **`Camera3D`** (Godot 3→4 converter artifact). Code references `$Camera3D/ScreenShake`; rename both together if you fix it.
-- `BossBattle.update()` never returns true → the level never ends after the boss. Waves also loop via `waveCount % waves.size()`.
-- `Formation.gd` / `01_SimpleFighters.gd` have dead `_on_tween_completed` handlers (Godot 3 Tween API); enemies that finish their path/tween are never freed.
-- `BossBattle.gd`: `moveToScreenTween.play` is missing `()` (harmless, tweens autostart).
-- `components/Menu/Slider/Slider.tscn` is still in Godot 3 text format (`format=2`) and points at `res://Slider.gd` at the repo root.
-- `screens/Level/Lev4BB2.tmp` is a stray editor temp file.
-- "Upgrade weapon" has no handler in `Menu.gd`; `UpgradeShip` / `ShopItem` are stubs.
-- `Score` is never reset when starting a new run.
+- "Upgrade weapon" has no handler in `Menu.gd`; `UpgradeShip` / `ShopItem` are stubs (shop not implemented).
+- `Score` persists across runs (never reset). Intentional if score is meant to be shop money — decide when the shop is built.
+- Bullets are only freed on hit or when touching a `"wall"` (`WorldBounds`); anything that escapes the walls lives forever.
 
 ## Skills
 Project skills for agents are in `.claude/skills/`:

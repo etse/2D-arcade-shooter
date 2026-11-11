@@ -17,7 +17,6 @@ func exit():
 func _on_Timer_timeout():
 	var enemy = basicEnemy.instantiate()
 	var path = PathFollow2D.new()
-	var tween = create_tween()
 	path.add_child(enemy)
 	if spawnCount % 2 == 0:
 		$Enemies/LeftPath.add_child(path)
@@ -25,10 +24,8 @@ func _on_Timer_timeout():
 		$Enemies/RightPath.add_child(path)
 	path.rotates = false
 	path.rotation = 0
+	var tween = path.create_tween()
 	tween.tween_property(path, "progress_ratio", 1.0, 10).set_trans(Tween.TRANS_LINEAR)
-	tween.play()
+	# Paths end below the screen: free the follower (and its enemy) when done.
+	tween.finished.connect(path.queue_free)
 	spawnCount += 1
-	
-
-func _on_Tween_tween_completed(object, key):
-	object.queue_free()

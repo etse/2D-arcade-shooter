@@ -17,16 +17,14 @@ func exit():
 	$Timer.stop()
 
 func _on_Timer_timeout():
-	var tween = get_tree().create_tween()
 	var enemy = basicEnemy.instantiate()
 	var startPos = startPoints[spawnCount % startPoints.size()]
 	var endPos = endPoints[spawnCount % endPoints.size()]
 	enemy.position = startPos.position
-	tween.tween_property(enemy, "position", endPos.position, 5).set_trans(Tween.TRANS_LINEAR)
-	tween.play()
 	$Enemies.add_child(enemy)
+	# Bind the tween to the enemy so it dies with it if the enemy is shot down.
+	var tween = enemy.create_tween()
+	tween.tween_property(enemy, "position", endPos.position, 5).set_trans(Tween.TRANS_LINEAR)
+	# End points are below the screen: remove enemies that fly past the player.
+	tween.finished.connect(enemy.queue_free)
 	spawnCount += 1
-	
-
-func _on_tween_tween_completed(object, key):
-	object.queue_free()

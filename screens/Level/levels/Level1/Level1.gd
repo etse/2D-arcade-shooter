@@ -1,5 +1,7 @@
 extends Node2D
 
+signal completed
+
 @onready var waves = [$Waves/Wait, $Waves/SimpleFighters, $Waves/Formation, $Waves/Wait, $Waves/BossBattle]
 @onready var currentWave = null
 var waveCount = 0
@@ -9,9 +11,14 @@ func _ready():
 	currentWave.start()
 
 func _process(delta):
+	if currentWave == null:
+		return
 	if currentWave.update(delta):
 		currentWave.exit()
 		waveCount += 1
-		currentWave = waves[waveCount % waves.size()]
+		if waveCount >= waves.size():
+			currentWave = null
+			completed.emit()
+			return
+		currentWave = waves[waveCount]
 		currentWave.start()
-	

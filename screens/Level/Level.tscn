@@ -39,11 +39,11 @@ shape = SubResource("2")
 [node name="Player" parent="." instance=ExtResource("4")]
 position = Vector2(960, 950)
 
-[node name="Camera3D" type="Camera2D" parent="."]
+[node name="Camera" type="Camera2D" parent="."]
 position = Vector2(960, 540)
 ignore_rotation = false
 
-[node name="ScreenShake" parent="Camera3D" instance=ExtResource("5")]
+[node name="ScreenShake" parent="Camera" instance=ExtResource("5")]
 
 [node name="Level1" parent="." instance=ExtResource("3")]
 
@@ -53,3 +53,4 @@ polygon = PackedVector2Array(0, 0, 1920, 0, 1920, 1080, 0, 1080)
 
 [connection signal="destroyed" from="Player" to="." method="_on_Player_destroyed"]
 [connection signal="health_changed" from="Player" to="." method="_on_Player_health_changed"]
+[connection signal="completed" from="Level1" to="." method="_on_Level1_completed"]
