@@ -1,6 +1,8 @@
 extends Area2D
 
 @export var health: float = 230
+## Money awarded when the boss is destroyed.
+@export var points: int = 300
 var exploded = false
 var explosionSound = 0
 signal destroyed;
@@ -17,7 +19,7 @@ func _process(delta):
 func playExplosion():
 	self.exploded = true
 	var tween = create_tween()
-	Score.add_score(1000)
+	Score.add_score(points)
 	CameraControl.screen_shake(14, 25, 1.2)
 	$CollisionShape2D.disabled = true
 	$Explosion/ExplosionSoundTimer.start()

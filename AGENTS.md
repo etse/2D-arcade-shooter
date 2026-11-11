@@ -149,7 +149,7 @@ Collision layers/masks are all default; **filtering is done with groups**:
 
 ### Weapons and the shop
 - A weapon is a `WeaponData` resource (`components/Weapons/WeaponData.gd`): name, description, icon, `bullet_scene`, and per-level arrays `damage`, `bullet_count`, `fire_interval`, `upgrade_cost` (index = level − 1; array length = max level; `upgrade_cost[i]` is the price to go from level i+1 to i+2).
-- Focus fire: `components/Weapons/FocusFire/FocusFire.tres` (10 levels; level 1 = 2 dmg, 2 bullets, 0.4 s). Balance it by editing that file.
+- Focus fire: `components/Weapons/FocusFire/FocusFire.tres` (10 levels; level 1 = 2 dmg, 2 bullets, 0.4 s). Balance it by editing that file. Income reference: a perfect Level 1 run pays $540 (24 `BasicEnemy` × `points` 10 + `SimpleBoss.points` 300), i.e. about two upgrades.
 - `Player.gd` `fire_weapon()` reads the equipped weapon from `Loadout` and fires `bullet_count` bullets spread between `$LeftGun` and `$RightGun` (widens by `FOCUS_FIRE_EXTRA_WIDTH` per bullet beyond two), all straight ahead. Inner bullets spawn `FOCUS_FIRE_STAGGER` px further ahead per step from the edge, so 3+ bullets form an arrowhead (3 = triangle, 4 = middle pair ahead). Other firing patterns (spread, homing) will need their own logic — likely a fire-pattern field on `WeaponData`.
 - `components/Menu/WeaponShop/` is the shop panel; `Menu.gd` switches to it from MainMenu's `UpgradeWeapon` signal and back on its `back` signal. It rebuilds its UI from `Loadout` + `Score` whenever shown or changed.
 
