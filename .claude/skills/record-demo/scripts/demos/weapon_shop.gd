@@ -24,7 +24,7 @@ func run() -> void:
 	log_line("weak weapon: score=%d alive=%d" % [Score.score, enemies_alive().size()])
 
 	# 3) Cheat money, max the weapon out in the shop
-	Score.add_score(9000)
+	Score.add_score(20000)
 	await goto(MENU)
 	await wait(0.3)
 	await click(node("MenuContainer/MainMenu/%UpgradeWeapon"))
