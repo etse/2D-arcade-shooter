@@ -6,23 +6,39 @@
 [ext_resource type="FontFile" path="res://assets/fonts/8bitOperatorPlus-Regular.ttf" id="4_regular"]
 [ext_resource type="PackedScene" uid="uid://vy8ykdp0wu7f" path="res://components/Menu/Label/Label.tscn" id="5_label"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_item"]
-bg_color = Color(0, 0, 0, 0.55)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
+bg_color = Color(0.03, 0.02, 0.06, 0.78)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.75, 0, 0.85)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(1, 0.6, 0, 0.18)
+shadow_size = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_icon"]
+bg_color = Color(1, 1, 1, 0.05)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(1, 0.7, 0, 0.6)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+border_color = Color(1, 1, 1, 0.15)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+content_margin_left = 24.0
+content_margin_top = 24.0
+content_margin_right = 24.0
+content_margin_bottom = 24.0
 
 [node name="WeaponShop" type="VBoxContainer"]
-offset_left = 360.0
-offset_right = 1480.0
-offset_bottom = 1060.0
-theme_override_constants/separation = 16
+custom_minimum_size = Vector2(1000, 0)
+theme_override_constants/separation = 20
 alignment = 1
 script = ExtResource("1_script")
 
@@ -31,82 +47,122 @@ layout_mode = 2
 theme_override_fonts/font = ExtResource("2_arcade")
 theme_override_font_sizes/font_size = 140
 text = "Weapon shop"
+horizontal_alignment = 1
 
-[node name="Money" type="Label" parent="."]
+[node name="MoneyRow" type="HBoxContainer" parent="."]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.7, 0, 1)
-theme_override_fonts/font = ExtResource("3_bold")
-theme_override_font_sizes/font_size = 36
-text = "Money: $0"
+theme_override_constants/separation = 16
+alignment = 1
 
-[node name="Item" type="PanelContainer" parent="."]
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_item")
-
-[node name="Margin" type="MarginContainer" parent="Item"]
-layout_mode = 2
-theme_override_constants/margin_left = 24
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 24
-theme_override_constants/margin_bottom = 20
-
-[node name="Row" type="HBoxContainer" parent="Item/Margin"]
-layout_mode = 2
-theme_override_constants/separation = 32
-
-[node name="Icon" type="TextureRect" parent="Item/Margin/Row"]
-custom_minimum_size = Vector2(128, 128)
+[node name="Caption" type="Label" parent="MoneyRow"]
 layout_mode = 2
 size_flags_vertical = 4
+theme_override_colors/font_color = Color(0.6, 0.6, 0.68, 1)
+theme_override_fonts/font = ExtResource("4_regular")
+theme_override_font_sizes/font_size = 28
+text = "Money"
+
+[node name="Money" type="Label" parent="MoneyRow"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(1, 0.75, 0, 1)
+theme_override_fonts/font = ExtResource("3_bold")
+theme_override_font_sizes/font_size = 40
+text = "$0"
+
+[node name="Card" type="PanelContainer" parent="."]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
+
+[node name="Margin" type="MarginContainer" parent="Card"]
+layout_mode = 2
+theme_override_constants/margin_left = 36
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 36
+theme_override_constants/margin_bottom = 32
+
+[node name="Row" type="HBoxContainer" parent="Card/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 40
+
+[node name="IconFrame" type="PanelContainer" parent="Card/Margin/Row"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_icon")
+
+[node name="Icon" type="TextureRect" parent="Card/Margin/Row/IconFrame"]
+layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Info" type="VBoxContainer" parent="Item/Margin/Row"]
+[node name="Info" type="VBoxContainer" parent="Card/Margin/Row"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 8
+theme_override_constants/separation = 14
 
-[node name="Name" type="Label" parent="Item/Margin/Row/Info"]
+[node name="Header" type="HBoxContainer" parent="Card/Margin/Row/Info"]
 layout_mode = 2
+
+[node name="Name" type="Label" parent="Card/Margin/Row/Info/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.24, 0.94, 0.27, 1)
 theme_override_fonts/font = ExtResource("3_bold")
 theme_override_font_sizes/font_size = 44
 text = "Weapon"
 
-[node name="Description" type="Label" parent="Item/Margin/Row/Info"]
+[node name="Level" type="Label" parent="Card/Margin/Row/Info/Header"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("3_bold")
+theme_override_font_sizes/font_size = 28
+text = "LV 1 / 10"
+horizontal_alignment = 2
+
+[node name="Description" type="Label" parent="Card/Margin/Row/Info"]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.75, 0.8, 1)
 theme_override_fonts/font = ExtResource("4_regular")
 theme_override_font_sizes/font_size = 24
 text = "Description"
 autowrap_mode = 3
 
-[node name="Level" type="Label" parent="Item/Margin/Row/Info"]
+[node name="LevelBar" type="HBoxContainer" parent="Card/Margin/Row/Info"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("3_bold")
-theme_override_font_sizes/font_size = 30
-text = "Level 1 / 10"
+theme_override_constants/separation = 6
 
-[node name="Stats" type="GridContainer" parent="Item/Margin/Row/Info"]
+[node name="Stats" type="GridContainer" parent="Card/Margin/Row/Info"]
 layout_mode = 2
-theme_override_constants/h_separation = 16
+theme_override_constants/h_separation = 28
+theme_override_constants/v_separation = 2
 columns = 3
+
+[node name="Spacer" type="Control" parent="."]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
 
 [node name="Upgrade" parent="." instance=ExtResource("5_label")]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_bold")
+theme_override_font_sizes/font_size = 32
 text = "Upgrade"
+horizontal_alignment = 1
 
 [node name="Status" type="Label" parent="."]
-custom_minimum_size = Vector2(0, 32)
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_regular")
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 24
+horizontal_alignment = 1
 
 [node name="Back" parent="." instance=ExtResource("5_label")]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_bold")
+theme_override_font_sizes/font_size = 32
 text = "Back"
+horizontal_alignment = 1
 
 [connection signal="selected" from="Upgrade" to="." method="_on_Upgrade_selected"]
 [connection signal="selected" from="Back" to="." method="_on_Back_selected"]
