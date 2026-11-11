@@ -9,9 +9,19 @@ var destroyed = false
 func _ready():
 	add_to_group("bullets")
 
+## How far outside the visible screen (in pixels) a bullet may travel before it is freed.
+const OFFSCREEN_MARGIN := 200.0
+
 func _physics_process(delta):
 	move_local_y(speed[1] * delta)
 	move_local_x(speed[0] * delta)
+	if not destroyed and _is_far_offscreen():
+		queue_free()
+
+func _is_far_offscreen() -> bool:
+	# Position in screen space, so camera movement/shake is accounted for.
+	var screen_pos := get_global_transform_with_canvas().origin
+	return not get_viewport_rect().grow(OFFSCREEN_MARGIN).has_point(screen_pos)
 
 func _process(delta):
 	if not destroyed:
@@ -22,10 +32,7 @@ func _process(delta):
 		for body in get_overlapping_bodies():
 			if body.is_in_group("player") and not friendly:
 				on_collision(body)
-			elif body.is_in_group("wall"):
-				queue_free()
-				
-				
+
 func on_collision(body):
 	if body.has_method("on_hit"):
 		body.on_hit(damage)

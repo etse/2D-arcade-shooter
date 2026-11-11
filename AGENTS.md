@@ -98,7 +98,8 @@ when the boss emits `destroyed`.
 Collision layers/masks are all default; **filtering is done with groups**:
 - `"enemies"` — enemies and bosses (Area2D). Must implement `on_hit(damage: float)`.
 - `"bullets"` — all bullets (Area2D, `bullet.gd`). `friendly=true` hits `"enemies"`, `friendly=false` hits `"player"`.
-- `"player"` — the player body. `"wall"` — removes bullets.
+- `"player"` — the player body.
+- Bullets free themselves once they are more than `OFFSCREEN_MARGIN` (200 px) outside the visible screen. The `WorldBounds` walls in `Level.tscn` only keep the player on screen.
 - Bullets poll `get_overlapping_areas()/bodies()` in `_process` rather than using signals.
 - The player takes ramming damage via its `CollisionArea` overlapping `"enemies"`.
 - Enemy death: `health <= 0` → explosion anim + sound, `Score.add_score(points)`, screen shake, `queue_free()` when the sound ends.
@@ -132,7 +133,6 @@ changes bus volumes (not persisted to disk).
 ## Known issues / gotchas
 - "Upgrade weapon" has no handler in `Menu.gd`; `UpgradeShip` / `ShopItem` are stubs (shop not implemented).
 - `Score` persists across runs (never reset). Intentional if score is meant to be shop money — decide when the shop is built.
-- Bullets are only freed on hit or when touching a `"wall"` (`WorldBounds`); anything that escapes the walls lives forever.
 
 ## Skills
 Project skills for agents are in `.claude/skills/`:
