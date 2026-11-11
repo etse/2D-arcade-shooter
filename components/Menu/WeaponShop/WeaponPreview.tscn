@@ -1,0 +1,45 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://components/Menu/WeaponShop/WeaponPreview.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://llk20olhalge" path="res://assets/backgrounds/Nebula Aqua-Pink-small.png" id="2_nebula"]
+[ext_resource type="Texture2D" uid="uid://c7ofebfvkc8nr" path="res://assets/backgrounds/Stars Small_1.png" id="3_stars_small"]
+[ext_resource type="Texture2D" uid="uid://c0cb4bkkh40hh" path="res://assets/backgrounds/Stars-Big_1_2_PC.png" id="4_stars_big"]
+
+[node name="WeaponPreview" type="SubViewportContainer"]
+custom_minimum_size = Vector2(560, 640)
+mouse_filter = 2
+stretch = true
+script = ExtResource("1_script")
+
+[node name="Viewport" type="SubViewport" parent="."]
+handle_input_locally = false
+size = Vector2i(560, 640)
+render_target_update_mode = 4
+
+[node name="Space" type="ColorRect" parent="Viewport"]
+offset_right = 560.0
+offset_bottom = 640.0
+color = Color(0, 0, 0.02, 1)
+
+[node name="Nebula" type="TextureRect" parent="Viewport"]
+modulate = Color(1, 1, 1, 0.55)
+offset_left = -680.0
+offset_top = -1400.0
+offset_right = 1241.0
+offset_bottom = 2696.0
+texture = ExtResource("2_nebula")
+
+[node name="StarsSmall" type="TextureRect" parent="Viewport"]
+offset_right = 560.0
+offset_bottom = 640.0
+texture = ExtResource("3_stars_small")
+stretch_mode = 1
+
+[node name="StarsBig" type="TextureRect" parent="Viewport"]
+modulate = Color(1, 1, 1, 0.7)
+offset_right = 560.0
+offset_bottom = 640.0
+texture = ExtResource("4_stars_big")
+stretch_mode = 1
+
+[node name="Bullets" type="Node2D" parent="Viewport"]

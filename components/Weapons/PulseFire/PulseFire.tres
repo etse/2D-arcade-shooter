@@ -6,10 +6,12 @@
 
 [resource]
 script = ExtResource("1_data")
-name = "Focus fire"
+name = "Pulse fire"
 description = "Fires straight ahead. Covers only a narrow part of the screen, but hits hard."
 icon = ExtResource("3_icon")
 bullet_scene = ExtResource("2_bullet")
+fire_pattern = 0
+price = 300
 damage = PackedFloat32Array(2, 2.5, 3, 3, 3.5, 4, 4, 4.5, 5, 6)
 bullet_count = PackedInt32Array(2, 2, 2, 3, 3, 3, 4, 4, 4, 5)
 fire_interval = PackedFloat32Array(0.4, 0.37, 0.34, 0.32, 0.3, 0.28, 0.26, 0.24, 0.22, 0.2)

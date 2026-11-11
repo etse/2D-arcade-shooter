@@ -30,9 +30,9 @@ An enemy is an `Area2D` scene that:
 
 - Bullet scenes live in `components/Bullets/<Name>/` and use `components/Bullets/bullet.gd` (`class_name Bullet`): `speed: Vector2` (negative y = up), `damage`, `friendly`.
 - Required children used by `bullet.gd`: `Sprite2D`, `HitSound`, `Timer` (wired to `_on_Timer_timeout`), `Particles`. Easiest is to copy `FireBullet/`.
-- Weapons are `WeaponData` resources (`components/Weapons/<Name>/<Name>.tres`, script `components/Weapons/WeaponData.gd`) with per-level stat arrays and upgrade prices; all arrays must have the same length (= max level). Copy `FocusFire.tres` for a new weapon.
-- The equipped weapon + level live in the `Loadout` autoload; `Player.gd` `fire_weapon()` spawns the volley. A new firing pattern (spread, homing) needs code there (or a pattern field on `WeaponData`).
-- The shop UI (`components/Menu/WeaponShop/`) reads everything from `Loadout`/`WeaponData`; balance changes need no UI work.
+- Weapons are `WeaponData` resources (`components/Weapons/<Name>/<Name>.tres`, script `components/Weapons/WeaponData.gd`) with per-level stat arrays and upgrade prices; all arrays must have the same length (= max level). Also set `price` and `fire_pattern` (and `spread_angle` for SPREAD). Copy `PulseFire.tres` or `SpreadFire.tres` for a new weapon, and add it to `Loadout.WEAPONS` so the shop lists it.
+- The equipped weapon + level live in the `Loadout` autoload; `WeaponGun.fire()` (`components/Weapons/WeaponGun.gd`, used by both `Player` and the shop preview) dispatches on `WeaponData.fire_pattern` (`PULSE`, `SPREAD`) and returns the delay until the next shot. A new firing pattern (e.g. homing) = new enum value + a `_fire_<pattern>()` function there.
+- The shop UI (`components/Menu/WeaponShop/`) reads everything from `Loadout`/`WeaponData`; balance changes need no UI work, and a weapon added to `Loadout.WEAPONS` shows up in the shop list and preview automatically.
 
 ## Recipe: new wave
 
@@ -78,7 +78,8 @@ dynamically). Background is built from `InfinityScroll` instances
 | Thing | Value |
 | --- | --- |
 | Player health / regen | 100 / 5 per s (0.5 while shooting) |
-| Focus fire lvl 1 → 10 | dmg 2 → 6, bullets 2 → 5, interval 0.4 → 0.2 s; upgrades cost $100 … $2500 ($8700 total) — see `FocusFire.tres` |
+| Pulse fire lvl 1 → 10 | price $300; dmg 2 → 6, bullets 2 → 5, interval 0.4 → 0.2 s, DPS 10 → 150; upgrades $100 … $2500 ($8700 total) — `PulseFire.tres` |
+| Spread fire lvl 1 → 10 | price $500; dmg 1.5 → 3, bullets/volley 2 → 12, interval 0.24 → 0.2 s, fan 4° → 76°, DPS 12.5 → 180; upgrades $150 … $4000 ($14050 total) — `SpreadFire.tres` |
 | Ramming | player takes 15, enemy takes 2 |
 | BasicEnemy | health 6, points 10 |
-| SimpleBoss | health 230, 1000 points, fireballs 20 dmg at 500 px/s |
+| SimpleBoss | health 230, 300 points, fireballs 20 dmg at 500 px/s |

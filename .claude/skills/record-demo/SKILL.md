@@ -18,7 +18,7 @@ git-ignored (`/demo/` in `.gitignore`) — never commit videos.
 | --- | --- |
 | `record.sh` | `record.sh [--dry-run] <director.gd> [out.mp4]` — records to `demo/<director-name>.mp4` by default |
 | `demo_base.gd` | Base class for directors with helpers (scenes, menu clicks, input, spawning, waits) |
-| `demos/*.gd` | Ready-made directors. `weapon_shop.gd` = weak weapon → shop upgrades 1→10 → maxed weapon vs rows + boss (~18 s) |
+| `demos/*.gd` | Ready-made directors. `weapon_shop.gd` = weak weapon → shop upgrades 1→10 → maxed weapon vs rows + boss (~18 s). `spread_fire.gd` = shop: browse with live preview, buy Spread fire, power up/down → power 3 and 10 vs rows + boss (~17 s) |
 | `contact_sheet.sh` | `contact_sheet.sh <video> [out.png] [fps=1] [cols=5]` — tiles frames into one PNG for reviewing |
 
 Requirements: `$DISPLAY` (rendering is not headless), `ffmpeg`/`ffprobe`, the
@@ -73,7 +73,7 @@ Godot binary via `tools/godot.sh`. Recording runs at roughly real time.
 - **Movement:** the player accelerates fast and is capped at 500 px/s while
   shooting; `hold("move_left", 0.3)` moves ≈130 px. The player starts at
   x=960, y=950. Spawned rows are centred on x=960.
-- **Weak weapon is weak:** level-1 Focus fire needs ~3 hits per BasicEnemy (6 HP)
+- **Weak weapon is weak:** level-1 Pulse fire needs ~3 hits per BasicEnemy (6 HP)
   and its 2 bullets straddle a target — park directly under enemies.
 - **Cheats available:** `Score.add_score(n)`, `Loadout.weapon_level = n`,
   `spawn_row(...)`, `spawn_boss(level, health)` (boss default 140 HP vs 230 in
@@ -84,7 +84,8 @@ Godot binary via `tools/godot.sh`. Recording runs at roughly real time.
 - **Menu buttons** are `components/Menu/Label` nodes; `click()` plays their
   focus/accept animation and sound and fires `selected` like a real key press.
   Main menu: `MenuContainer/MainMenu/{StartGame,UpgradeWeapon,UpgradeShip,Options}`;
-  shop: `MenuContainer/WeaponShop/{Upgrade,Back}`.
+  The weapon shop has no buttons: drive it with `tap("ui_down")` / `tap("ui_up")` (cursor over weapons + DONE; starts on the equipped weapon), `tap("ui_right")` / `tap("ui_left")` (upgrade / downgrade the equipped weapon), `tap("ui_accept")` (buy highlighted / DONE) and `tap("ui_cancel")` (back). Cheat a weapon directly with `Loadout.weapon = Loadout.WEAPONS[i]`.
+- **Real recordings open a window, and the real mouse pointer may sit over it.** UI that reacts to `mouse_entered` can then change under you (the shop used to); if a menu behaves differently in the recording than in the dry run, suspect the pointer.
 - The level's own waves keep running (first enemies after ~5 s); scenes longer
   than that will include them.
 - If node paths or scene names change in the game, update `demo_base.gd` and

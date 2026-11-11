@@ -1,7 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://dyb6kp4rafykb"]
+[gd_scene format=3 uid="uid://dyb6kp4rafykb"]
 
 [ext_resource type="FontFile" uid="uid://bv744ye3li3i1" path="res://assets/fonts/Roboto-Regular.ttf" id="1"]
-[ext_resource type="Script" path="res://screens/Menu/Menu.gd" id="2"]
+[ext_resource type="Script" uid="uid://rrphum0drh3v" path="res://screens/Menu/Menu.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://bcrem2ugvl83t" path="res://components/Menu/MainMenu/MainMenu.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://dlbhca3tu1lin" path="res://components/Menu/Options/Options.tscn" id="4"]
 [ext_resource type="PackedScene" uid="uid://chaybk1l06kkn" path="res://components/Menu/UpgradeShip/UpgradeShip.tscn" id="5"]
@@ -11,6 +11,15 @@
 
 [sub_resource type="FontFile" id="1"]
 fallbacks = Array[Font]([ExtResource("1")])
+cache/0/variation_coordinates = {}
+cache/0/face_index = 0
+cache/0/embolden = 0.0
+cache/0/transform = Transform2D(1, 0, 0, 1, 0, 0)
+cache/0/spacing_top = 0
+cache/0/spacing_bottom = 0
+cache/0/spacing_space = 0
+cache/0/spacing_glyph = 0
+cache/0/baseline_offset = 0.0
 cache/0/16/0/ascent = 0.0
 cache/0/16/0/descent = 0.0
 cache/0/16/0/underline_position = 0.0
@@ -21,7 +30,7 @@ cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
 [sub_resource type="Theme" id="2"]
 default_font = SubResource("1")
 
-[node name="MenuScreen" type="Control"]
+[node name="MenuScreen" type="Control" unique_id=59638790]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -32,7 +41,7 @@ mouse_filter = 2
 theme = SubResource("2")
 script = ExtResource("2")
 
-[node name="MenuContainer" type="CenterContainer" parent="."]
+[node name="MenuContainer" type="CenterContainer" parent="." unique_id=1509179052]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -40,22 +49,22 @@ grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 2
 
-[node name="MainMenu" parent="MenuContainer" instance=ExtResource("3")]
+[node name="MainMenu" parent="MenuContainer" unique_id=1207323498 instance=ExtResource("3")]
 layout_mode = 2
 
-[node name="Options" parent="MenuContainer" instance=ExtResource("4")]
+[node name="Options" parent="MenuContainer" unique_id=1856249937 instance=ExtResource("4")]
 visible = false
 layout_mode = 2
 
-[node name="UpgradeShip" parent="MenuContainer" instance=ExtResource("5")]
+[node name="UpgradeShip" parent="MenuContainer" unique_id=60799737 instance=ExtResource("5")]
 visible = false
 layout_mode = 2
 
-[node name="WeaponShop" parent="MenuContainer" instance=ExtResource("8_shop")]
+[node name="WeaponShop" parent="MenuContainer" unique_id=267849020 instance=ExtResource("8_shop")]
 visible = false
 layout_mode = 2
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=816296719]
 show_behind_parent = true
 clip_contents = true
 layout_mode = 1
@@ -69,7 +78,7 @@ texture = ExtResource("6")
 expand_mode = 1
 stretch_mode = 3
 
-[node name="Music" type="AudioStreamPlayer" parent="."]
+[node name="Music" type="AudioStreamPlayer" parent="." unique_id=994137401]
 stream = ExtResource("7")
 volume_db = -20.0
 autoplay = true

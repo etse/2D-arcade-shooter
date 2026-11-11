@@ -4,10 +4,12 @@
 [ext_resource type="FontFile" uid="uid://c4wkpvq38gdoq" path="res://assets/fonts/Arcade.ttf" id="2_arcade"]
 [ext_resource type="FontFile" uid="uid://doesrguwx81i0" path="res://assets/fonts/8bitOperatorPlus-Bold.ttf" id="3_bold"]
 [ext_resource type="FontFile" path="res://assets/fonts/8bitOperatorPlus-Regular.ttf" id="4_regular"]
-[ext_resource type="PackedScene" uid="uid://vy8ykdp0wu7f" path="res://components/Menu/Label/Label.tscn" id="5_label"]
+[ext_resource type="PackedScene" path="res://components/Menu/WeaponShop/WeaponPreview.tscn" id="5_preview"]
+[ext_resource type="AudioStream" uid="uid://c3tbju5vskra2" path="res://assets/sfx/menu_select_3.ogg" id="6_move"]
+[ext_resource type="AudioStream" uid="uid://cq3mg6kmondo4" path="res://assets/sfx/menu_select_4.ogg" id="7_accept"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
-bg_color = Color(0.03, 0.02, 0.06, 0.78)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_frame"]
+bg_color = Color(0.03, 0.02, 0.06, 0.82)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
@@ -20,41 +22,159 @@ corner_radius_bottom_left = 10
 shadow_color = Color(1, 0.6, 0, 0.18)
 shadow_size = 18
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_icon"]
-bg_color = Color(1, 1, 1, 0.05)
-border_width_left = 2
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_window"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.45, 0.34, 0.12, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hint"]
+bg_color = Color(0.03, 0.02, 0.06, 0.82)
 border_width_top = 2
-border_width_right = 2
 border_width_bottom = 2
-border_color = Color(1, 1, 1, 0.15)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+border_color = Color(1, 0.75, 0, 0.4)
 content_margin_left = 24.0
-content_margin_top = 24.0
+content_margin_top = 10.0
 content_margin_right = 24.0
-content_margin_bottom = 24.0
+content_margin_bottom = 10.0
 
 [node name="WeaponShop" type="VBoxContainer"]
-custom_minimum_size = Vector2(1000, 0)
 theme_override_constants/separation = 20
 alignment = 1
 script = ExtResource("1_script")
 
-[node name="Title" type="Label" parent="."]
+[node name="Main" type="HBoxContainer" parent="."]
 layout_mode = 2
+theme_override_constants/separation = 28
+
+[node name="Showcase" type="PanelContainer" parent="Main"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_frame")
+
+[node name="Margin" type="MarginContainer" parent="Main/Showcase"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 20
+
+[node name="VBox" type="VBoxContainer" parent="Main/Showcase/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="View" type="HBoxContainer" parent="Main/Showcase/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Window" type="PanelContainer" parent="Main/Showcase/Margin/VBox/View"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_window")
+
+[node name="Preview" parent="Main/Showcase/Margin/VBox/View/Window" instance=ExtResource("5_preview")]
+layout_mode = 2
+
+[node name="Firepower" type="VBoxContainer" parent="Main/Showcase/Margin/VBox/View"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Meter" type="VBoxContainer" parent="Main/Showcase/Margin/VBox/View/Firepower"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 3
+
+[node name="Caption" type="Label" parent="Main/Showcase/Margin/VBox/View/Firepower"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.6, 0.68, 1)
+theme_override_fonts/font = ExtResource("4_regular")
+theme_override_font_sizes/font_size = 20
+text = "DPS"
+horizontal_alignment = 1
+
+[node name="Value" type="Label" parent="Main/Showcase/Margin/VBox/View/Firepower"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_bold")
+theme_override_font_sizes/font_size = 24
+text = "0"
+horizontal_alignment = 1
+
+[node name="Power" type="HBoxContainer" parent="Main/Showcase/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Down" type="Label" parent="Main/Showcase/Margin/VBox/Power"]
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+mouse_filter = 0
+theme_override_fonts/font = ExtResource("3_bold")
+theme_override_font_sizes/font_size = 48
+text = "<"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Segments" type="HBoxContainer" parent="Main/Showcase/Margin/VBox/Power"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="Up" type="Label" parent="Main/Showcase/Margin/VBox/Power"]
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+mouse_filter = 0
+theme_override_fonts/font = ExtResource("3_bold")
+theme_override_font_sizes/font_size = 48
+text = ">"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PowerInfo" type="Label" parent="Main/Showcase/Margin/VBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_bold")
+theme_override_font_sizes/font_size = 28
+text = "POWER 1 / 10"
+horizontal_alignment = 1
+
+[node name="Store" type="PanelContainer" parent="Main"]
+custom_minimum_size = Vector2(820, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_frame")
+
+[node name="Margin" type="MarginContainer" parent="Main/Store"]
+layout_mode = 2
+theme_override_constants/margin_left = 36
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 36
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="Main/Store/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Title" type="Label" parent="Main/Store/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.75, 0, 1)
 theme_override_fonts/font = ExtResource("2_arcade")
-theme_override_font_sizes/font_size = 140
+theme_override_font_sizes/font_size = 110
 text = "Weapon shop"
 horizontal_alignment = 1
 
-[node name="MoneyRow" type="HBoxContainer" parent="."]
+[node name="MoneyRow" type="HBoxContainer" parent="Main/Store/Margin/VBox"]
 layout_mode = 2
 theme_override_constants/separation = 16
 alignment = 1
 
-[node name="Caption" type="Label" parent="MoneyRow"]
+[node name="Caption" type="Label" parent="Main/Store/Margin/VBox/MoneyRow"]
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_colors/font_color = Color(0.6, 0.6, 0.68, 1)
@@ -62,7 +182,7 @@ theme_override_fonts/font = ExtResource("4_regular")
 theme_override_font_sizes/font_size = 28
 text = "Money"
 
-[node name="Money" type="Label" parent="MoneyRow"]
+[node name="Money" type="Label" parent="Main/Store/Margin/VBox/MoneyRow"]
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_colors/font_color = Color(1, 0.75, 0, 1)
@@ -70,58 +190,12 @@ theme_override_fonts/font = ExtResource("3_bold")
 theme_override_font_sizes/font_size = 40
 text = "$0"
 
-[node name="Card" type="PanelContainer" parent="."]
+[node name="List" type="VBoxContainer" parent="Main/Store/Margin/VBox"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_card")
+theme_override_constants/separation = 8
 
-[node name="Margin" type="MarginContainer" parent="Card"]
-layout_mode = 2
-theme_override_constants/margin_left = 36
-theme_override_constants/margin_top = 32
-theme_override_constants/margin_right = 36
-theme_override_constants/margin_bottom = 32
-
-[node name="Row" type="HBoxContainer" parent="Card/Margin"]
-layout_mode = 2
-theme_override_constants/separation = 40
-
-[node name="IconFrame" type="PanelContainer" parent="Card/Margin/Row"]
-custom_minimum_size = Vector2(200, 200)
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_styles/panel = SubResource("StyleBoxFlat_icon")
-
-[node name="Icon" type="TextureRect" parent="Card/Margin/Row/IconFrame"]
-layout_mode = 2
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Info" type="VBoxContainer" parent="Card/Margin/Row"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 14
-
-[node name="Header" type="HBoxContainer" parent="Card/Margin/Row/Info"]
-layout_mode = 2
-
-[node name="Name" type="Label" parent="Card/Margin/Row/Info/Header"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.24, 0.94, 0.27, 1)
-theme_override_fonts/font = ExtResource("3_bold")
-theme_override_font_sizes/font_size = 44
-text = "Weapon"
-
-[node name="Level" type="Label" parent="Card/Margin/Row/Info/Header"]
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_fonts/font = ExtResource("3_bold")
-theme_override_font_sizes/font_size = 28
-text = "LV 1 / 10"
-horizontal_alignment = 2
-
-[node name="Description" type="Label" parent="Card/Margin/Row/Info"]
-custom_minimum_size = Vector2(600, 0)
+[node name="Description" type="Label" parent="Main/Store/Margin/VBox"]
+custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.75, 0.75, 0.8, 1)
 theme_override_fonts/font = ExtResource("4_regular")
@@ -129,40 +203,33 @@ theme_override_font_sizes/font_size = 24
 text = "Description"
 autowrap_mode = 3
 
-[node name="LevelBar" type="HBoxContainer" parent="Card/Margin/Row/Info"]
-layout_mode = 2
-theme_override_constants/separation = 6
-
-[node name="Stats" type="GridContainer" parent="Card/Margin/Row/Info"]
+[node name="Stats" type="GridContainer" parent="Main/Store/Margin/VBox"]
 layout_mode = 2
 theme_override_constants/h_separation = 28
 theme_override_constants/v_separation = 2
 columns = 3
 
-[node name="Spacer" type="Control" parent="."]
-custom_minimum_size = Vector2(0, 8)
+[node name="Spacer" type="Control" parent="Main/Store/Margin/VBox"]
 layout_mode = 2
+size_flags_vertical = 3
 
-[node name="Upgrade" parent="." instance=ExtResource("5_label")]
+[node name="Hint" type="PanelContainer" parent="."]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("3_bold")
-theme_override_font_sizes/font_size = 32
-text = "Upgrade"
-horizontal_alignment = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_hint")
 
-[node name="Status" type="Label" parent="."]
-custom_minimum_size = Vector2(0, 30)
+[node name="Text" type="Label" parent="Hint"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.8, 0.65, 1)
 theme_override_fonts/font = ExtResource("4_regular")
-theme_override_font_sizes/font_size = 24
-horizontal_alignment = 1
+theme_override_font_sizes/font_size = 26
+text = "Select a weapon."
 
-[node name="Back" parent="." instance=ExtResource("5_label")]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("3_bold")
-theme_override_font_sizes/font_size = 32
-text = "Back"
-horizontal_alignment = 1
+[node name="MoveSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_move")
+volume_db = -25.0
+bus = &"sfx"
 
-[connection signal="selected" from="Upgrade" to="." method="_on_Upgrade_selected"]
-[connection signal="selected" from="Back" to="." method="_on_Back_selected"]
+[node name="AcceptSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_accept")
+volume_db = -25.0
+bus = &"sfx"

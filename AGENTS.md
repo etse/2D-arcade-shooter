@@ -34,8 +34,8 @@ Example weapons:
 
 | Weapon | Behaviour | Strength / weakness | Upgrades |
 | --- | --- | --- | --- |
-| **Focus fire** | Shoots straight ahead | High damage, but covers only a narrow part of the screen | Damage, number of bullets, rate of fire |
-| **Spread fire** | Shoots in a spread across the screen | Hits much more of the screen, but less damage than focus fire | Spread angle, rate of fire, damage, number of bullets |
+| **Pulse fire** | Shoots straight ahead | High damage, but covers only a narrow part of the screen | Damage, number of bullets, rate of fire |
+| **Spread fire** | Minigun-style stream of small bullets fanned across the screen | Hits much more of the screen and higher total DPS, but less damage per bullet than pulse fire | Spread angle, rate of fire, damage, number of bullets |
 | **Homing rockets** | Fires missiles that seek enemies | Area-of-effect (AoE) damage on impact | Damage, AoE radius, rate of fire |
 
 Design implications for code: weapon stats and per-level upgrade values should
@@ -46,9 +46,13 @@ shop can read names, prices and stats from the same data.
 ### Current state
 
 Only Level 1 exists (waves → boss → back to menu). Money is earned and kept.
-The **weapon shop** ("Upgrade weapon" in the main menu) sells one item: upgrades
-for **Focus fire**, the only weapon, from level 1 to 10. Buying new weapons and
-ship upgrades ("Upgrade ship" → `UpgradeShip` / `ShopItem` stubs) is not built yet.
+The **weapon shop** ("Upgrade weapon" in the main menu) is Tyrian-style: a list
+of weapons — **Pulse fire** (starting weapon, $300) and **Spread fire** ($500) —
+with a live preview of the highlighted weapon and a 10-step power bar. The player
+owns one weapon at a time; buying another trades the current one in for its full
+value (price + upgrades paid), and power can be raised (pay) or lowered (full
+refund of that step) freely.
+Ship upgrades ("Upgrade ship" → `UpgradeShip` / `ShopItem` stubs) are not built yet.
 
 - Engine: **Godot 4.7** (`config/features=PackedStringArray("4.7")`), GDScript only, no addons.
 - Originally a Godot 3 project, migrated to Godot 4 (see git history). Watch out
@@ -88,12 +92,12 @@ components/                    reusable scenes, each folder = Scene.tscn + Scene
   Player/                      CharacterBody2D player ship
   Enemies/BasicEnemy/          basic Area2D enemy (class_name BasicEnemy)
   Bosses/SimpleBoss/           level-1 boss, fires FireBalls
-  Bullets/                     bullet.gd (class_name Bullet) + Bullet/FireBullet/FireBall scenes
-  Weapons/                     WeaponData.gd (class_name WeaponData) + one folder per weapon with its .tres
+  Bullets/                     bullet.gd (class_name Bullet) + Bullet/FireBullet/SpreadBullet/FireBall scenes
+  Weapons/                     WeaponData.gd (class_name WeaponData), WeaponGun.gd (firing patterns) + one folder per weapon with its .tres
   CameraEffects/ScreenShake/   shake effect, child of the level's Camera2D
   HUD/                         CanvasLayer: score label + health bar
   InfinityScroll/              looping vertical background layer
-  Menu/                        menu widgets (Label, MainMenu, Options, Slider, WeaponShop, ShopItem, UpgradeShip)
+  Menu/                        menu widgets (Label, MainMenu, Options, Slider, WeaponShop + WeaponPreview, ShopItem, UpgradeShip)
   Singletons/                  autoload scripts (Score, CameraControl, Loadout)
 screens/
   Menu/                        main menu screen (entry point)
@@ -108,7 +112,7 @@ demo/                          recorded demo videos (git-ignored, see skill reco
 
 ### Autoloads (`project.godot` → `[autoload]`)
 - `Score` (`components/Singletons/Score.gd`): `score: int`, `add_score(points)`, `spend(amount) -> bool`, signal `score_changed(score)`. This is the player's money — intentionally never reset between levels/runs.
-- `Loadout` (`components/Singletons/Loadout.gd`): the player's equipment — `weapon: WeaponData` and `weapon_level` (starts at 1). `upgrade_weapon()` pays via `Score.spend()` and emits `changed`. In memory only, not saved.
+- `Loadout` (`components/Singletons/Loadout.gd`): the player's equipment — `WEAPONS` (all weapons sold, in shop order), `weapon: WeaponData` and `weapon_level` (starts at 1). `upgrade_weapon()` pays via `Score.spend()`; `downgrade_weapon()` refunds that level's `upgrade_cost`; `buy_weapon(w)` refunds `trade_in_value()` (= `weapon.get_total_value(level)`) and charges `w.price`, resetting to level 1. Both emit `changed`. In memory only, not saved.
 - `CameraControl` (`components/Singletons/Camera_control.gd`): global event bus for screen shake. Call `CameraControl.screen_shake(amplitude, frequency, duration)`; `Level.gd` forwards it to `$Camera/ScreenShake`.
 
 ### Scene flow
@@ -148,10 +152,15 @@ Collision layers/masks are all default; **filtering is done with groups**:
 - Enemy death: `health <= 0` → explosion anim + sound, `Score.add_score(points)`, screen shake, `queue_free()` when the sound ends.
 
 ### Weapons and the shop
-- A weapon is a `WeaponData` resource (`components/Weapons/WeaponData.gd`): name, description, icon, `bullet_scene`, and per-level arrays `damage`, `bullet_count`, `fire_interval`, `upgrade_cost` (index = level − 1; array length = max level; `upgrade_cost[i]` is the price to go from level i+1 to i+2).
-- Focus fire: `components/Weapons/FocusFire/FocusFire.tres` (10 levels; level 1 = 2 dmg, 2 bullets, 0.4 s). Balance it by editing that file. Income reference: a perfect Level 1 run pays $540 (24 `BasicEnemy` × `points` 10 + `SimpleBoss.points` 300), i.e. about two upgrades.
-- `Player.gd` `fire_weapon()` reads the equipped weapon from `Loadout` and fires `bullet_count` bullets spread between `$LeftGun` and `$RightGun` (widens by `FOCUS_FIRE_EXTRA_WIDTH` per bullet beyond two), all straight ahead. Inner bullets spawn `FOCUS_FIRE_STAGGER` px further ahead per step from the edge, so 3+ bullets form an arrowhead (3 = triangle, 4 = middle pair ahead). Other firing patterns (spread, homing) will need their own logic — likely a fire-pattern field on `WeaponData`.
-- `components/Menu/WeaponShop/` is the shop panel; `Menu.gd` switches to it from MainMenu's `UpgradeWeapon` signal and back on its `back` signal. It rebuilds its UI from `Loadout` + `Score` whenever shown or changed.
+- A weapon is a `WeaponData` resource (`components/Weapons/WeaponData.gd`): name, description, icon, `bullet_scene`, `fire_pattern` (`PULSE`/`SPREAD`), `price`, and per-level arrays `damage`, `bullet_count`, `fire_interval`, `spread_angle` (SPREAD only), `upgrade_cost` (index = level − 1; array length = max level; `upgrade_cost[i]` is the price to go from level i+1 to i+2).
+- Pulse fire: `components/Weapons/PulseFire/PulseFire.tres` (10 levels; level 1 = 2 dmg, 2 bullets, 0.4 s). Spread fire: `components/Weapons/SpreadFire/SpreadFire.tres` (level 1 = 1.5 dmg, 2 bullets, 0.24 s, 4° fan → level 10 = 3 dmg, 12 bullets, 0.2 s, 76°; upgrades ~1.6× Pulse fire's). Rule of thumb: spread does less damage per bullet but more total DPS. Balance by editing the `.tres` files. Income reference: a perfect Level 1 run pays $540 (24 `BasicEnemy` × `points` 10 + `SimpleBoss.points` 300), i.e. about two upgrades.
+- Firing lives in `WeaponGun` (`components/Weapons/WeaponGun.gd`, a Node2D at the ship's origin): set `weapon`, `level`, `left_muzzle`/`right_muzzle`, `bullet_parent`, optional `sound`, and call `tick(delta, firing)` every physics frame. `fire()` dispatches on `fire_pattern` and returns the seconds until the next shot; `tick` loops, so several bullets can fire per frame. `Player.gd` creates one in `_ready()` (`player.gun`) and feeds it `Loadout` each frame; the shop preview reuses it, so the preview always matches the game.
+  - `PULSE`: the whole volley at once, spread between `$LeftGun` and `$RightGun` (widens by `PULSE_FIRE_EXTRA_WIDTH` per bullet beyond two), straight ahead. Inner bullets spawn `PULSE_FIRE_STAGGER` px further ahead per step from the edge, so 3+ bullets form an arrowhead.
+  - `SPREAD` (minigun): ONE bullet per call, every `fire_interval / bullet_count` s, from just left/right of the nose (`SPREAD_FIRE_MUZZLE_OFFSET`, not the wide guns — otherwise level 1 misses what's straight ahead). Each volley's lanes are evenly fanned over `spread_angle`, fired in shuffled order alternating left/right, with ±`SPREAD_FIRE_JITTER`°. Bullets fly along their rotation (`bullet.gd` moves in local space).
+- `components/Menu/WeaponShop/` is the shop panel; `Menu.gd` switches to it from MainMenu's `UpgradeWeapon` signal and back on its `back` signal (DONE / Esc).
+  - Layout: left = `WeaponPreview` (SubViewport with scrolling stars and a display-only `Player` instance whose `gun` fires the highlighted weapon nonstop), DPS meter (full = strongest weapon in `Loadout.WEAPONS` at max power), power bar `<` `>`; right = list rows built in code from `Loadout.WEAPONS` + DONE, description, stats; bottom = hint/status bar.
+  - It does **not** use GUI focus (focus is released when shown): `_input` handles `ui_up/down` (cursor), `ui_left/right` (downgrade/upgrade the equipped weapon), `ui_accept` (buy / DONE), `ui_cancel`. Mouse: rows follow `InputEventMouseMotion` (deliberately not `mouse_entered`, which fires when the panel appears under a resting pointer and steals the cursor), click = accept; `<`/`>` clickable.
+  - Public for scripting: `cursor`, `move_cursor(step)`, `accept()`, `change_power(step)`, `highlighted_weapon()`. It rebuilds from `Loadout` + `Score` whenever shown or changed.
 
 ### Player
 `components/Player/Player.gd`: acceleration-based movement with dampening

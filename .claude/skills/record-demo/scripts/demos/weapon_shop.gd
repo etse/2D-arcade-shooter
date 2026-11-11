@@ -1,4 +1,4 @@
-## ~18 s demo: weak level-1 Focus fire -> shop upgrades 1..10 -> maxed weapon
+## ~18 s demo: weak level-1 Pulse fire -> shop upgrades 1..10 -> maxed weapon
 ## shredding two enemy rows and the boss.
 extends "res://.claude/skills/record-demo/scripts/demo_base.gd"
 
@@ -30,9 +30,9 @@ func run() -> void:
 	await click(node("MenuContainer/MainMenu/UpgradeWeapon"))
 	await wait(0.6)
 	while not Loadout.is_weapon_maxed():
-		await click(node("MenuContainer/WeaponShop/Upgrade"), 0.02, 0.3)
+		await tap("ui_right", 0.3)
 	await wait(0.6)
-	await click(node("MenuContainer/WeaponShop/Back"))
+	await tap("ui_cancel")
 	await wait(0.25)
 	await click(node("MenuContainer/MainMenu/StartGame"))
 

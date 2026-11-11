@@ -1,0 +1,22 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://components/Bullets/Bullet.tscn" id="1_bullet"]
+[ext_resource type="Texture2D" path="res://assets/sprites/effects/bullets/bullet_fire.png" id="2_sprite"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hit"]
+size = Vector2(10, 22)
+
+[node name="SpreadBullet" instance=ExtResource("1_bullet")]
+speed = Vector2(0, -1700)
+damage = 1.5
+
+[node name="HitSound" parent="." index="2"]
+volume_db = -32.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." index="3"]
+scale = Vector2(0.16, 0.16)
+texture = ExtResource("2_sprite")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="4"]
+position = Vector2(0, -3)
+shape = SubResource("RectangleShape2D_hit")

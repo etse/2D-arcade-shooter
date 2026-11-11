@@ -91,6 +91,16 @@ func press(action: String, pressed := true) -> void:
 	Input.parse_input_event(ev)
 
 
+## Tap an action like a key press (press + release), then wait `after` seconds.
+## Use for menus that read input directly, e.g. the weapon shop
+## (ui_up/ui_down/ui_left/ui_right/ui_accept/ui_cancel).
+func tap(action: String, after := 0.25) -> void:
+	press(action, true)
+	await get_tree().process_frame
+	press(action, false)
+	await wait(after)
+
+
 ## Hold an action for `seconds`, then release it.
 func hold(action: String, seconds: float) -> void:
 	press(action, true)
