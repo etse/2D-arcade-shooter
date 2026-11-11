@@ -2,6 +2,9 @@ extends CharacterBody2D
 
 ## Extra row width (px) per bullet beyond two, so bullets don't overlap.
 const FOCUS_FIRE_EXTRA_WIDTH = 16.0
+## How far (px) each bullet is pushed ahead of its outer neighbour, so volleys
+## of 3+ bullets form an arrowhead (middle bullets in front) instead of a line.
+const FOCUS_FIRE_STAGGER = 20.0
 const acceleration_force = 7000
 const dampening = 10
 const max_speed = 1000
@@ -56,8 +59,9 @@ func handle_shooting(delta: float):
 		gun_cooldown = Loadout.weapon.get_fire_interval(Loadout.weapon_level)
 
 ## Fires one volley of the equipped weapon (see the Loadout autoload).
-## Bullets are spread evenly in a row between the guns, widening a little per
-## extra bullet, and all fly straight ahead (focus fire).
+## Bullets are spread evenly between the guns, widening a little per extra
+## bullet, and all fly straight ahead (focus fire). Inner bullets spawn further
+## ahead than outer ones, so the volley forms an arrowhead.
 func fire_weapon():
 	var weapon: WeaponData = Loadout.weapon
 	var level: int = Loadout.weapon_level
@@ -67,11 +71,15 @@ func fire_weapon():
 	var extra_width: float = FOCUS_FIRE_EXTRA_WIDTH * maxi(count - 2, 0)
 	left.x -= extra_width / 2.0
 	right.x += extra_width / 2.0
+	var center := (count - 1) / 2.0
 	for i in count:
 		var t := 0.5 if count == 1 else float(i) / (count - 1)
+		var offset := left.lerp(right, t)
+		# Rings from the edge: 0 for the outermost bullets, highest in the middle.
+		offset.y -= FOCUS_FIRE_STAGGER * floorf(center - absf(i - center))
 		var bullet = weapon.bullet_scene.instantiate()
 		bullet.damage = weapon.get_damage(level)
-		bullet.position = get_global_transform() * left.lerp(right, t)
+		bullet.position = get_global_transform() * offset
 		$Bullets.add_child(bullet)
 		
 func on_hit(damage: float):
