@@ -248,8 +248,14 @@ func _refresh_hint(weapon: WeaponData, equipped: bool):
 		_hint.text = "Up/Down: select a weapon.   " + "   ".join(parts) + "."
 	else:
 		var cost := Loadout.buy_cost(weapon)
-		var price := "$%d" % cost if cost >= 0 else "get $%d back" % -cost
-		_hint.text = "Enter: buy for %s  (your %s is traded in for $%d)." % [price, Loadout.weapon.name, Loadout.trade_in_value()]
+		var action: String
+		if cost > 0:
+			action = "buy for $%d" % cost
+		elif cost < 0:
+			action = "buy and get $%d back" % -cost
+		else:
+			action = "swap at no cost"
+		_hint.text = "Enter: %s  (your %s is traded in for $%d)." % [action, Loadout.weapon.name, Loadout.trade_in_value()]
 
 
 ## Stats at `level`, with the value at `next` shown as an upgrade when it differs.
@@ -319,7 +325,10 @@ func accept():
 	var cost := Loadout.buy_cost(weapon)
 	if Loadout.buy_weapon(weapon):
 		$AcceptSound.play()
-		_show_status("%s equipped!" % weapon.name, COLOR_OK)
+		if cost < 0:
+			_show_status("%s equipped - got $%d back!" % [weapon.name, -cost], COLOR_OK)
+		else:
+			_show_status("%s equipped!" % weapon.name, COLOR_OK)
 	else:
 		_show_status("Not enough money - need $%d more." % (cost - Score.score), COLOR_ERROR)
 
