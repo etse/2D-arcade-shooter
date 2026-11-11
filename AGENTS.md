@@ -95,9 +95,10 @@ components/                    reusable scenes, each folder = Scene.tscn + Scene
   Bullets/                     bullet.gd (class_name Bullet) + Bullet/FireBullet/SpreadBullet/FireBall scenes
   Weapons/                     WeaponData.gd (class_name WeaponData), WeaponGun.gd (firing patterns) + one folder per weapon with its .tres
   CameraEffects/ScreenShake/   shake effect, child of the level's Camera2D
-  HUD/                         CanvasLayer: score label + health bar
+  HUD/                         CanvasLayer: money + weapon panel, segmented hull bar
+  UI/                          shared look: UIStyle.gd (colours, fonts, styles), styles/*.tres, MenuRow
   InfinityScroll/              looping vertical background layer
-  Menu/                        menu widgets (Label, MainMenu, Options, Slider, WeaponShop + WeaponPreview, ShopItem, UpgradeShip)
+  Menu/                        menu panels (MainMenu, Options, Slider, WeaponShop + WeaponPreview, ShopItem, UpgradeShip)
   Singletons/                  autoload scripts (Score, CameraControl, Loadout)
 screens/
   Menu/                        main menu screen (entry point)
@@ -169,6 +170,15 @@ while holding fire). Shooting uses the equipped weapon (see above).
 Health 100, regenerates over time (10× slower while shooting). Signals
 `health_changed(health)` and `destroyed`.
 
+### UI look ("weapon shop style")
+All menus and the HUD share one look, defined in `components/UI/`:
+- `UIStyle.gd` (`class_name UIStyle`): colours (`GOLD`, `TEXT`, `DIM`, `GREEN`, `RED`, …), fonts (`TITLE_FONT` = Arcade, `BOLD_FONT`/`TEXT_FONT` = 8bitOperatorPlus) and the styleboxes in `styles/`: `Frame` (gold-bordered panel), `Window` (black inset, e.g. preview), `Hint` (bottom hint/status bar), `Row`/`RowSelected` (list rows), `Hud` (small in-game panel). Reference these instead of new hard-coded colours/styles.
+- Menu panel recipe: gold Arcade title (110 px) inside a `Frame` panel, optional "Money $X" row, a list of rows, and a `Hint` bar below whose text follows the focused row.
+- `MenuRow` (`components/UI/MenuRow/`, `class_name MenuRow`): the menu button — [icon] title / detail, right-hand `tag`, `hint`, `disabled`; focus-based (arrow keys via Godot focus), Enter/click → short flash + sound → `selected`. `press()` triggers it from code, `focus_quietly()` focuses without the move sound. Hover follows mouse *motion* only (see the weapon shop note). `Slider` is the matching volume-slider row.
+- Menu sounds play at −25 dB on the `sfx` bus (louder stands out).
+- Main menu: one full-width `Frame` panel (same size as the weapon shop, 1520×840) with title, money, rows `%StartGame`, `%UpgradeWeapon` ("Weapon shop"), `%UpgradeShip`, `%Options`. Options = fullscreen ON/OFF row, 3 volume sliders, DONE (Esc also goes back). Upgrade ship = "coming soon" + DONE.
+- HUD (`components/HUD/`): bottom-left money + equipped weapon (icon, name, power), bottom-right hull bar of 20 segments (green > 50%, gold > 25%, red). API used by `Level.gd`: `set_max_health()`, `update_health()`.
+
 ### Input map
 `move_left/right/up/down` = arrow keys, `shoot` = Space, `mouse_click` = LMB,
 plus `ui_focus_next/prev` remapped to Tab/arrows for the menu.
@@ -189,7 +199,7 @@ changes bus volumes (not persisted to disk).
 - Commit directly on `main`.
 
 ## Known issues / gotchas
-- "Upgrade ship" (`UpgradeShip`) and `ShopItem` are stubs; `ShopItem.tscn` and `FireBullet.tscn` are still in Godot 3 text format (`format=2`) but load fine.
+- "Upgrade ship" (`UpgradeShip`, a "coming soon" panel) and `ShopItem` are stubs; `ShopItem.tscn` and `FireBullet.tscn` are still in Godot 3 text format (`format=2`) but load fine.
 - Money (`Score`) and any future purchases/upgrades only live in memory; nothing is saved to disk yet.
 - "Start next level" always starts Level 1; there is no level progression yet.
 

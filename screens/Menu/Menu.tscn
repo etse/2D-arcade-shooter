@@ -90,3 +90,4 @@ bus = &"music"
 [connection signal="UpgradeWeapon" from="MenuContainer/MainMenu" to="." method="_on_MainMenu_UpgradeWeapon"]
 [connection signal="saved" from="MenuContainer/Options" to="." method="_on_Options_saved"]
 [connection signal="back" from="MenuContainer/WeaponShop" to="." method="_on_WeaponShop_back"]
+[connection signal="back" from="MenuContainer/UpgradeShip" to="." method="_on_UpgradeShip_back"]

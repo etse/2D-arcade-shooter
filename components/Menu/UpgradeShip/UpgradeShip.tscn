@@ -1,68 +1,67 @@
-[gd_scene load_steps=7 format=3 uid="uid://chaybk1l06kkn"]
+[gd_scene format=3 uid="uid://chaybk1l06kkn"]
 
 [ext_resource type="Script" path="res://components/Menu/UpgradeShip/UpgradeShip.gd" id="1"]
-[ext_resource type="FontFile" uid="uid://c4wkpvq38gdoq" path="res://assets/fonts/Arcade.ttf" id="2"]
-[ext_resource type="PackedScene" uid="uid://vy8ykdp0wu7f" path="res://components/Menu/Label/Label.tscn" id="3"]
-[ext_resource type="FontFile" uid="uid://doesrguwx81i0" path="res://assets/fonts/8bitOperatorPlus-Bold.ttf" id="4"]
-
-[sub_resource type="FontFile" id="3"]
-fallbacks = Array[Font]([ExtResource("2"), ExtResource("2")])
-subpixel_positioning = 0
-msdf_pixel_range = 14
-msdf_size = 128
-cache/0/16/0/ascent = 0.0
-cache/0/16/0/descent = 0.0
-cache/0/16/0/underline_position = 0.0
-cache/0/16/0/underline_thickness = 0.0
-cache/0/16/0/scale = 1.0
-cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
-cache/0/16/0/kerning_overrides/140/0 = Vector2(0, 0)
-cache/0/140/0/ascent = 0.0
-cache/0/140/0/descent = 0.0
-cache/0/140/0/underline_position = 0.0
-cache/0/140/0/underline_thickness = 0.0
-cache/0/140/0/scale = 1.0
-cache/0/140/0/kerning_overrides/16/0 = Vector2(0, 0)
-cache/0/140/0/kerning_overrides/140/0 = Vector2(0, 0)
-
-[sub_resource type="FontFile" id="2"]
-fallbacks = Array[Font]([ExtResource("4"), ExtResource("4")])
-subpixel_positioning = 0
-msdf_pixel_range = 14
-msdf_size = 128
-cache/0/24/0/ascent = 0.0
-cache/0/24/0/descent = 0.0
-cache/0/24/0/underline_position = 0.0
-cache/0/24/0/underline_thickness = 0.0
-cache/0/24/0/scale = 1.0
-cache/0/24/0/kerning_overrides/24/0 = Vector2(0, 0)
-cache/0/24/0/kerning_overrides/16/0 = Vector2(0, 0)
-cache/0/16/0/ascent = 0.0
-cache/0/16/0/descent = 0.0
-cache/0/16/0/underline_position = 0.0
-cache/0/16/0/underline_thickness = 0.0
-cache/0/16/0/scale = 1.0
-cache/0/16/0/kerning_overrides/24/0 = Vector2(0, 0)
-cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
+[ext_resource type="FontFile" uid="uid://c4wkpvq38gdoq" path="res://assets/fonts/Arcade.ttf" id="2_arcade"]
+[ext_resource type="FontFile" path="res://assets/fonts/8bitOperatorPlus-Regular.ttf" id="3_regular"]
+[ext_resource type="PackedScene" path="res://components/UI/MenuRow/MenuRow.tscn" id="4_row"]
+[ext_resource type="StyleBox" path="res://components/UI/styles/Frame.tres" id="5_frame"]
+[ext_resource type="StyleBox" path="res://components/UI/styles/Hint.tres" id="6_hint"]
 
 [node name="UpgradeShip" type="VBoxContainer"]
-offset_left = 382.0
-offset_top = 302.0
-offset_right = 1538.0
-offset_bottom = 777.0
+custom_minimum_size = Vector2(1000, 0)
+theme_override_constants/separation = 20
+alignment = 1
 script = ExtResource("1")
 
-[node name="UpgradeShipTitle" type="Label" parent="."]
+[node name="Panel" type="PanelContainer" parent="."]
 layout_mode = 2
-theme_override_fonts/font = SubResource("3")
-theme_override_font_sizes/font_size = 140
-text = "Upgrade ship
-"
+theme_override_styles/panel = ExtResource("5_frame")
 
-[node name="ShipList" type="HBoxContainer" parent="."]
+[node name="Margin" type="MarginContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 32
+
+[node name="VBox" type="VBoxContainer" parent="Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="UpgradeShipTitle" type="Label" parent="Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.75, 0, 1)
+theme_override_fonts/font = ExtResource("2_arcade")
+theme_override_font_sizes/font_size = 110
+text = "Upgrade ship"
+horizontal_alignment = 1
+
+[node name="Info" type="Label" parent="Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.8, 0.65, 1)
+theme_override_fonts/font = ExtResource("3_regular")
+theme_override_font_sizes/font_size = 28
+text = "The ship yard is still under construction.
+Health, regen and speed upgrades are coming soon."
+horizontal_alignment = 1
+
+[node name="ShipList" type="HBoxContainer" parent="Panel/Margin/VBox"]
 layout_mode = 2
 
-[node name="GoBack" parent="." instance=ExtResource("3")]
+[node name="GoBack" parent="Panel/Margin/VBox" instance=ExtResource("4_row")]
+unique_name_in_owner = true
 layout_mode = 2
-theme_override_fonts/font = SubResource("2")
-text = "Back"
+title = "DONE"
+
+[node name="Hint" type="PanelContainer" parent="."]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("6_hint")
+
+[node name="Text" type="Label" parent="Hint"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.8, 0.65, 1)
+theme_override_fonts/font = ExtResource("3_regular")
+theme_override_font_sizes/font_size = 26
+text = "Enter: back to the main menu."
+
+[connection signal="selected" from="Panel/Margin/VBox/GoBack" to="." method="_on_GoBack_selected"]

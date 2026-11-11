@@ -7,46 +7,9 @@
 [ext_resource type="PackedScene" path="res://components/Menu/WeaponShop/WeaponPreview.tscn" id="5_preview"]
 [ext_resource type="AudioStream" uid="uid://c3tbju5vskra2" path="res://assets/sfx/menu_select_3.ogg" id="6_move"]
 [ext_resource type="AudioStream" uid="uid://cq3mg6kmondo4" path="res://assets/sfx/menu_select_4.ogg" id="7_accept"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_frame"]
-bg_color = Color(0.03, 0.02, 0.06, 0.82)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(1, 0.75, 0, 0.85)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-shadow_color = Color(1, 0.6, 0, 0.18)
-shadow_size = 18
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_window"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0.45, 0.34, 0.12, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-expand_margin_left = 2.0
-expand_margin_top = 2.0
-expand_margin_right = 2.0
-expand_margin_bottom = 2.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hint"]
-bg_color = Color(0.03, 0.02, 0.06, 0.82)
-border_width_top = 2
-border_width_bottom = 2
-border_color = Color(1, 0.75, 0, 0.4)
-content_margin_left = 24.0
-content_margin_top = 10.0
-content_margin_right = 24.0
-content_margin_bottom = 10.0
+[ext_resource type="StyleBox" path="res://components/UI/styles/Frame.tres" id="8_frame"]
+[ext_resource type="StyleBox" path="res://components/UI/styles/Window.tres" id="9_window"]
+[ext_resource type="StyleBox" path="res://components/UI/styles/Hint.tres" id="10_hint"]
 
 [node name="WeaponShop" type="VBoxContainer"]
 theme_override_constants/separation = 20
@@ -59,7 +22,7 @@ theme_override_constants/separation = 28
 
 [node name="Showcase" type="PanelContainer" parent="Main"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_frame")
+theme_override_styles/panel = ExtResource("8_frame")
 
 [node name="Margin" type="MarginContainer" parent="Main/Showcase"]
 layout_mode = 2
@@ -78,7 +41,7 @@ theme_override_constants/separation = 16
 
 [node name="Window" type="PanelContainer" parent="Main/Showcase/Margin/VBox/View"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_window")
+theme_override_styles/panel = ExtResource("9_window")
 
 [node name="Preview" parent="Main/Showcase/Margin/VBox/View/Window" instance=ExtResource("5_preview")]
 layout_mode = 2
@@ -148,7 +111,7 @@ horizontal_alignment = 1
 [node name="Store" type="PanelContainer" parent="Main"]
 custom_minimum_size = Vector2(820, 0)
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_frame")
+theme_override_styles/panel = ExtResource("8_frame")
 
 [node name="Margin" type="MarginContainer" parent="Main/Store"]
 layout_mode = 2
@@ -215,7 +178,7 @@ size_flags_vertical = 3
 
 [node name="Hint" type="PanelContainer" parent="."]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_hint")
+theme_override_styles/panel = ExtResource("10_hint")
 
 [node name="Text" type="Label" parent="Hint"]
 layout_mode = 2

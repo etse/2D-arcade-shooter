@@ -11,7 +11,7 @@ func run() -> void:
 	Score.add_score(1500)
 	await goto(MENU)
 	await wait(0.6)
-	await click(node("MenuContainer/MainMenu/UpgradeWeapon"))
+	await click(node("MenuContainer/MainMenu/%UpgradeWeapon"))
 	await wait(1.6)                 # Pulse fire preview
 	await tap("ui_down", 1.8)       # Spread fire preview (power 1)
 	var before := Score.score
@@ -24,7 +24,7 @@ func run() -> void:
 	log_line("power %d, $%d" % [Loadout.weapon_level, Score.score])
 	await tap("ui_down", 0.5)       # DONE
 	await tap("ui_accept", 0.4)
-	await click(node("MenuContainer/MainMenu/StartGame"))
+	await click(node("MenuContainer/MainMenu/%StartGame"))
 
 	# 2) In game: low power vs a row
 	var level := await scene_named("Level")

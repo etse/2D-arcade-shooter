@@ -7,7 +7,7 @@ func run() -> void:
 	# 1) Title screen -> start level
 	await goto(MENU)
 	await wait(0.9)
-	await click(node("MenuContainer/MainMenu/StartGame"))
+	await click(node("MenuContainer/MainMenu/%StartGame"))
 
 	# 2) Level-1 weapon: park under each enemy until it goes down
 	var level := await scene_named("Level")
@@ -27,14 +27,14 @@ func run() -> void:
 	Score.add_score(9000)
 	await goto(MENU)
 	await wait(0.3)
-	await click(node("MenuContainer/MainMenu/UpgradeWeapon"))
+	await click(node("MenuContainer/MainMenu/%UpgradeWeapon"))
 	await wait(0.6)
 	while not Loadout.is_weapon_maxed():
 		await tap("ui_right", 0.3)
 	await wait(0.6)
 	await tap("ui_cancel")
 	await wait(0.25)
-	await click(node("MenuContainer/MainMenu/StartGame"))
+	await click(node("MenuContainer/MainMenu/%StartGame"))
 
 	# 4) Maxed weapon vs two rows + boss: sweep until everything is dead
 	level = await scene_named("Level")

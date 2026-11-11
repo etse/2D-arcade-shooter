@@ -27,6 +27,9 @@ func _on_WeaponShop_back():
 func _on_MainMenu_UpgradeShip():
 	self._switch_panel($MenuContainer/UpgradeShip)
 
+func _on_UpgradeShip_back():
+	self._switch_panel($MenuContainer/MainMenu)
+
 func _on_MainMenu_StartGame():
 	get_tree().change_scene_to_file(levelScene)
 

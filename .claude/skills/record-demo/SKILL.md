@@ -18,7 +18,7 @@ git-ignored (`/demo/` in `.gitignore`) — never commit videos.
 | --- | --- |
 | `record.sh` | `record.sh [--dry-run] <director.gd> [out.mp4]` — records to `demo/<director-name>.mp4` by default |
 | `demo_base.gd` | Base class for directors with helpers (scenes, menu clicks, input, spawning, waits) |
-| `demos/*.gd` | Ready-made directors. `weapon_shop.gd` = weak weapon → shop upgrades 1→10 → maxed weapon vs rows + boss (~18 s). `spread_fire.gd` = shop: browse with live preview, buy Spread fire, power up/down → power 3 and 10 vs rows + boss (~17 s) |
+| `demos/*.gd` | Ready-made directors. `weapon_shop.gd` = weak weapon → shop upgrades 1→10 → maxed weapon vs rows + boss (~18 s). `menus_tour.gd` = main menu → options → upgrade ship → weapon shop → level with HUD (~20 s). `spread_fire.gd` = shop: browse with live preview, buy Spread fire, power up/down → power 3 and 10 vs rows + boss (~17 s) |
 | `contact_sheet.sh` | `contact_sheet.sh <video> [out.png] [fps=1] [cols=5]` — tiles frames into one PNG for reviewing |
 
 Requirements: `$DISPLAY` (rendering is not headless), `ffmpeg`/`ffprobe`, the
@@ -34,7 +34,7 @@ Godot binary via `tools/godot.sh`. Recording runs at roughly real time.
 
    func run() -> void:
        await goto(MENU)                                   # load a scene, wait until ready
-       await click(node("MenuContainer/MainMenu/StartGame"))
+       await click(node("MenuContainer/MainMenu/%StartGame"))
        var level := await scene_named("Level")            # wait for scene changed by the game
        var row := spawn_row(level, 5, 140.0, 380.0)       # cheat: spawn enemies
        Loadout.weapon_level = 6                           # cheat: set upgrades
@@ -81,9 +81,10 @@ Godot binary via `tools/godot.sh`. Recording runs at roughly real time.
 - **Keep it short:** the user typically wants 10–20 s. Trim waits, use
   `click(label, 0.02, 0.3)` for rapid repeated menu presses, and end shortly
   after the last explosion.
-- **Menu buttons** are `components/Menu/Label` nodes; `click()` plays their
-  focus/accept animation and sound and fires `selected` like a real key press.
-  Main menu: `MenuContainer/MainMenu/{StartGame,UpgradeWeapon,UpgradeShip,Options}`;
+- **Menu buttons** are `components/UI/MenuRow` nodes; `click()` focuses one,
+  then calls its `press()` (flash + sound, then `selected`) like a real key press.
+  Main menu rows are `MenuRow`s with unique names: `MenuContainer/MainMenu/%StartGame`
+  (also `%UpgradeWeapon`, `%UpgradeShip`, `%Options`); Options has `%FullScreen`/`%Save`;
   The weapon shop has no buttons: drive it with `tap("ui_down")` / `tap("ui_up")` (cursor over weapons + DONE; starts on the equipped weapon), `tap("ui_right")` / `tap("ui_left")` (upgrade / downgrade the equipped weapon), `tap("ui_accept")` (buy highlighted / DONE) and `tap("ui_cancel")` (back). Cheat a weapon directly with `Loadout.weapon = Loadout.WEAPONS[i]`.
 - **Real recordings open a window, and the real mouse pointer may sit over it.** UI that reacts to `mouse_entered` can then change under you (the shop used to); if a menu behaves differently in the recording than in the dry run, suspect the pointer.
 - The level's own waves keep running (first enemies after ~5 s); scenes longer

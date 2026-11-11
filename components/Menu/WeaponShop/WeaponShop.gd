@@ -11,17 +11,17 @@ extends VBoxContainer
 
 signal back
 
-const TITLE_FONT := preload("res://assets/fonts/8bitOperatorPlus-Bold.ttf")
-const TEXT_FONT := preload("res://assets/fonts/8bitOperatorPlus-Regular.ttf")
-const COLOR_DIM := Color(0.6, 0.6, 0.68)
-const COLOR_TEXT := Color(0.85, 0.8, 0.65)
-const COLOR_GOLD := Color(1, 0.75, 0)
-const COLOR_EMPTY := Color(1, 1, 1, 0.12)
-const COLOR_UP := Color(0.24, 0.94, 0.27)
-const COLOR_ERROR := Color(1, 0.35, 0.3)
-const COLOR_OK := Color(0.24, 0.94, 0.27)
-const COLOR_EQUIPPED := Color(0.24, 0.94, 0.27)
-const COLOR_DISABLED := Color(1, 1, 1, 0.2)
+const TITLE_FONT := UIStyle.BOLD_FONT
+const TEXT_FONT := UIStyle.TEXT_FONT
+const COLOR_DIM := UIStyle.DIM
+const COLOR_TEXT := UIStyle.TEXT
+const COLOR_GOLD := UIStyle.GOLD
+const COLOR_EMPTY := UIStyle.EMPTY
+const COLOR_UP := UIStyle.GREEN
+const COLOR_ERROR := UIStyle.RED
+const COLOR_OK := UIStyle.GREEN
+const COLOR_EQUIPPED := UIStyle.GREEN
+const COLOR_DISABLED := UIStyle.DISABLED
 const ROW_ICON_SIZE := Vector2(84, 84)
 const POWER_SEGMENT_SIZE := Vector2(30, 46)
 const METER_SEGMENTS := 24
@@ -47,8 +47,8 @@ const STAT_FONT_SIZE := 24
 ## Row index under the cursor; rows are Loadout.WEAPONS followed by DONE.
 var cursor := 0
 var _rows: Array[PanelContainer] = []
-var _row_style := StyleBoxFlat.new()
-var _row_style_selected := StyleBoxFlat.new()
+var _row_style: StyleBox = UIStyle.ROW
+var _row_style_selected: StyleBox = UIStyle.ROW_SELECTED
 ## DPS that fills the meter: the strongest weapon at max power, so the meter
 ## always compares weapons against the best one in the shop.
 var _max_dps := 1.0
@@ -60,7 +60,6 @@ var _active := false
 
 
 func _ready():
-	_setup_styles()
 	_build_rows()
 	_build_meter()
 	for i in Loadout.WEAPONS[0].max_level():
@@ -79,20 +78,6 @@ func _ready():
 
 
 # --- building ---------------------------------------------------------------------
-
-func _setup_styles():
-	for style in [_row_style, _row_style_selected]:
-		style.set_corner_radius_all(8)
-		style.set_border_width_all(2)
-		style.content_margin_left = 14
-		style.content_margin_right = 20
-		style.content_margin_top = 8
-		style.content_margin_bottom = 8
-	_row_style.bg_color = Color(1, 1, 1, 0.03)
-	_row_style.border_color = Color(1, 1, 1, 0.06)
-	_row_style_selected.bg_color = Color(1, 0.75, 0, 0.14)
-	_row_style_selected.border_color = COLOR_GOLD
-
 
 func _build_rows():
 	for weapon in Loadout.WEAPONS:
@@ -152,12 +137,7 @@ func _build_meter():
 
 
 func _make_label(text: String, font: Font, size: int, color: Color) -> Label:
-	var label := Label.new()
-	label.text = text
-	label.add_theme_font_override("font", font)
-	label.add_theme_font_size_override("font_size", size)
-	label.add_theme_color_override("font_color", color)
-	return label
+	return UIStyle.make_label(text, font, size, color)
 
 
 # --- state ------------------------------------------------------------------------

@@ -57,7 +57,8 @@ func scene_named(scene_name: String) -> Node:
 	return get_tree().current_scene
 
 
-## Node in the current scene, e.g. node("MenuContainer/MainMenu/StartGame").
+## Node in the current scene, e.g. node("MenuContainer/MainMenu/%StartGame")
+## (menu rows are unique names inside their panel scene; see SKILL.md).
 func node(path: String) -> Node:
 	return get_tree().current_scene.get_node(path)
 
@@ -69,15 +70,12 @@ func _root_name_of(scene_path: String) -> String:
 
 # --- menu ------------------------------------------------------------------------
 
-## Focus a menu Label (components/Menu/Label) and "press" it, playing its
-## select + accept animation and sound like a real key press.
-func click(label: Node, focus_time := 0.15, after := 0.3) -> void:
-	label.grab_focus()
+## Focus a menu row (components/UI/MenuRow) and "press" it, with its
+## highlight, flash and sound like a real key press.
+func click(row: Node, focus_time := 0.15, after := 0.3) -> void:
+	row.grab_focus()
 	await wait(focus_time)
-	var ev := InputEventAction.new()
-	ev.action = "ui_accept"
-	ev.pressed = true
-	label._on_Label_gui_input(ev)
+	await row.press()
 	await wait(after)
 
 
