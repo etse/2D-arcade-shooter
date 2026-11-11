@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dyb6kp4rafykb"]
+[gd_scene load_steps=11 format=3 uid="uid://dyb6kp4rafykb"]
 
 [ext_resource type="FontFile" uid="uid://bv744ye3li3i1" path="res://assets/fonts/Roboto-Regular.ttf" id="1"]
 [ext_resource type="Script" path="res://screens/Menu/Menu.gd" id="2"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://chaybk1l06kkn" path="res://components/Menu/UpgradeShip/UpgradeShip.tscn" id="5"]
 [ext_resource type="Texture2D" uid="uid://llk20olhalge" path="res://assets/backgrounds/Nebula Aqua-Pink-small.png" id="6"]
 [ext_resource type="AudioStream" uid="uid://wvxdbxn74ui8" path="res://assets/music/BoxCat_Games_Assignment.ogg" id="7"]
+[ext_resource type="PackedScene" path="res://components/Menu/WeaponShop/WeaponShop.tscn" id="8_shop"]
 
 [sub_resource type="FontFile" id="1"]
 fallbacks = Array[Font]([ExtResource("1")])
@@ -50,6 +51,10 @@ layout_mode = 2
 visible = false
 layout_mode = 2
 
+[node name="WeaponShop" parent="MenuContainer" instance=ExtResource("8_shop")]
+visible = false
+layout_mode = 2
+
 [node name="Background" type="TextureRect" parent="."]
 show_behind_parent = true
 clip_contents = true
@@ -73,4 +78,6 @@ bus = &"music"
 [connection signal="Options" from="MenuContainer/MainMenu" to="." method="_on_MainMenu_Options"]
 [connection signal="StartGame" from="MenuContainer/MainMenu" to="." method="_on_MainMenu_StartGame"]
 [connection signal="UpgradeShip" from="MenuContainer/MainMenu" to="." method="_on_MainMenu_UpgradeShip"]
+[connection signal="UpgradeWeapon" from="MenuContainer/MainMenu" to="." method="_on_MainMenu_UpgradeWeapon"]
 [connection signal="saved" from="MenuContainer/Options" to="." method="_on_Options_saved"]
+[connection signal="back" from="MenuContainer/WeaponShop" to="." method="_on_WeaponShop_back"]

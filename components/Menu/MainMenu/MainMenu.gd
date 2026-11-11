@@ -6,7 +6,12 @@ signal UpgradeShip
 signal Options
 
 func _ready():
-	pass
+	visibility_changed.connect(_on_visibility_changed)
+
+func _on_visibility_changed():
+	# Give keyboard focus back when returning from another panel.
+	if visible:
+		$StartGame.grab_focus()
 
 
 func _on_StartGame_selected():

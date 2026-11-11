@@ -6,10 +6,49 @@ something non-obvious about the project, add it here.
 ## What the game is
 
 A vertical-scrolling, old-school shoot 'em up inspired by Tyrian 2000. The
-player flies a ship at the bottom of the screen, shoots upward at waves of
-enemies and finishes the level with a boss fight. Earned score is shown as
-money (`$123`); the menu has "Upgrade weapon" / "Upgrade ship" entries meant
-for a shop (not implemented yet).
+player flies a ship at the bottom of the screen and shoots upward at waves of
+enemies.
+
+### Game design (intended)
+
+- **Multiple levels.** The game is a sequence of levels; each level is a series
+  of enemy waves and **always ends with a boss fight**.
+- **Points are money.** Destroying enemies and bosses earns points, and points
+  are the currency (shown as `$123` in the HUD). They carry over between levels.
+- **Shopping between levels.** After a level, back in the menu, the player
+  spends money in shops to:
+  - buy new weapons,
+  - upgrade weapons,
+  - upgrade other parts of the ship (e.g. health, regen, speed).
+
+### Weapons (intended)
+
+- Every weapon has its **own graphics** (bullet sprite, effects) and its **own
+  strengths** — a distinct trade-off, not just bigger numbers.
+- Some weapons can simply be **better overall, but cost more**.
+- Each weapon has its own **upgrade path**: upgrades raise that weapon's
+  stats (damage, number of bullets, rate of fire, …), and which stats can be
+  upgraded depends on the weapon.
+
+Example weapons:
+
+| Weapon | Behaviour | Strength / weakness | Upgrades |
+| --- | --- | --- | --- |
+| **Focus fire** | Shoots straight ahead | High damage, but covers only a narrow part of the screen | Damage, number of bullets, rate of fire |
+| **Spread fire** | Shoots in a spread across the screen | Hits much more of the screen, but less damage than focus fire | Spread angle, rate of fire, damage, number of bullets |
+| **Homing rockets** | Fires missiles that seek enemies | Area-of-effect (AoE) damage on impact | Damage, AoE radius, rate of fire |
+
+Design implications for code: weapon stats and per-level upgrade values should
+be data (e.g. a `Resource` per weapon) rather than hard-coded in `Player.gd`,
+so new weapons and upgrade levels can be added without new logic, and so the
+shop can read names, prices and stats from the same data.
+
+### Current state
+
+Only Level 1 exists (waves → boss → back to menu). Money is earned and kept.
+The **weapon shop** ("Upgrade weapon" in the main menu) sells one item: upgrades
+for **Focus fire**, the only weapon, from level 1 to 10. Buying new weapons and
+ship upgrades ("Upgrade ship" → `UpgradeShip` / `ShopItem` stubs) is not built yet.
 
 - Engine: **Godot 4.7** (`config/features=PackedStringArray("4.7")`), GDScript only, no addons.
 - Originally a Godot 3 project, migrated to Godot 4 (see git history). Watch out
@@ -49,11 +88,12 @@ components/                    reusable scenes, each folder = Scene.tscn + Scene
   Enemies/BasicEnemy/          basic Area2D enemy (class_name BasicEnemy)
   Bosses/SimpleBoss/           level-1 boss, fires FireBalls
   Bullets/                     bullet.gd (class_name Bullet) + Bullet/FireBullet/FireBall scenes
+  Weapons/                     WeaponData.gd (class_name WeaponData) + one folder per weapon with its .tres
   CameraEffects/ScreenShake/   shake effect, child of the level's Camera2D
   HUD/                         CanvasLayer: score label + health bar
   InfinityScroll/              looping vertical background layer
-  Menu/                        menu widgets (Label, MainMenu, Options, Slider, ShopItem, UpgradeShip)
-  Singletons/                  autoload scripts (Score, CameraControl)
+  Menu/                        menu widgets (Label, MainMenu, Options, Slider, WeaponShop, ShopItem, UpgradeShip)
+  Singletons/                  autoload scripts (Score, CameraControl, Loadout)
 screens/
   Menu/                        main menu screen (entry point)
   Level/Level.tscn             gameplay shell: walls, HUD, Player, Camera, fade overlay, Level1
@@ -65,7 +105,8 @@ tools/                         agent/dev helper scripts (validate, screenshot, g
 ## Architecture
 
 ### Autoloads (`project.godot` → `[autoload]`)
-- `Score` (`components/Singletons/Score.gd`): `score: int`, `add_score(points)`, signal `score_changed(score)`. Never reset between runs.
+- `Score` (`components/Singletons/Score.gd`): `score: int`, `add_score(points)`, `spend(amount) -> bool`, signal `score_changed(score)`. This is the player's money — intentionally never reset between levels/runs.
+- `Loadout` (`components/Singletons/Loadout.gd`): the player's equipment — `weapon: WeaponData` and `weapon_level` (starts at 1). `upgrade_weapon()` pays via `Score.spend()` and emits `changed`. In memory only, not saved.
 - `CameraControl` (`components/Singletons/Camera_control.gd`): global event bus for screen shake. Call `CameraControl.screen_shake(amplitude, frequency, duration)`; `Level.gd` forwards it to `$Camera/ScreenShake`.
 
 ### Scene flow
@@ -104,10 +145,16 @@ Collision layers/masks are all default; **filtering is done with groups**:
 - The player takes ramming damage via its `CollisionArea` overlapping `"enemies"`.
 - Enemy death: `health <= 0` → explosion anim + sound, `Score.add_score(points)`, screen shake, `queue_free()` when the sound ends.
 
+### Weapons and the shop
+- A weapon is a `WeaponData` resource (`components/Weapons/WeaponData.gd`): name, description, icon, `bullet_scene`, and per-level arrays `damage`, `bullet_count`, `fire_interval`, `upgrade_cost` (index = level − 1; array length = max level; `upgrade_cost[i]` is the price to go from level i+1 to i+2).
+- Focus fire: `components/Weapons/FocusFire/FocusFire.tres` (10 levels; level 1 = 2 dmg, 2 bullets, 0.4 s). Balance it by editing that file.
+- `Player.gd` `fire_weapon()` reads the equipped weapon from `Loadout` and fires `bullet_count` bullets in a row between `$LeftGun` and `$RightGun` (row widens by `FOCUS_FIRE_EXTRA_WIDTH` per bullet beyond two), all straight ahead. Other firing patterns (spread, homing) will need their own logic — likely a fire-pattern field on `WeaponData`.
+- `components/Menu/WeaponShop/` is the shop panel; `Menu.gd` switches to it from MainMenu's `UpgradeWeapon` signal and back on its `back` signal. It rebuilds its UI from `Loadout` + `Score` whenever shown or changed.
+
 ### Player
 `components/Player/Player.gd`: acceleration-based movement with dampening
 (`acceleration_force`, `dampening`, `max_speed`, slower `max_speed_shooting`
-while holding fire). Fires two `FireBullet`s every 0.4 s from `$LeftGun`/`$RightGun`.
+while holding fire). Shooting uses the equipped weapon (see above).
 Health 100, regenerates over time (10× slower while shooting). Signals
 `health_changed(health)` and `destroyed`.
 
@@ -131,8 +178,9 @@ changes bus volumes (not persisted to disk).
 - Commit directly on `main`.
 
 ## Known issues / gotchas
-- "Upgrade weapon" has no handler in `Menu.gd`; `UpgradeShip` / `ShopItem` are stubs (shop not implemented).
-- `Score` persists across runs (never reset). Intentional if score is meant to be shop money — decide when the shop is built.
+- "Upgrade ship" (`UpgradeShip`) and `ShopItem` are stubs; `ShopItem.tscn` and `FireBullet.tscn` are still in Godot 3 text format (`format=2`) but load fine.
+- Money (`Score`) and any future purchases/upgrades only live in memory; nothing is saved to disk yet.
+- "Start next level" always starts Level 1; there is no level progression yet.
 
 ## Skills
 Project skills for agents are in `.claude/skills/`:

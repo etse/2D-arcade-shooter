@@ -18,6 +18,12 @@ func _switch_panel(toPanel: Object):
 func _on_MainMenu_Options():
 	self._switch_panel($MenuContainer/Options)
 
+func _on_MainMenu_UpgradeWeapon():
+	self._switch_panel($MenuContainer/WeaponShop)
+
+func _on_WeaponShop_back():
+	self._switch_panel($MenuContainer/MainMenu)
+
 func _on_MainMenu_UpgradeShip():
 	self._switch_panel($MenuContainer/UpgradeShip)
 

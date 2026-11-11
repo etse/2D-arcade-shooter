@@ -30,7 +30,9 @@ An enemy is an `Area2D` scene that:
 
 - Bullet scenes live in `components/Bullets/<Name>/` and use `components/Bullets/bullet.gd` (`class_name Bullet`): `speed: Vector2` (negative y = up), `damage`, `friendly`.
 - Required children used by `bullet.gd`: `Sprite2D`, `HitSound`, `Timer` (wired to `_on_Timer_timeout`), `Particles`. Easiest is to copy `FireBullet/`.
-- Player firing logic is in `Player.gd` `handle_shooting()` (cooldown `0.4`, two guns). A weapon-upgrade system would naturally go here.
+- Weapons are `WeaponData` resources (`components/Weapons/<Name>/<Name>.tres`, script `components/Weapons/WeaponData.gd`) with per-level stat arrays and upgrade prices; all arrays must have the same length (= max level). Copy `FocusFire.tres` for a new weapon.
+- The equipped weapon + level live in the `Loadout` autoload; `Player.gd` `fire_weapon()` spawns the volley. A new firing pattern (spread, homing) needs code there (or a pattern field on `WeaponData`).
+- The shop UI (`components/Menu/WeaponShop/`) reads everything from `Loadout`/`WeaponData`; balance changes need no UI work.
 
 ## Recipe: new wave
 
@@ -76,7 +78,7 @@ dynamically). Background is built from `InfinityScroll` instances
 | Thing | Value |
 | --- | --- |
 | Player health / regen | 100 / 5 per s (0.5 while shooting) |
-| Player bullet damage / fire interval | 2 (`bullet.gd` default), 1600 px/s / 0.4 s, 2 guns |
+| Focus fire lvl 1 → 10 | dmg 2 → 6, bullets 2 → 5, interval 0.4 → 0.2 s; upgrades cost $100 … $2500 ($8700 total) — see `FocusFire.tres` |
 | Ramming | player takes 15, enemy takes 2 |
 | BasicEnemy | health 6, points 10 |
 | SimpleBoss | health 230, 1000 points, fireballs 20 dmg at 500 px/s |

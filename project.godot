@@ -23,6 +23,7 @@ config/icon="res://icon.png"
 
 Score="*res://components/Singletons/Score.gd"
 CameraControl="*res://components/Singletons/Camera_control.gd"
+Loadout="*res://components/Singletons/Loadout.gd"
 
 [debug]
 

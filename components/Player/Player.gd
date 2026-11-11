@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
-var fireBullet = preload("res://components/Bullets/FireBullet/FireBullet.tscn") 
+## Extra row width (px) per bullet beyond two, so bullets don't overlap.
+const FOCUS_FIRE_EXTRA_WIDTH = 16.0
 const acceleration_force = 7000
 const dampening = 10
 const max_speed = 1000
@@ -50,14 +51,28 @@ func handle_shooting(delta: float):
 		gun_cooldown -= delta
 	
 	if Input.is_action_pressed("shoot") && gun_cooldown <= 0:
-		var bulletLeft = fireBullet.instantiate()
-		var bulletRight = fireBullet.instantiate()
-		bulletLeft.position = get_global_transform() * ($LeftGun.position)
-		bulletRight.position = get_global_transform() * ($RightGun.position)
-		$Bullets.add_child(bulletLeft)
-		$Bullets.add_child(bulletRight)
+		fire_weapon()
 		$BulletSound.play()
-		gun_cooldown = 0.4
+		gun_cooldown = Loadout.weapon.get_fire_interval(Loadout.weapon_level)
+
+## Fires one volley of the equipped weapon (see the Loadout autoload).
+## Bullets are spread evenly in a row between the guns, widening a little per
+## extra bullet, and all fly straight ahead (focus fire).
+func fire_weapon():
+	var weapon: WeaponData = Loadout.weapon
+	var level: int = Loadout.weapon_level
+	var count := weapon.get_bullet_count(level)
+	var left: Vector2 = $LeftGun.position
+	var right: Vector2 = $RightGun.position
+	var extra_width: float = FOCUS_FIRE_EXTRA_WIDTH * maxi(count - 2, 0)
+	left.x -= extra_width / 2.0
+	right.x += extra_width / 2.0
+	for i in count:
+		var t := 0.5 if count == 1 else float(i) / (count - 1)
+		var bullet = weapon.bullet_scene.instantiate()
+		bullet.damage = weapon.get_damage(level)
+		bullet.position = get_global_transform() * left.lerp(right, t)
+		$Bullets.add_child(bullet)
 		
 func on_hit(damage: float):
 	health -= damage

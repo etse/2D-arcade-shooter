@@ -1,0 +1,112 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://components/Menu/WeaponShop/WeaponShop.gd" id="1_script"]
+[ext_resource type="FontFile" uid="uid://c4wkpvq38gdoq" path="res://assets/fonts/Arcade.ttf" id="2_arcade"]
+[ext_resource type="FontFile" uid="uid://doesrguwx81i0" path="res://assets/fonts/8bitOperatorPlus-Bold.ttf" id="3_bold"]
+[ext_resource type="FontFile" path="res://assets/fonts/8bitOperatorPlus-Regular.ttf" id="4_regular"]
+[ext_resource type="PackedScene" uid="uid://vy8ykdp0wu7f" path="res://components/Menu/Label/Label.tscn" id="5_label"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_item"]
+bg_color = Color(0, 0, 0, 0.55)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.7, 0, 0.6)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="WeaponShop" type="VBoxContainer"]
+offset_left = 360.0
+offset_right = 1480.0
+offset_bottom = 1060.0
+theme_override_constants/separation = 16
+alignment = 1
+script = ExtResource("1_script")
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_arcade")
+theme_override_font_sizes/font_size = 140
+text = "Weapon shop"
+
+[node name="Money" type="Label" parent="."]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.7, 0, 1)
+theme_override_fonts/font = ExtResource("3_bold")
+theme_override_font_sizes/font_size = 36
+text = "Money: $0"
+
+[node name="Item" type="PanelContainer" parent="."]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_item")
+
+[node name="Margin" type="MarginContainer" parent="Item"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 20
+
+[node name="Row" type="HBoxContainer" parent="Item/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="Icon" type="TextureRect" parent="Item/Margin/Row"]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+size_flags_vertical = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Info" type="VBoxContainer" parent="Item/Margin/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="Name" type="Label" parent="Item/Margin/Row/Info"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.24, 0.94, 0.27, 1)
+theme_override_fonts/font = ExtResource("3_bold")
+theme_override_font_sizes/font_size = 44
+text = "Weapon"
+
+[node name="Description" type="Label" parent="Item/Margin/Row/Info"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_fonts/font = ExtResource("4_regular")
+theme_override_font_sizes/font_size = 24
+text = "Description"
+autowrap_mode = 3
+
+[node name="Level" type="Label" parent="Item/Margin/Row/Info"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_bold")
+theme_override_font_sizes/font_size = 30
+text = "Level 1 / 10"
+
+[node name="Stats" type="GridContainer" parent="Item/Margin/Row/Info"]
+layout_mode = 2
+theme_override_constants/h_separation = 16
+columns = 3
+
+[node name="Upgrade" parent="." instance=ExtResource("5_label")]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_bold")
+text = "Upgrade"
+
+[node name="Status" type="Label" parent="."]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_regular")
+theme_override_font_sizes/font_size = 26
+
+[node name="Back" parent="." instance=ExtResource("5_label")]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_bold")
+text = "Back"
+
+[connection signal="selected" from="Upgrade" to="." method="_on_Upgrade_selected"]
+[connection signal="selected" from="Back" to="." method="_on_Back_selected"]
