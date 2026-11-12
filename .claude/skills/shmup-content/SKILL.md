@@ -53,7 +53,7 @@ func exit() -> void:         # stop timers, clean up
 
 Steps:
 1. Write `screens/Level/levels/Level1/<WaveName>.gd` (copy `01_SimpleFighters.gd` for timer + tween spawning or `Formation.gd` for `Path2D` paths).
-2. In `Level1.tscn`, attach the script to a node under `Waves` (placeholders exist: `DifferentStrength`, `Attackers`, `HordeEvade`, `CalmBeforeBoss`). Add its children: a `Timer` (connect `timeout` → `_on_Timer_timeout`), `Points/` `Marker2D`s and/or `Path2D`s, and an `Enemies` node to parent spawns.
+2. In `Level1.tscn`, attach the script to a node under `Waves` (placeholders exist: `HordeEvade`, `CalmBeforeBoss`). Add its children: a `Timer` (connect `timeout` → `_on_Timer_timeout`), `Points/` `Marker2D`s and/or `Path2D`s, and an `Enemies` node to parent spawns.
 3. Add the node to the `waves` array in `Level1.gd` at the right position.
 4. Make `update()` return true eventually (by spawn count, by time, or when `$Enemies.get_child_count() == 0` after spawning ends). A wave that never returns true stalls the level.
 5. Coordinates: the play area is the 1920×1080 viewport; y < 0 is above the screen (spawn there), the player sits near y ≈ 950.
@@ -78,8 +78,10 @@ dynamically). Background is built from `InfinityScroll` instances
 | Thing | Value |
 | --- | --- |
 | Player health / regen | 100 / 5 per s (0.5 while shooting) |
-| Pulse fire lvl 1 → 10 | price $300; dmg 2 → 6, bullets 2 → 5, interval 0.4 → 0.2 s, DPS 10 → 150; upgrades $100 … $8000, each ~1.7× the last ($19750 total) — `PulseFire.tres` |
-| Spread fire lvl 1 → 10 | price $500; dmg 1.5 → 3, bullets/volley 2 → 12, interval 0.24 → 0.2 s, fan 4° → 76°, DPS 12.5 → 180; upgrades $150 … $12800, ~1.6× Pulse fire per step ($31450 total) — `SpreadFire.tres` |
+| Pulse fire lvl 1 → 10 | price $300; dmg 2 → 6, bullets 2 → 5, interval 0.4 → 0.2 s, DPS 10 → 150; upgrades $500 … $19000, each ~1.6× the last ($51250 total) — `PulseFire.tres` |
+| Spread fire lvl 1 → 10 | price $400; dmg 1.5 → 3, bullets/volley 2 → 12, interval 0.24 → 0.2 s, fan 4° → 76°, DPS 12.5 → 180; upgrades $650 … $24000, ~1.3× Pulse fire per step ($64350 total) — `SpreadFire.tres` |
 | Ramming | player takes 15, enemy takes 2 |
-| BasicEnemy | health 6, points 10 |
-| SimpleBoss | health 230, 300 points, fireballs 20 dmg at 500 px/s |
+| BasicEnemy | health 6, points 5 |
+| Level income target | perfect Level 1 run ≈ $800–1000 (currently $825); later levels pay more |
+| HeavyEnemy | health 24, points 25, flies 7.5 s vs 5 s for basics in `DifferentStrength` |
+| SimpleBoss | health 230, 250 points, fireballs 20 dmg at 500 px/s |

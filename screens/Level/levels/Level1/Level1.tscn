@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://by33htaqqymtq"]
+[gd_scene load_steps=15 format=3 uid="uid://by33htaqqymtq"]
 
 [ext_resource type="Script" path="res://screens/Level/levels/Level1/Level1.gd" id="1"]
 [ext_resource type="PackedScene" path="res://components/InfinityScroll/InfinityScroll.tscn" id="2"]
@@ -10,6 +10,8 @@
 [ext_resource type="Script" path="res://screens/Level/levels/Level1/01_SimpleFighters.gd" id="8"]
 [ext_resource type="Script" path="res://screens/Level/levels/Level1/Formation.gd" id="9"]
 [ext_resource type="Script" path="res://screens/Level/levels/Level1/BossBattle.gd" id="10"]
+[ext_resource type="Script" path="res://screens/Level/levels/Level1/DifferentStrength.gd" id="11"]
+[ext_resource type="Script" path="res://screens/Level/levels/Level1/Attackers.gd" id="12"]
 
 [sub_resource type="Curve2D" id="1"]
 bake_interval = 10.0
@@ -106,8 +108,28 @@ curve = SubResource("1")
 curve = SubResource("2")
 
 [node name="DifferentStrength" type="Node" parent="Waves"]
+script = ExtResource("11")
+
+[node name="Timer" type="Timer" parent="Waves/DifferentStrength"]
+wait_time = 1.6
+
+[node name="Enemies" type="Node" parent="Waves/DifferentStrength"]
 
 [node name="Attackers" type="Node" parent="Waves"]
+script = ExtResource("12")
+
+[node name="Timer" type="Timer" parent="Waves/Attackers"]
+wait_time = 1.2
+
+[node name="Paths" type="Node" parent="Waves/Attackers"]
+
+[node name="LeftPath" type="Path2D" parent="Waves/Attackers/Paths"]
+curve = SubResource("1")
+
+[node name="RightPath" type="Path2D" parent="Waves/Attackers/Paths"]
+curve = SubResource("2")
+
+[node name="Squads" type="Node" parent="Waves/Attackers"]
 
 [node name="HordeEvade" type="Node" parent="Waves"]
 
@@ -133,3 +155,5 @@ position = Vector2(1720, 180)
 [connection signal="timeout" from="Waves/Wait/Timer" to="Waves/Wait" method="_on_Timer_timeout"]
 [connection signal="timeout" from="Waves/SimpleFighters/Timer" to="Waves/SimpleFighters" method="_on_Timer_timeout"]
 [connection signal="timeout" from="Waves/Formation/Timer" to="Waves/Formation" method="_on_Timer_timeout"]
+[connection signal="timeout" from="Waves/DifferentStrength/Timer" to="Waves/DifferentStrength" method="_on_Timer_timeout"]
+[connection signal="timeout" from="Waves/Attackers/Timer" to="Waves/Attackers" method="_on_Timer_timeout"]

@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="PackedScene" uid="uid://bah3i3ovmy3pf" path="res://components/Enemies/BasicEnemy/BasicEnemy.tscn" id="1_base"]
+[ext_resource type="Texture2D" uid="uid://cex8ycfdsucec" path="res://assets/sprites/enemies/illumGreenglow07.png" id="2_tex"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_heavy"]
+radius = 62.0
+
+[node name="HeavyEnemy" instance=ExtResource("1_base")]
+health = 24.0
+points = 25
+
+[node name="Sprite2D" parent="." index="0"]
+scale = Vector2(1.8, 1.8)
+texture = ExtResource("2_tex")
+
+[node name="CollisionShape2D" parent="." index="1"]
+rotation = 0.0
+shape = SubResource("CircleShape2D_heavy")
+
+[node name="Explosion" parent="." index="2"]
+scale = Vector2(0.28, 0.28)

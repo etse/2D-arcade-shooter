@@ -8,7 +8,7 @@ const SPREAD_FIRE := preload("res://components/Weapons/SpreadFire/SpreadFire.tre
 
 func run() -> void:
 	# 1) Shop: preview Pulse fire, browse to Spread fire, buy it, power it up
-	Score.add_score(1500)
+	Score.add_score(6000)
 	await goto(MENU)
 	await wait(0.6)
 	await click(node("MenuContainer/MainMenu/%UpgradeWeapon"))

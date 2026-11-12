@@ -2,7 +2,7 @@ extends Node2D
 
 signal completed
 
-@onready var waves = [$Waves/Wait, $Waves/SimpleFighters, $Waves/Formation, $Waves/Wait, $Waves/BossBattle]
+@onready var waves = [$Waves/Wait, $Waves/SimpleFighters, $Waves/DifferentStrength, $Waves/Formation, $Waves/Attackers, $Waves/Wait, $Waves/BossBattle]
 @onready var currentWave = null
 var waveCount = 0
 

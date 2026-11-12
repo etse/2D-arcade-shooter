@@ -2,7 +2,7 @@ extends Area2D
 
 @export var health: float = 230
 ## Money awarded when the boss is destroyed.
-@export var points: int = 300
+@export var points: int = 250
 var exploded = false
 var explosionSound = 0
 signal destroyed;

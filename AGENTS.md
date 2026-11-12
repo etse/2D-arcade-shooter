@@ -47,7 +47,7 @@ shop can read names, prices and stats from the same data.
 
 Only Level 1 exists (waves → boss → back to menu). Money is earned and kept.
 The **weapon shop** ("Upgrade weapon" in the main menu) is Tyrian-style: a list
-of weapons — **Pulse fire** (starting weapon, $300) and **Spread fire** ($500) —
+of weapons — **Pulse fire** (starting weapon, $300) and **Spread fire** ($400) —
 with a live preview of the highlighted weapon and a 10-step power bar. The player
 owns one weapon at a time; buying another trades the current one in for its full
 value (price + upgrades paid), and power can be raised (pay) or lowered (full
@@ -91,6 +91,7 @@ project.godot                  engine config, autoloads, input map
 components/                    reusable scenes, each folder = Scene.tscn + Scene.gd
   Player/                      CharacterBody2D player ship
   Enemies/BasicEnemy/          basic Area2D enemy (class_name BasicEnemy)
+  Enemies/HeavyEnemy/          tanky variant: inherited BasicEnemy scene, bigger sprite, more health/points
   Bosses/SimpleBoss/           level-1 boss, fires FireBalls
   Bullets/                     bullet.gd (class_name Bullet) + Bullet/FireBullet/SpreadBullet/FireBall scenes
   Weapons/                     WeaponData.gd (class_name WeaponData), WeaponGun.gd (firing patterns) + one folder per weapon with its .tres
@@ -132,8 +133,10 @@ func update(delta) -> bool    # called every frame; return true when the wave is
 func exit() -> void           # called once, before the next wave starts
 ```
 
-Current order: `Wait → SimpleFighters → Formation → Wait → BossBattle`.
-`DifferentStrength`, `Attackers`, `HordeEvade`, `CalmBeforeBoss` are empty
+Current order: `Wait → SimpleFighters → DifferentStrength → Formation → Attackers → Wait → BossBattle`.
+`DifferentStrength` streams basics straight down with slower `HeavyEnemy`s mixed in (data-driven `BEATS` list; ends when all spawned and the screen is clear).
+`Attackers` (hardest, last before the boss) = Formation's S-curve fighters at half density + squads (two basics in front of a `HeavyEnemy`, moved as one `Node2D`) alternating left/right; reuses Formation's `Curve2D` sub-resources.
+`HordeEvade`, `CalmBeforeBoss` are empty
 placeholder nodes not yet wired in. Waves spawn enemies under their own
 `Enemies` child and move them with tweens (`SimpleFighters`) or
 `Path2D`/`PathFollow2D` (`Formation`). Spawn/target positions are `Marker2D`s
@@ -150,11 +153,12 @@ Collision layers/masks are all default; **filtering is done with groups**:
 - Bullets free themselves once they are more than `OFFSCREEN_MARGIN` (200 px) outside the visible screen. The `WorldBounds` walls in `Level.tscn` only keep the player on screen.
 - Bullets poll `get_overlapping_areas()/bodies()` in `_process` rather than using signals.
 - The player takes ramming damage via its `CollisionArea` overlapping `"enemies"`.
+- `HeavyEnemy` (`components/Enemies/HeavyEnemy/HeavyEnemy.tscn`) is an *inherited scene* of `BasicEnemy.tscn` with the same script: only sprite (`illumGreenglow07`, ×1.8), circle collision, explosion scale and `health`/`points` are overridden. Make further variants the same way.
 - Enemy death: `health <= 0` → explosion anim + sound, `Score.add_score(points)`, screen shake, `queue_free()` when the sound ends.
 
 ### Weapons and the shop
 - A weapon is a `WeaponData` resource (`components/Weapons/WeaponData.gd`): name, description, icon, `bullet_scene`, `fire_pattern` (`PULSE`/`SPREAD`), `price`, and per-level arrays `damage`, `bullet_count`, `fire_interval`, `spread_angle` (SPREAD only), `upgrade_cost` (index = level − 1; array length = max level; `upgrade_cost[i]` is the price to go from level i+1 to i+2).
-- Pulse fire: `components/Weapons/PulseFire/PulseFire.tres` (10 levels; level 1 = 2 dmg, 2 bullets, 0.4 s). Spread fire: `components/Weapons/SpreadFire/SpreadFire.tres` (level 1 = 1.5 dmg, 2 bullets, 0.24 s, 4° fan → level 10 = 3 dmg, 12 bullets, 0.2 s, 76°; upgrades ~1.6× Pulse fire's). Upgrade prices grow ~1.7× per level (Pulse fire $100 → $8000, $19750 to max). Rule of thumb: spread does less damage per bullet but more total DPS. Balance by editing the `.tres` files. Income reference: a perfect Level 1 run pays $540 (24 `BasicEnemy` × `points` 10 + `SimpleBoss.points` 300), i.e. about two upgrades.
+- Pulse fire: `components/Weapons/PulseFire/PulseFire.tres` (10 levels; level 1 = 2 dmg, 2 bullets, 0.4 s). Spread fire: `components/Weapons/SpreadFire/SpreadFire.tres` (level 1 = 1.5 dmg, 2 bullets, 0.24 s, 4° fan → level 10 = 3 dmg, 12 bullets, 0.2 s, 76°; upgrades ~1.3× Pulse fire's). Upgrade prices grow ~1.6× per level (Pulse fire $500 → $19000, $51250 to max; Spread fire $650 → $24000, $64350). Rule of thumb: spread does less damage per bullet but more total DPS. Balance by editing the `.tres` files. Income reference / target: a perfect Level 1 run should pay about $800–1000 (now $825: 60 `BasicEnemy` × 5 + 11 `HeavyEnemy` × 25 + `SimpleBoss.points` 250), i.e. roughly one upgrade per level early on; later levels are meant to pay more, so the expensive top levels take several levels of saving. Keep that in mind when adding waves to Level 1.
 - Firing lives in `WeaponGun` (`components/Weapons/WeaponGun.gd`, a Node2D at the ship's origin): set `weapon`, `level`, `left_muzzle`/`right_muzzle`, `bullet_parent`, optional `sound`, and call `tick(delta, firing)` every physics frame. `fire()` dispatches on `fire_pattern` and returns the seconds until the next shot; `tick` loops, so several bullets can fire per frame. `Player.gd` creates one in `_ready()` (`player.gun`) and feeds it `Loadout` each frame; the shop preview reuses it, so the preview always matches the game.
   - `PULSE`: the whole volley at once, spread between `$LeftGun` and `$RightGun` (widens by `PULSE_FIRE_EXTRA_WIDTH` per bullet beyond two), straight ahead. Inner bullets spawn `PULSE_FIRE_STAGGER` px further ahead per step from the edge, so 3+ bullets form an arrowhead.
   - `SPREAD` (minigun): ONE bullet per call, every `fire_interval / bullet_count` s, from just left/right of the nose (`SPREAD_FIRE_MUZZLE_OFFSET`, not the wide guns — otherwise level 1 misses what's straight ahead). Each volley's lanes are evenly fanned over `spread_angle`, fired in shuffled order alternating left/right, with ±`SPREAD_FIRE_JITTER`°. Bullets fly along their rotation (`bullet.gd` moves in local space).
