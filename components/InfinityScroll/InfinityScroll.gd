@@ -3,12 +3,14 @@ extends Node
 @export var texture: CompressedTexture2D
 @export var scroll_speed: float
 @export var alpha: float = 1
+## Colour tint (alpha comes from `alpha`).
+@export var tint: Color = Color.WHITE
 
 func _ready():
 	$texture_1.texture = texture
 	$texture_2.texture = texture
-	$texture_1.modulate = Color(1, 1, 1, alpha)
-	$texture_2.modulate = Color(1, 1, 1, alpha)
+	$texture_1.modulate = Color(tint, alpha)
+	$texture_2.modulate = Color(tint, alpha)
 	$texture_1.position = Vector2(0, -texture.get_height())
 	$texture_2.position = Vector2(0, 0)
 	

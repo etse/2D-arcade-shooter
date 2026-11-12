@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="PackedScene" uid="uid://bah3i3ovmy3pf" path="res://components/Enemies/BasicEnemy/BasicEnemy.tscn" id="1_base"]
+[ext_resource type="Script" path="res://components/Enemies/Gunship/Gunship.gd" id="2_script"]
+[ext_resource type="Texture2D" uid="uid://bfo3tqbcondsq" path="res://assets/sprites/enemies/illumRed09.png" id="3_tex"]
+[ext_resource type="AudioStream" uid="uid://d3hwh1ay3j5lv" path="res://assets/sfx/laser_bolt1.ogg" id="4_sfx"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gun"]
+radius = 50.0
+
+[node name="Gunship" instance=ExtResource("1_base")]
+script = ExtResource("2_script")
+health = 14.0
+points = 15
+
+[node name="Sprite2D" parent="." index="0"]
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("3_tex")
+
+[node name="CollisionShape2D" parent="." index="1"]
+rotation = 0.0
+shape = SubResource("CircleShape2D_gun")
+
+[node name="Explosion" parent="." index="2"]
+scale = Vector2(0.22, 0.22)
+
+[node name="ShotSound" type="AudioStreamPlayer" parent="." index="5"]
+stream = ExtResource("4_sfx")
+volume_db = -26.0
+bus = &"sfx"

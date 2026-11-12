@@ -23,7 +23,7 @@ An enemy is an `Area2D` scene that:
 1. Copy `components/Enemies/BasicEnemy/` to `components/Enemies/<Name>/`, rename files to `<Name>.tscn` / `<Name>.gd`.
 2. In the new `.tscn`: rename the root node, repoint the script ext_resource to the new `.gd`, remove the copied `uid=` values (header + script ext_resource).
 3. In the new `.gd`: either `extends BasicEnemy` and override (preferred for small variations — tweak `health`, `points`, add shooting), or change `class_name` to `<Name>`.
-4. For a shooting enemy: copy the pattern from `SimpleBoss.gd` — `ShootTimer` + `Marker2D` gun(s) + a `Bullets` child; bullets need `friendly = false` and a downward `speed` (`Vector2(0, +N)`).
+4. For a shooting enemy: extend `Gunship` or copy its `_fire()` (`EnemyBullet`s into `Bullet.layer(self)`); older pattern: `SimpleBoss.gd` — `ShootTimer` + `Marker2D` gun(s) + a `Bullets` child; bullets need `friendly = false` and a downward `speed` (`Vector2(0, +N)`).
 5. Sprites: frames are in `assets/sprites/enemies/` (see existing `SpriteFrames`/textures in BasicEnemy.tscn).
 
 ## Recipe: new bullet / weapon
@@ -34,9 +34,17 @@ An enemy is an `Area2D` scene that:
 - The equipped weapon + level live in the `Loadout` autoload; `WeaponGun.fire()` (`components/Weapons/WeaponGun.gd`, used by both `Player` and the shop preview) dispatches on `WeaponData.fire_pattern` (`PULSE`, `SPREAD`) and returns the delay until the next shot. A new firing pattern (e.g. homing) = new enum value + a `_fire_<pattern>()` function there.
 - The shop UI (`components/Menu/WeaponShop/`) reads everything from `Loadout`/`WeaponData`; balance changes need no UI work, and a weapon added to `Loadout.WEAPONS` shows up in the shop list and preview automatically.
 
-## Recipe: new wave
+## Recipe: new wave (preferred: TimelineWave)
 
-Waves are plain `Node`s under `Level1/Waves` implementing:
+For straight / gunship / squad / path spawns, extend `TimelineWave`
+(`screens/Level/levels/TimelineWave.gd`) and override `beats()` — see the
+Level 2 waves (`screens/Level/levels/Level2/*.gd`) for examples. Add a `Node`
+with the script (and `beat_time`) under the level's `Waves`; no other nodes
+needed. Add new spawn kinds to `TimelineWave._spawn()` so every level gets them.
+
+## Recipe: new wave (hand-written)
+
+Waves are plain `Node`s under the level's `Waves` implementing:
 
 ```gdscript
 extends Node
@@ -60,7 +68,7 @@ Steps:
 
 ## Recipe: boss
 
-Follow `components/Bosses/SimpleBoss/` + `screens/Level/levels/Level1/BossBattle.gd`:
+Follow `components/Bosses/SimpleBoss/` + `screens/Level/levels/Level1/BossBattle.gd` (simple), or `components/Bosses/Dreadnought/` + `Level2/BossBattle.gd` (boss runs its own phases and bullet patterns; `Bullet.layer(self)` for its bullets):
 boss scene emits `destroyed` when its death sequence finishes; the battle wave
 drives movement with tweens (created on the boss) in a loop while the boss is
 alive, and its `update()` returns true once `destroyed` has fired (it then
@@ -68,10 +76,13 @@ alive, and its `update()` returns true once `destroyed` has fired (it then
 
 ## Recipe: new level
 
-Duplicate `screens/Level/levels/Level1/` → `Level2/`, then swap the `Level1`
-instance in `screens/Level/Level.tscn` (or make `Level.gd` choose the level
-dynamically). Background is built from `InfinityScroll` instances
-(`texture`, `scroll_speed`, `alpha`).
+Copy `screens/Level/levels/Level2/` (generic `Level2.gd` runs `$Waves` children
+in order) to `LevelN/`, rename the root node/script, and append the scene path
+to `Campaign.LEVELS` (`components/Singletons/Campaign.gd`). `Level.gd`
+instances `Campaign.level_scene()`; the root must have `signal completed`.
+Background is built from `InfinityScroll` instances (`texture`,
+`scroll_speed`, `alpha`, `tint`). Jump straight to it in demos/tests with
+`goto_level(n)` from the record-demo `demo_base.gd`.
 
 ## Balancing reference (current values)
 
@@ -83,5 +94,8 @@ dynamically). Background is built from `InfinityScroll` instances
 | Ramming | player takes 15, enemy takes 2 |
 | BasicEnemy | health 6, points 5 |
 | Level income target | perfect Level 1 run ≈ $800–1000 (currently $825); later levels pay more |
+| Gunship | health 14, points 15; 3-bullet fan straight down (8° apart) every 1 s at 560 px/s, 10 dmg |
+| Dreadnought (Level 2 boss) | health 600, 400 points; orbs 190–340 px/s, 10 dmg |
+| Level 2 income | perfect run ≈ $1535 |
 | HeavyEnemy | health 24, points 25, flies 7.5 s vs 5 s for basics in `DifferentStrength` |
-| SimpleBoss | health 230, 250 points, fireballs 20 dmg at 500 px/s |
+| SimpleBoss | health 230, 250 points; volley every 0.75 s: twin fireballs (500 px/s) or, every 3rd (every 2nd below half health), a 7-ball 70° fan (360 px/s); 15 dmg |

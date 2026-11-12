@@ -213,11 +213,18 @@ func fast_forward(seconds: float, speed := 6.0) -> void:
 
 # --- level cheats ------------------------------------------------------------------------
 
-## Jump Level1 to the wave node named `wave_name` (see Level1.gd `waves`), e.g.
-## "SimpleFighters", "DifferentStrength", "Formation", "Attackers", "BossBattle".
+## Start level `number` (1-based) directly, skipping the menu.
+func goto_level(number: int) -> Node:
+	Campaign.level_index = number - 1
+	return await goto(LEVEL)
+
+
+## Jump the current level to the wave node named `wave_name` (see the level's
+## `waves`), e.g. Level 1: "SimpleFighters", "DifferentStrength", "Formation",
+## "Attackers", "BossBattle"; Level 2: see Level2.tscn `Waves`.
 ## Clears enemies and bullets on screen first unless `clear` is false.
 func skip_to_wave(level: Node, wave_name: String, clear := true) -> Node:
-	var l1 := level.get_node("Level1")
+	var l1: Node = level.level
 	var index: int = l1.waves.map(func(w): return w.name).find(wave_name)
 	assert(index >= 0, "no wave named " + wave_name)
 	if l1.currentWave != null:

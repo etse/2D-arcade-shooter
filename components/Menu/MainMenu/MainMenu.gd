@@ -25,6 +25,7 @@ func _ready():
 
 func refresh():
 	%Money.text = "$%d" % Score.score
+	%StartGame.detail = "Level %d" % Campaign.level_number()
 	%UpgradeWeapon.detail = "%s  -  power %d / %d" % [Loadout.weapon.name, Loadout.weapon_level, Loadout.weapon.max_level()]
 
 

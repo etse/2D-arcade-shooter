@@ -1,8 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://bdllior8sn4f0"]
+[gd_scene load_steps=7 format=3 uid="uid://bdllior8sn4f0"]
 
 [ext_resource type="Script" path="res://screens/Level/Level.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://1b74sphhym2f" path="res://components/HUD/HUD.tscn" id="2"]
-[ext_resource type="PackedScene" uid="uid://by33htaqqymtq" path="res://screens/Level/levels/Level1/Level1.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://c3gcmir1uqwv8" path="res://components/Player/Player.tscn" id="4"]
 [ext_resource type="PackedScene" path="res://components/CameraEffects/ScreenShake/ScreenShake.tscn" id="5"]
 
@@ -45,7 +44,7 @@ ignore_rotation = false
 
 [node name="ScreenShake" parent="Camera" instance=ExtResource("5")]
 
-[node name="Level1" parent="." instance=ExtResource("3")]
+[node name="Projectiles" type="Node2D" parent="." groups=["projectiles"]]
 
 [node name="Overlay" type="Polygon2D" parent="."]
 modulate = Color(0, 0, 0, 1)
@@ -53,4 +52,3 @@ polygon = PackedVector2Array(0, 0, 1920, 0, 1920, 1080, 0, 1080)
 
 [connection signal="destroyed" from="Player" to="." method="_on_Player_destroyed"]
 [connection signal="health_changed" from="Player" to="." method="_on_Player_health_changed"]
-[connection signal="completed" from="Level1" to="." method="_on_Level1_completed"]

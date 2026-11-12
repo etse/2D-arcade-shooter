@@ -42,6 +42,8 @@ func run() -> void:
 	Score.add_score(SHOP_MONEY)
 	fast_forward(5.0)                # skip the level's own pause + fade to menu
 	await wait_for_scene(MENU)
+	Campaign.level_index = 0         # beating the boss advanced to Level 2; replay Level 1
+	node("MenuContainer/MainMenu").refresh()
 	Engine.time_scale = 1.0
 	await fade_in(0.4)
 

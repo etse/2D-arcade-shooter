@@ -9,6 +9,13 @@ var destroyed = false
 func _ready():
 	add_to_group("bullets")
 
+
+## Where enemies should put the bullets they fire: the level's "projectiles"
+## layer (drawn below the fade overlay, survives the shooter), else the scene.
+static func layer(from: Node) -> Node:
+	var node := from.get_tree().get_first_node_in_group("projectiles")
+	return node if node != null else from.get_tree().current_scene
+
 ## How far outside the visible screen (in pixels) a bullet may travel before it is freed.
 const OFFSCREEN_MARGIN := 200.0
 
