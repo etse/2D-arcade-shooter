@@ -26,6 +26,8 @@ func _ready():
 func refresh():
 	%Money.text = "$%d" % Score.score
 	%StartGame.detail = "Level %d" % Campaign.level_number()
+	if Campaign.ng_plus > 0:
+		%StartGame.detail += "  -  New Game+ %d (enemies x%s)" % [Campaign.ng_plus, Campaign.difficulty_text()]
 	%UpgradeWeapon.detail = "%s  -  power %d / %d" % [Loadout.weapon.name, Loadout.weapon_level, Loadout.weapon.max_level()]
 
 

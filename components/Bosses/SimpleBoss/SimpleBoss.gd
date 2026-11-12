@@ -10,6 +10,7 @@ signal destroyed;
 
 func _ready():
 	add_to_group("enemies")
+	health = Campaign.enemy_health(health)
 	max_health = health
 
 func _process(delta):
@@ -20,7 +21,7 @@ func _process(delta):
 func playExplosion():
 	self.exploded = true
 	var tween = create_tween()
-	Score.add_score(points)
+	Score.add_score(Campaign.reward(points))
 	CameraControl.screen_shake(14, 25, 1.2)
 	$CollisionShape2D.disabled = true
 	$Explosion/ExplosionSoundTimer.start()

@@ -3,6 +3,13 @@ extends Control
 @onready var currentPanel = $MenuContainer/MainMenu
 @onready var levelScene = "res://screens/Level/Level.tscn"
 
+func _ready():
+	if Campaign.victory_pending:
+		Campaign.victory_pending = false
+		$MenuContainer/MainMenu.visible = false
+		$MenuContainer/Victory.visible = true
+		currentPanel = $MenuContainer/Victory
+
 func _switch_panel(toPanel: Object):
 	toPanel.modulate = Color(1, 1, 1, 0)
 	toPanel.visible = true
@@ -34,4 +41,7 @@ func _on_MainMenu_StartGame():
 	get_tree().change_scene_to_file(levelScene)
 
 func _on_Options_saved():
+	self._switch_panel($MenuContainer/MainMenu)
+
+func _on_Victory_back():
 	self._switch_panel($MenuContainer/MainMenu)

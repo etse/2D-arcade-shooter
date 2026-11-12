@@ -35,6 +35,7 @@ var _ring_offset := 0.0
 
 func _ready():
 	add_to_group("enemies")
+	health = Campaign.enemy_health(health)
 	max_health = health
 
 
@@ -165,7 +166,7 @@ func _explode():
 	# Be nice: its bullets disappear with it.
 	for bullet in get_tree().get_nodes_in_group("boss_bullets"):
 		bullet.queue_free()
-	Score.add_score(points)
+	Score.add_score(Campaign.reward(points))
 	CameraControl.screen_shake(16, 25, 1.6)
 	$CollisionShape2D.disabled = true
 	$Explosion/ExplosionSoundTimer.start()

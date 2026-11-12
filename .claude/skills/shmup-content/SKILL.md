@@ -13,9 +13,9 @@ if it's visible (skill `godot-validate`). Scene text-editing rules: skill
 ## Contract every enemy must satisfy
 
 An enemy is an `Area2D` scene that:
-1. `add_to_group("enemies")` in `_ready()` — bullets and the player only interact with this group.
+1. `add_to_group("enemies")` in `_ready()` — bullets and the player only interact with this group. Also `health = Campaign.enemy_health(health)` there (New Game+ scaling; subclasses of `BasicEnemy` get both from `super`).
 2. Implements `on_hit(damage: float)` — called by friendly bullets and on player ramming.
-3. On death: disables its `CollisionShape2D` (so it stops taking hits), calls `Score.add_score(points)`, optionally `CameraControl.screen_shake(...)`, plays explosion, then `queue_free()`s.
+3. On death: disables its `CollisionShape2D` (so it stops taking hits), calls `Score.add_score(Campaign.reward(points))` (NG+ scaling), optionally `CameraControl.screen_shake(...)`, plays explosion, then `queue_free()`s.
 4. Is freed if it leaves the screen without dying. Current waves do this by ending the movement tween below the screen and `queue_free()`ing on `tween.finished`; a `VisibleOnScreenNotifier2D` + `screen_exited` also works.
 
 ## Recipe: new enemy type

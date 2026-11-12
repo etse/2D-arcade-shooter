@@ -4,6 +4,8 @@ const acceleration_force = 7000
 const dampening = 10
 const max_speed = 1000
 const max_speed_shooting = 500
+## Damage taken when ramming an enemy (scaled by Campaign.difficulty).
+const RAM_DAMAGE = 15.0
 var acceleration = Vector2(0,0);
 ## Fires the equipped weapon (see the Loadout autoload).
 var gun := WeaponGun.new()
@@ -48,7 +50,7 @@ func handle_collision(delta):
 	for collider in $CollisionArea.get_overlapping_areas():
 		if collider.is_in_group("enemies") and not collider.is_in_group("bullets"):
 			collider.on_hit(2)
-			self.on_hit(15)
+			self.on_hit(Campaign.enemy_damage(RAM_DAMAGE))
 			self.velocity = (self.position - collider.position).normalized() * 600
 	
 func handle_shooting(delta: float):

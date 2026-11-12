@@ -45,7 +45,7 @@ shop can read names, prices and stats from the same data.
 
 ### Current state
 
-Two levels (waves → boss → back to menu). Beating a level unlocks the next (`Campaign`); after the last one it is replayed. Money is earned and kept.
+Two levels (waves → boss → back to menu). Beating a level unlocks the next (`Campaign`). Dying sends you back to the menu with the money you had when the level started (no farming). Beating the last level shows a Victory panel and starts **New Game+** at Level 1: enemy health, enemy damage and money rewards are multiplied by `Campaign.difficulty` (1.0, then ×1.5 per completed run). Money and weapons carry over.
 The **weapon shop** ("Upgrade weapon" in the main menu) is Tyrian-style: a list
 of weapons — **Pulse fire** (starting weapon, $300) and **Spread fire** ($400) —
 with a live preview of the highlighted weapon and a 10-step power bar. The player
@@ -102,7 +102,7 @@ components/                    reusable scenes, each folder = Scene.tscn + Scene
   HUD/                         CanvasLayer: money + weapon panel, segmented hull bar
   UI/                          shared look: UIStyle.gd (colours, fonts, styles), styles/*.tres, MenuRow
   InfinityScroll/              looping vertical background layer
-  Menu/                        menu panels (MainMenu, Options, Slider, WeaponShop + WeaponPreview, ShopItem, UpgradeShip)
+  Menu/                        menu panels (MainMenu, Options, Slider, WeaponShop + WeaponPreview, ShopItem, UpgradeShip, Victory)
   Singletons/                  autoload scripts (Score, CameraControl, Loadout, Campaign)
 screens/
   Menu/                        main menu screen (entry point)
@@ -120,15 +120,15 @@ demo/                          recorded demo videos (git-ignored, see skill reco
 ### Autoloads (`project.godot` → `[autoload]`)
 - `Score` (`components/Singletons/Score.gd`): `score: int`, `add_score(points)`, `spend(amount) -> bool`, signal `score_changed(score)`. This is the player's money — intentionally never reset between levels/runs.
 - `Loadout` (`components/Singletons/Loadout.gd`): the player's equipment — `WEAPONS` (all weapons sold, in shop order), `weapon: WeaponData` and `weapon_level` (starts at 1). `upgrade_weapon()` pays via `Score.spend()`; `downgrade_weapon()` refunds that level's `upgrade_cost`; `buy_weapon(w)` refunds `trade_in_value()` (= `weapon.get_total_value(level)`) and charges `w.price`, resetting to level 1. Both emit `changed`. In memory only, not saved.
-- `Campaign` (`components/Singletons/Campaign.gd`): `LEVELS` (level scene paths in order), `level_index` (next level to play), `level_number()`, `level_scene()`, `complete_level()` (called by `Level.gd` on `completed`; stays on the last level). In memory only.
+- `Campaign` (`components/Singletons/Campaign.gd`): `LEVELS` (level scene paths in order), `level_index` (next level to play), `ng_plus`, `difficulty` (×`NG_PLUS_STEP` 1.5 per completed run), `victory_pending`. `Level.gd` calls `begin_level()` (snapshots `Score`), `fail_level()` on death (restores it via `Score.set_score()`) and `complete_level()` (next level, or after the last: NG+ — `difficulty` ×1.5, back to Level 1, `victory_pending`). **Scaling helpers — every enemy/boss/bullet must use them:** `enemy_health(h)` (in `_ready`), `reward(points)` (for `Score.add_score`), `enemy_damage(d)` (applied centrally in `bullet.gd` for non-friendly bullets and in `Player.gd` for ramming). In memory only.
 - `CameraControl` (`components/Singletons/Camera_control.gd`): global event bus for screen shake. Call `CameraControl.screen_shake(amplitude, frequency, duration)`; `Level.gd` forwards it to `$Camera/ScreenShake`.
 
 ### Scene flow
 `Menu.tscn` → "Start next level" → `change_scene_to_file("res://screens/Level/Level.tscn")`
 → `Level.gd` instances `Campaign.level_scene()` (as `level`, placed below `Projectiles` and the fade `Overlay`)
-→ player dies, or the level emits `completed` after its last wave (→ `Campaign.complete_level()`) → `Level.gd` fades out → back to `Menu.tscn`.
-The main menu's "Start next level" row shows `Level N` from `Campaign`.
-There is no dedicated win/lose screen yet.
+→ player dies (→ `Campaign.fail_level()`, money restored; ignored once the boss is beaten), or the level emits `completed` after its last wave (→ `Campaign.complete_level()`) → `Level.gd` fades out → back to `Menu.tscn`, which opens the `Victory` panel instead of the main menu when `Campaign.victory_pending` (last level beaten).
+The main menu's "Start next level" row shows `Level N` (and `New Game+ N (enemies xF)`) from `Campaign`.
+There is no lose screen (dying just fades back to the menu).
 
 ### Levels and waves
 A level scene (`Level1.tscn`, `Level2.tscn`) has a `Background`, a `Waves` node and

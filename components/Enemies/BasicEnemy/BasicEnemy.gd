@@ -6,6 +6,7 @@ class_name BasicEnemy
 
 func _ready():
 	add_to_group("enemies")
+	health = Campaign.enemy_health(health)
 	
 func _process(delta):
 	if health <= 0 and not $CollisionShape2D.disabled:
@@ -20,7 +21,7 @@ func on_destroyed():
 	tween.tween_property($Sprite2D, "modulate", Color(1, 1, 1, 0), 0.3).set_trans(Tween.TRANS_LINEAR)
 	tween.play()
 	CameraControl.screen_shake(3, 20, 0.3)
-	Score.add_score(self.points)
+	Score.add_score(Campaign.reward(points))
 	
 func on_hit(damage: float):
 	health -= damage

@@ -42,7 +42,8 @@ func _process(delta):
 
 func on_collision(body):
 	if body.has_method("on_hit"):
-		body.on_hit(damage)
+		# Enemy bullets hit harder in New Game+.
+		body.on_hit(damage if friendly else Campaign.enemy_damage(damage))
 	destroyed = true
 	$Sprite2D.visible = false
 	$HitSound.play()
