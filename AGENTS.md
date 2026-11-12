@@ -171,7 +171,7 @@ Collision layers/masks are all default; **filtering is done with groups**:
 `components/Player/Player.gd`: acceleration-based movement with dampening
 (`acceleration_force`, `dampening`, `max_speed`, slower `max_speed_shooting`
 while holding fire). Shooting uses the equipped weapon (see above).
-Health 100, regenerates over time (10× slower while shooting). Signals
+Health 60, regenerates `health_regen` 2/s (`health_regen_shooting` 0.5/s while shooting) — 4 rams or 3 fireballs kill. Signals
 `health_changed(health)` and `destroyed`.
 
 ### UI look ("weapon shop style")

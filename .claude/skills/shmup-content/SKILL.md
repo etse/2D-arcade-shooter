@@ -77,7 +77,7 @@ dynamically). Background is built from `InfinityScroll` instances
 
 | Thing | Value |
 | --- | --- |
-| Player health / regen | 100 / 5 per s (0.5 while shooting) |
+| Player health / regen | 60 / 2 per s (0.5 while shooting); ramming costs 15, a boss fireball 20 |
 | Pulse fire lvl 1 → 10 | price $300; dmg 2 → 6, bullets 2 → 5, interval 0.4 → 0.2 s, DPS 10 → 150; upgrades $500 … $19000, each ~1.6× the last ($51250 total) — `PulseFire.tres` |
 | Spread fire lvl 1 → 10 | price $400; dmg 1.5 → 3, bullets/volley 2 → 12, interval 0.24 → 0.2 s, fan 4° → 76°, DPS 12.5 → 180; upgrades $650 … $24000, ~1.3× Pulse fire per step ($64350 total) — `SpreadFire.tres` |
 | Ramming | player takes 15, enemy takes 2 |

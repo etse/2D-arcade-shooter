@@ -8,9 +8,10 @@ var acceleration = Vector2(0,0);
 ## Fires the equipped weapon (see the Loadout autoload).
 var gun := WeaponGun.new()
 var isDestroyed = false
-var max_health = 100
-var health = 100
-var health_regen = 5
+var max_health = 60
+var health = 60
+var health_regen = 2
+var health_regen_shooting = 0.5
 
 signal health_changed
 signal destroyed
@@ -103,5 +104,5 @@ func _update_health(health_change: float):
 	
 
 func _on_HealthRegenTimer_timeout():
-	var regen = self.health_regen / 10.0 if Input.is_action_pressed("shoot") else self.health_regen
+	var regen = self.health_regen_shooting if Input.is_action_pressed("shoot") else self.health_regen
 	self._update_health(regen * $HealthRegenTimer.wait_time)

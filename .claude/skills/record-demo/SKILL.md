@@ -18,7 +18,7 @@ git-ignored (`/demo/` in `.gitignore`) — never commit videos.
 | --- | --- |
 | `record.sh` | `record.sh [--dry-run] <director.gd> [out.mp4]` — records to `demo/<director-name>.mp4` by default |
 | `demo_base.gd` | Base class for directors with helpers (scenes, menu clicks, input, spawning, waits) |
-| `demos/*.gd` | Ready-made directors. `weapon_shop.gd` = weak weapon → shop upgrades 1→10 → maxed weapon vs rows + boss (~18 s). `menus_tour.gd` = main menu → options → upgrade ship → weapon shop → level with HUD (~20 s). `spread_fire.gd` = shop: browse with live preview, buy Spread fire, power up/down → power 3 and 10 vs rows + boss (~17 s) |
+| `demos/*.gd` | Ready-made directors. `weapon_shop.gd` = weak weapon → shop upgrades 1→10 → maxed weapon vs rows + boss (~18 s). `menus_tour.gd` = main menu → options → upgrade ship → weapon shop → level with HUD (~20 s). `spread_fire.gd` = shop: browse with live preview, buy Spread fire, power up/down → power 3 and 10 vs rows + boss (~17 s). `game_tour.gd` = whole-game trailer (~56 s): Level 1 first wave → fade → Attackers wave → fade → boss kill → shop: buy Spread fire + 6 upgrades → fade into Attackers with it |
 | `contact_sheet.sh` | `contact_sheet.sh <video> [out.png] [fps=1] [cols=5]` — tiles frames into one PNG for reviewing |
 
 Requirements: `$DISPLAY` (rendering is not headless), `ffmpeg`/`ffprobe`, the
@@ -75,6 +75,8 @@ Godot binary via `tools/godot.sh`. Recording runs at roughly real time.
   x=960, y=950. Spawned rows are centred on x=960.
 - **Weak weapon is weak:** level-1 Pulse fire needs ~3 hits per BasicEnemy (6 HP)
   and its 2 bullets straddle a target — park directly under enemies.
+- **Cutting between parts of the game** (`demo_base.gd`): `fade_out()` / `fade_in()` / `black()` use a black overlay owned by the director (survives scene changes). While black: `skip_to_wave(level, "Attackers")` (any wave node name from `Level1.gd` `waves`; clears the screen and returns the wave node, e.g. `.boss` for `BossBattle`), `fast_forward(seconds)` (runs the game at 6× so a fresh wave fills the screen, or to skip the level's own fade back to the menu), `wait_for_scene(MENU)` when the game changes scene by itself.
+- **Playing by itself:** `autopilot(seconds, until := Callable())` holds fire and steers under one target at a time (heavies preferred) until it dies or leaves. It doesn't dodge, so pair it with `god_mode(level)` (keeps the player at full health). Don't add dodging back naively: it fought the targeting and the ship froze in place.
 - **Cheats available:** `Score.add_score(n)`, `Loadout.weapon_level = n`,
   `spawn_row(...)`, `spawn_boss(level, health)` (boss default 140 HP vs 230 in
   the game), `goto(scene)` to skip menus, editing any node directly.
