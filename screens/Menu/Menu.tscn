@@ -11,6 +11,9 @@
 
 [sub_resource type="FontFile" id="1"]
 fallbacks = Array[Font]([ExtResource("1")])
+subpixel_positioning = 0
+msdf_pixel_range = 14
+msdf_size = 128
 cache/0/variation_coordinates = {}
 cache/0/face_index = 0
 cache/0/embolden = 0.0
@@ -89,5 +92,5 @@ bus = &"music"
 [connection signal="UpgradeShip" from="MenuContainer/MainMenu" to="." method="_on_MainMenu_UpgradeShip"]
 [connection signal="UpgradeWeapon" from="MenuContainer/MainMenu" to="." method="_on_MainMenu_UpgradeWeapon"]
 [connection signal="saved" from="MenuContainer/Options" to="." method="_on_Options_saved"]
-[connection signal="back" from="MenuContainer/WeaponShop" to="." method="_on_WeaponShop_back"]
 [connection signal="back" from="MenuContainer/UpgradeShip" to="." method="_on_UpgradeShip_back"]
+[connection signal="back" from="MenuContainer/WeaponShop" to="." method="_on_WeaponShop_back"]

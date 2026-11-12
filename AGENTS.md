@@ -225,6 +225,7 @@ changes bus volumes (not persisted to disk).
 - Use `create_tween()` (Godot 4); there is no `Tween` node anymore.
 - Prefer editing scenes in a way that keeps the `.tscn` diff small; see the `godot-scene-editing` skill.
 - Commit directly on `main`.
+- Harmless Godot editor re-save noise (e.g. newly written default properties, reordered `[connection]` lines, `unique_id`s, new `.uid` files) can always be included in commits — don't leave it out or ask about it. Glance at the diff first to be sure it really is only noise.
 
 ## Known issues / gotchas
 - "Upgrade ship" (`UpgradeShip`, a "coming soon" panel) and `ShopItem` are stubs; `ShopItem.tscn` and `FireBullet.tscn` are still in Godot 3 text format (`format=2`) but load fine.
