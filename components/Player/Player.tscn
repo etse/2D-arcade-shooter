@@ -53,7 +53,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="1"]
-radius = 40.0
+radius = 28.0
 
 [sub_resource type="Animation" id="3"]
 resource_name = "hit"

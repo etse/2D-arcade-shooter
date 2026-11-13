@@ -195,7 +195,7 @@ Collision layers/masks are all default; **filtering is done with groups**:
 `components/Player/Player.gd`: acceleration-based movement with dampening
 (`acceleration_force`, `dampening`, `max_speed`, slower `max_speed_shooting`
 while holding fire). Shooting uses the equipped weapon (see above).
-Health 60, regenerates `health_regen` 2/s (`health_regen_shooting` 0.5/s while shooting) — 4 rams or 3 fireballs kill. Signals
+Health 60, regenerates `health_regen` 2/s (`health_regen_shooting` 0.5/s while shooting) — 4 rams or 3 fireballs kill. Hitbox: one 28 px radius circle on the ship's core (smaller than the ~100 px sprite on purpose, so you can slip between bullets); shared by bullet hits, ramming and the walls. Signals
 `health_changed(health)` and `destroyed`.
 
 ### UI look ("weapon shop style")

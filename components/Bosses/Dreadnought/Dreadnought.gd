@@ -1,7 +1,7 @@
 ## Level-2 boss: a slow bullet-hell fight in three phases (by remaining health).
 ##   1. Rings    – sways side to side, fires rings of slow orbs with a rotating
 ##                 gap pattern, plus aimed volleys from the wing guns.
-##   2. Spiral   – parks in the middle and spins a 4-armed spiral that reverses
+##   2. Spiral   – parks in the middle and spins a 3-armed spiral that reverses
 ##                 direction now and then; occasional aimed volley.
 ##   3. Enraged  – glows red, sways faster, alternating offset rings (dodge
 ##                 through the gaps) + aimed fans.
@@ -62,18 +62,18 @@ func _process(delta):
 			if _due("aimed", 3.1, 1.1):
 				_aimed_volley(3, 14.0, 320.0)
 		2:
-			if _due("spiral", 0.17):
-				for arm in 4:
-					_shoot($Core.global_position, _spiral_angle + arm * TAU / 4, 190.0)
-				_spiral_angle += deg_to_rad(9.0) * _spiral_dir
+			if _due("spiral", 0.2):
+				for arm in 3:
+					_shoot($Core.global_position, _spiral_angle + arm * TAU / 3, 190.0)
+				_spiral_angle += deg_to_rad(10.0) * _spiral_dir
 			if _due("reverse", 4.0, 4.0):
 				_spiral_dir = -_spiral_dir
 			if _due("aimed", 3.5, 2.0):
 				_aimed_volley(1, 0.0, 340.0)
 		3:
-			if _due("ring", 1.7):
-				_ring(18, 230.0, _ring_offset)
-				_ring_offset += 10.0   # half the gap: next ring's holes line up with this ring's orbs
+			if _due("ring", 1.9):
+				_ring(14, 230.0, _ring_offset)
+				_ring_offset += 180.0 / 14   # half the gap: next ring's holes line up with this ring's orbs
 			if _due("aimed", 2.3, 0.8):
 				_aimed_volley(5, 11.0, 330.0)
 
